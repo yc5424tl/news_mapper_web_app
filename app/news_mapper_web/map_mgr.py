@@ -10,27 +10,30 @@ import pycountry
 from .metadata_mgr import MetadataManager
 from datetime import datetime
 
-meta_data_mgr = MetadataManager('static/txt/geo_data_for_news_choropleth.txt')
+# meta_data_mgr = MetadataManager('./static/txt/geo_data_for_news_choropleth.txt')
 
 
 class GeoMapManager:
 
     @staticmethod
-    def get_source_country(source_name):
-        source = Source.objects.filter(name=source_name)
-        alpha_2_code = source.country
-        country = pycountry.countries.get(alpha_2=alpha_2_code.upper())
+    def get_country_alpha_3_code(source_country):
 
-        return country.alpha3
+        # source = Source.objects.get(name=source_name)
+        # alpha_2_code = source.country
+        country = pycountry.countries.get(alpha_2=source_country.upper())
+        print('country: ')
+        print(str(country))
 
-    @staticmethod
-    def map_source(source_country):
+        return country.alpha_3
 
-        if type(source_country) is None:
+    def map_source(self, source_name):
+
+        if type(source_name) is None:
             # TODO log
             return None
         else:
-            return source_country
+            country_alpha3 = self.get_country_alpha_3_code(source_name)
+            return country_alpha3
 
     @staticmethod
     def save_choro_to_file(argument, query_type, choro_map):
@@ -43,13 +46,13 @@ class GeoMapManager:
         filename = query_type + '_query_' + argument + '_at_' + map_prefix + '_choropleth_map.html'
 
         # ui.message(str(now))
-
-        choro_map.save('./output_maps/' + filename)
+        new_file = open('../static/output_maps/' + filename, 'w+')
+        choro_map.save('../static/output_maps/' + filename)
         choro_map.render()
 
         return choro_map
 
-    def build_choropleth(self, argument, query_type):
+    def build_choropleth(self, argument, query_type, meta_data_mgr):
 
         world_df = gpd.read_file(meta_data_mgr.json_filename)
         choro_map = folium.Map([0, 0], tiles='Mapbox Bright', zoom_start=4)
@@ -75,7 +78,7 @@ class GeoMapManager:
         elif articles_per_country.values.max() > 160:
             threshold_scale = [0, 1, 2, 5, 10, articles_per_country.values.max()]
 
-        choro_map.choropleth(geo_data=mgr.json_geo_data,
+        choro_map.choropleth(geo_data=meta_data_mgr.json_geo_data,
                              data=world_df,
                              columns=['id', 'article_count'],
                              key_on='feature.id',
@@ -94,10 +97,10 @@ class GeoMapManager:
         folium.TileLayer("Mapbox Control Room", attr='attr').add_to(choro_map)
         folium.LayerControl().add_to(choro_map)
 
-        new_choro = self.save_choro_to_file(argument=argument, query_type=query_type, choro_map=choro_map)
+        # new_choro = self.save_choro_to_file(argument=argument, query_type=query_type, choro_map=choro_map)
 
-        logging.debug(type(new_choro), 'type(new_choro) from map_mgr.build_choropleth')
+        # logging.debug(type(new_choro), 'type(new_choro) from map_mgr.build_choropleth')
 
-        return new_choro
+        choro_map = choro_map.render()
 
-
+        return choro_map

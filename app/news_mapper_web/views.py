@@ -16,7 +16,7 @@ from .metadata_mgr import MetadataManager
 
 from sqlite3 import OperationalError
 
-json_file = 'txt/geo_data_for_news_choropleth.txt'
+json_file = 'geo_data_for_news_choropleth.txt'
 
 query_mgr = QueryManager()
 geo_map_mgr = GeoMapManager()
@@ -69,16 +69,29 @@ def user_logout(request):
 
 
 def new_newsquery(request):
+
     if request.method == 'GET':
         form = NewQueryForm()
         return render(request, 'news_mapper_web/search.html', {'search_form': form})
 
     elif request.method == 'POST':
 
+        if meta_data_mgr.json_geo_data is None or meta_data_mgr.request_geo_data is None:
+            meta_data_mgr.get_geo_data()
+            meta_data_mgr.fix_cyprus_country_code()
+
+        meta_data_mgr.write_json_to_file(
+            meta_data_mgr.json_filename,
+            meta_data_mgr.json_geo_data
+        )
+
+        meta_data_mgr.build_query_results_dict()
+
         try:
-            Source.objects.get(pk=1)
-        except Source.DoesNotExist:
+            source = Source.objects.get(pk=1)
+            print('source: ' + str(source))
         # except OperationalError:
+        except Source.DoesNotExist:
             source_list_txt = query_mgr.fetch_and_build_sources()
             query_mgr.write_sources_json_to_file(source_list_txt)
 
@@ -86,33 +99,44 @@ def new_newsquery(request):
         q_type = request.POST.get('query_type')
 
         articles_list = query_mgr.query_api(query_argument=argument, query_type=q_type)
-        query_mgr.query_api('Scientists', )
+        # query_mgr.query_api('Scientists', )
 
         #  user_model = UserModel.objects.get(email=request.user.email)
 
         # query_object = NewsQuery(user=user_model, query_type=q_type, data=articles_list, argument=argument)
 
-        query_object = NewsQuery(query_type=q_type, data=articles_list)
-
-        if articles_list is not None:
-            for article in articles_list:
-                query_mgr.build_article_object(article, query_object)
-                # source_country = article.source.country
-                geo_map_mgr.get_source_country(article.source.name)
-                if geo_map_mgr.map_source(article.source.country) is not None:
-                    meta_data_mgr.query_data_dict[article.source.country] += 1
-
-        choropleth = geo_map_mgr.build_choropleth(argument, q_type)
-
-        meta_data_mgr.build_query_results_dict()
-
-        query_object.choropleth = choropleth
+        query_object = NewsQuery(query_type=q_type, data=articles_list, argument=argument)
         query_object.save()
 
-        return render(request, 'news_mapper_web/query_results.html', {
-            'news_query': query_object,
-            'choropleth': query_object.choropleth
-        })
+        if articles_list is not None:
+            print('Articles List: ')
+            print(articles_list)
+            for article in articles_list:
+                new_article = query_mgr.build_article_object(article, query_object)
+                print('new_article.source: ' + str(new_article.source))
+                print('new_article.source.country: ' + str(new_article.source.country))
+                # source_country = article.source.country
+                # geo_map_mgr.get_source_country(article.source.name)
+                #source_country = geo_map_mgr.get_source_country(new_article.source.name)
+                # if geo_map_mgr.map_source(article.source.country) is not None:
+                #     meta_data_mgr.query_data_dict[article.source.country] += 1
+                if new_article.source.country is not None:
+                    country_code = geo_map_mgr.get_country_alpha_3_code(new_article.source.country)
+                    # if geo_map_mgr.map_source(source_country) is not None:
+                    meta_data_mgr.query_data_dict[country_code] += 1
+                # if geo_map_mgr.map_source(new_article.source.country) is not None:
+                #     meta_data_mgr.query_data_dict[new_article.source.country] += 1
+                    choropleth = geo_map_mgr.build_choropleth(argument, q_type, meta_data_mgr)
+
+                    meta_data_mgr.build_query_results_dict()
+
+                    query_object.choropleth = choropleth
+                    query_object.save()
+
+                    return render(request, 'news_mapper_web/query_results.html', {
+                        'news_query': query_object,
+                        'choropleth': query_object.choropleth
+                    })
 
 
 #@login_required(login_url='/accounts/login/')

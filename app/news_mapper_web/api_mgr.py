@@ -23,17 +23,24 @@ class QueryManager:
 
     def query_api(self, query_argument, query_type, start_date=None, end_date=None):
 
+        print('Query Argument: ' + query_argument)
+        print('Query type: ' + query_type)
         valid_date_range = self.validate_date_range(start_date, end_date)
 
-        if not valid_date_range:
-
-            if query_type is 'headlines':
+        print('valid date range: ' + str(valid_date_range))
+        if valid_date_range is False:
+            print('in loop')
+            if query_type == 'headlines':
                 return self.build_articles_list(newsapi.get_top_headlines(q=query_argument, page_size=100))  # TODO return to page_size=100
 
-            if query_type is 'all':
-                endpoint = 'https://newsapi.org/v2/everything?q=' + query_argument + '&apiKey=' + api_key
+            if query_type == 'all':
+                print('in search all')
+                endpoint = 'https://newsapi.org/v2/everything?q=' + query_argument + '&apiKey=' + '5df648f726dd42d69fe046b765e22667'
+                print('endpoint' + endpoint)
                 article_count_raw = requests.get(endpoint)
                 article_count = article_count_raw.json()['totalResults']
+                print('Article Count: ')
+                print(article_count)
                 logger.info(article_count)
 
                 if article_count <= 100:  # 100 is max results/page.
@@ -52,7 +59,8 @@ class QueryManager:
 
                         try:
                             articles += results_page.json()['articles']
-                            with open('api_data-' + query_argument + '-' + datetime.now().day) as text_file:
+                            file_name = 'api_data-' + query_argument + '_' + query_type + '-' + datetime.now().strftime('%Y%m%d-%H%M%S')
+                            with open(file_name, 'w+') as text_file:
                                 text_file.write(str(results_page.json()))
                         except KeyError:
                             logger.exception(KeyError, 'KeyError during writing articles.json to file (QueryManager)')
@@ -75,7 +83,6 @@ class QueryManager:
         for i in range(len(api_query['articles'])):
             raw_article_data = api_query['articles'][i]
             new_article_object = self.build_article_object(raw_article_data, api_query)
-            new_article_object.save()
             articles_list.append(new_article_object)
 
         logger.info(str(articles_list))
@@ -190,13 +197,14 @@ class QueryManager:
         for source in sources:
             new_source = self.build_source_object(source)
             new_source.save()
+            print('new_source: ' + str(new_source))
             source_list.append(source)
         return source_list
 
     @staticmethod
     def validate_date_range(start_date, end_date):
-        if start_date and end_date:
-            pass
+        # if start_date and end_date:
+        #     pass
         return False
 
         # todo -- use a datetime object to validate inputs
