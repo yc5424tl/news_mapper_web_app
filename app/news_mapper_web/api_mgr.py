@@ -60,6 +60,8 @@ class QueryManager:
                             logger.exception(UnicodeEncodeError, 'UnicodeEncodeError during writing articles.json to file (QueryManager)')
                         except AttributeError:
                             logger.exception(AttributeError, 'AttributeException during writing articles.json to file (QueryManager)')
+                        except TypeError:
+                            logger.exception(TypeError, 'TypeError while ')
 
                     return articles
 
@@ -73,6 +75,7 @@ class QueryManager:
         for i in range(len(api_query['articles'])):
             raw_article_data = api_query['articles'][i]
             new_article_object = self.build_article_object(raw_article_data, api_query)
+            new_article_object.save()
             articles_list.append(new_article_object)
 
         logger.info(str(articles_list))

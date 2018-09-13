@@ -1,0 +1,47 @@
+
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}News Mapper{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+
+    <nav class="navbar" role="navigation">
+        <div class="container-fluid">
+            {% if logged_in %}
+                <a href="#">Account</a>
+                <a href="{% url 'logout' %}">Logout</a>
+            {% else %}
+                <form method="post" action="{% url 'login' %}" class="">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit">Login</button>
+                </form>
+{#                <a href="#">Login</a>#}
+{#                <a href="#">Register</a>#}
+
+                <a id="signup-link" href="{% url 'signup' %}"><button>Sign Up</button></a>
+
+            {% endif %}
+        </div>
+    </nav>
+
+{#  Navbar w/ login/logout/register/account options #}
+
+    {% block content %}
+    {% endblock %}
+
+    <footer class="footer">
+        <div class="container">
+            <span class="text-muted">Jacob Boline 2018 </span>
+            <a href="#">this.github</a>
+        </div>
+    </footer>
+
+{% comment %} links to view sources/about/github/contact {% endcomment %}
+</body>
+</html>
