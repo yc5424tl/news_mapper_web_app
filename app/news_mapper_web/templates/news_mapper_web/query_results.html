@@ -1,0 +1,15 @@
+
+{% extends 'news_mapper_web\base.html' %}
+
+{% block title %}Query Results{% endblock %}
+
+{% block content %}
+
+    {% block choropleth %}
+
+        <div class="choro-div">
+            {% include choropleth %}
+        </div>
+
+    {% endblock %}
+{% endblock %}
