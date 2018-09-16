@@ -5,11 +5,15 @@
 
 {% block content %}
 
-    {% block choropleth %}
+    <p>{{ news_query.argument }}</p>
+{#    <iframe src="{% url '../../media/news_mapper_web/html/{{ choropleth }}' %}"></iframe>#}
+    <iframe src="../../media/news_mapper_web/html/{{ choropleth }}"></iframe>
 
-        <div class="choro-div">
-            {% include choropleth %}
-        </div>
-
-    {% endblock %}
+{#    {% block choropleth %}#}
+{##}
+{#        <div class="choro-div">#}
+{#            {% include choropleth %}#}
+{#        </div>#}
+{##}
+{#    {% endblock %}#}
 {% endblock %}

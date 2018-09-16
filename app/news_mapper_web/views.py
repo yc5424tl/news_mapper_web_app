@@ -1,3 +1,4 @@
+from django.http import HttpRequest
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -7,7 +8,7 @@ from django.views import generic
 from django.conf import settings
 from .models import Post, Comment, UserModel, NewsQuery, Source
 from .forms import EditPostForm, EditCommentForm, LoginForm, NewQueryForm
-
+import os
 from .forms import UserCreationForm
 
 from .api_mgr import QueryManager
@@ -21,6 +22,10 @@ json_file = 'geo_data_for_news_choropleth.txt'
 query_mgr = QueryManager()
 geo_map_mgr = GeoMapManager()
 meta_data_mgr = MetadataManager(json_file)
+
+settings_dir = os.path.dirname(__file__)
+PROJECT_ROOT = os.path.abspath(os.path.dirname(settings_dir))
+CHORO_MAP_ROOT = os.path.join(PROJECT_ROOT, 'news_mapper_web/media/news_mapper_web/html/')
 
 
 def index(request):
@@ -90,71 +95,85 @@ def new_newsquery(request):
         try:
             source = Source.objects.get(pk=1)
             print('source: ' + str(source))
-        # except OperationalError:
         except Source.DoesNotExist:
             source_list_txt = query_mgr.fetch_and_build_sources()
             query_mgr.write_sources_json_to_file(source_list_txt)
 
-        argument = request.POST.get('argument')
-        q_type = request.POST.get('query_type')
+        q_argument = request.POST.get('_argument')
+        q_type = request.POST.get('_query_type')
 
-        articles_list = query_mgr.query_api(query_argument=argument, query_type=q_type)
+        articles_list = query_mgr.query_api(query_argument=q_argument, query_type=q_type)
         # query_mgr.query_api('Scientists', )
 
         #  user_model = UserModel.objects.get(email=request.user.email)
 
         # query_object = NewsQuery(user=user_model, query_type=q_type, data=articles_list, argument=argument)
 
-        query_object = NewsQuery(query_type=q_type, data=articles_list, argument=argument)
+        query_object = NewsQuery(_query_type=q_type, _data=articles_list, _argument=q_argument)
         query_object.save()
 
-        if articles_list is not None:
+        if articles_list:
+
             print('Articles List: ')
             print(articles_list)
             for article in articles_list:
+                print('article from article in articles (views.py 114) == ' + str(article))
                 new_article = query_mgr.build_article_object(article, query_object)
                 print('new_article.source: ' + str(new_article.source))
-                print('new_article.source.country: ' + str(new_article.source.country))
-                # source_country = article.source.country
-                # geo_map_mgr.get_source_country(article.source.name)
-                #source_country = geo_map_mgr.get_source_country(new_article.source.name)
-                # if geo_map_mgr.map_source(article.source.country) is not None:
-                #     meta_data_mgr.query_data_dict[article.source.country] += 1
-                if new_article.source.country is not None:
-                    country_code = geo_map_mgr.get_country_alpha_3_code(new_article.source.country)
-                    # if geo_map_mgr.map_source(source_country) is not None:
-                    meta_data_mgr.query_data_dict[country_code] += 1
-                # if geo_map_mgr.map_source(new_article.source.country) is not None:
-                #     meta_data_mgr.query_data_dict[new_article.source.country] += 1
-                    choropleth = geo_map_mgr.build_choropleth(argument, q_type, meta_data_mgr)
+                article_source_country = new_article.get_source_country()
+                if article_source_country:
+                    country_a3_code = geo_map_mgr.get_country_alpha_3_code(article_source_country)
+                    meta_data_mgr.query_data_dict[country_a3_code] += 1
 
-                    meta_data_mgr.build_query_results_dict()
+            choropleth_data_tuplet = geo_map_mgr.build_choropleth(q_argument, q_type, meta_data_mgr)
 
-                    query_object.choropleth = choropleth
-                    query_object.save()
-
-                    return render(request, 'news_mapper_web/query_results.html', {
-                        'news_query': query_object,
-                        'choropleth': query_object.choropleth
-                    })
+            choro_file = choropleth_data_tuplet[0]
+            choro_file_name = choropleth_data_tuplet[1]
 
 
-#@login_required(login_url='/accounts/login/')
+
+
+            #choropleth_map.save(os.path.join('media', '/news_mapper_web/html'))
+            # save_choro_to_file(q_argument, q_type, choropleth_map)
+
+            print('choropleth_file type = ' + str(type(choro_file)))
+            # choropleth_file.save()
+            meta_data_mgr.build_query_results_dict()
+
+            query_object.choropleth = choro_file
+
+            # query_object.save()
+
+            return render(request, 'news_mapper_web/query_results.html', {
+                'news_query': query_object,
+                'choropleth': choro_file_name
+            })
+
+
+def choro_map(request, choro_file_name):
+
+    print('TYPE choro_file_name = ' + str(type(choro_file_name)))
+    choro_path = CHORO_MAP_ROOT + choro_file_name
+    return render(request, choro_path)
+
+
+
+# @login_required(login_url='/accounts/login/')
 def view_newsquery(request):
     return None
 
 
-#@login_required()
+# @login_required()
 def save_query(request):
     return None
 
 
-#@login_required()
+# @login_required()
 def user_page(request):
     return None
 
 
-#@login_required()
+# @login_required()
 def view_post(request, post_pk):
     post = get_object_or_404(Post, pk=post_pk)
     if request.method == 'POST':

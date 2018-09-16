@@ -18,37 +18,90 @@ class Source(models.Model):
         ('technology', 'Technology')
     )
 
-    name = models.CharField(max_length=250)
-    country = models.CharField(blank=True, null=True, max_length=30)
-    country_alpha_code = models.CharField(blank=True, null=True, max_length=3)
-    url = models.URLField(default=None, null=True, blank=True)
-    api_id = models.CharField(default=None, null=True, blank=True, max_length=50)
-    description = models.CharField(default=None, null=True, blank=True, max_length=2000)
-    category = models.CharField(default=None, null=True, blank=True, choices=source_categories, max_length=50)
-    language = models.CharField(blank=True, null=True, default=None, max_length=50)
+    api_id = models.CharField(             default=None, null=True, blank=True, max_length=50)
+    category = models.CharField(           default=None, null=True, blank=True, max_length=50, choices=source_categories )
+    country = models.CharField(                          null=True, blank=True, max_length=30)
+    country_alpha_code = models.CharField(               null=True, blank=True, max_length=3)
+    description = models.CharField(        default=None, null=True, blank=True, max_length=2000)
+    language = models.CharField(           default=None, null=True, blank=True, max_length=50)
+    name = models.CharField(                                                    max_length=250)
+    url = models.URLField(                 default=None, null=True, blank=True)
 
     def __str__(self):
         return '%s - %s(%s)' % (self.name, self.country, self.country_alpha_code)
 
+    def get_api_id(self):
+        return self.api_id
+
+    def get_category(self):
+        return self.category
+
+    def get_country(self):
+        return self.country
+
+    def get_country_alpha_code(self):
+        return self.country_alpha_code
+
+    def get_description(self):
+        return self.description
+
+    def get_language(self):
+        return self.language
+
+    def get_name(self):
+        return self.name
+
+    def get_url(self):
+        return self.url
+
+
 
 class Article(models.Model):
+
+    article_url = models.URLField(default=None, blank=True, null=True)
     author = models.CharField(blank=True, null=True, max_length=75, default=None)
     date_published = models.DateTimeField(blank=True, null=True)
-    title = models.CharField(max_length=250)
-    source = models.ForeignKey('Source', on_delete=models.PROTECT, blank=True, null=True)
     description = models.CharField(blank=True, null=True, max_length=2500)
-    query = models.ForeignKey('NewsQuery', on_delete=models.CASCADE)
     image_url = models.URLField(default=None, blank=True, null=True)
-    article_url = models.URLField(default=None, blank=True, null=True)
+    query = models.ForeignKey('NewsQuery', on_delete=models.CASCADE)
+    source = models.ForeignKey('Source', on_delete=models.PROTECT, blank=True, null=True)
+    title = models.CharField(max_length=250)
 
     def __str__(self):
-        return '%s - %s, %s %s' % (self.title, self.author, self.date(), self.source.name)
+        return '%s - %s, %s %s' % (self.title, self.author, self.get_date_published(), self.source.name)
 
-    def date(self):
+    def get_date_published(self):
         if self.date_published:
             return '%s %s, %s' % (self.date_published.month, self.date_published.day, self.date_published.year)
         else:
-            return ''
+            return None
+
+    def get_source_country(self):
+        return self.source.country
+
+    def get_source_name(self):
+        return self.source.name
+
+    def get_source(self):
+        return self.source
+
+    def get_parent_query(self):
+        return self.query
+
+    def get_author(self):
+        return self.author
+
+    def get_article_url(self):
+        return self.article_url
+
+    def get_description(self):
+        return self.get_description
+
+    def get_image_url(self):
+        return self.image_url
+
+    def get_title(self):
+        return self.title
 
 
 class NewsQuery(models.Model):
@@ -60,17 +113,37 @@ class NewsQuery(models.Model):
 
     # user = models.ForeignKey('User', null=False, on_delete=models.PROTECT)
     #  user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT,)
-    query_type = models.CharField(default='headlines', choices=query_types, max_length=50)
-    data = models.CharField(max_length=200000, null=True, blank=True)
-    choropleth = models.FileField(upload_to='dociments/', null=True, blank=True, default=None)
-    argument = models.CharField(max_length=500)
-    date_range_start = models.DateField(default=None, null=True, blank=True)
-    date_range_end = models.DateField(default=None, null=True, blank=True)
-    date = models.DateField(auto_now_add=True)
-    public = models.BooleanField(default=False)
+    _argument = models.CharField(max_length=500)
+    _choropleth = models.FileField(upload_to='dociments/', null=True, blank=True, default=None)
+    _data = models.CharField(max_length=200000, null=True, blank=True)
+    _date = models.DateField(auto_now_add=True)
+    _date_range_end = models.DateField(default=None, null=True, blank=True)
+    _date_range_start = models.DateField(default=None, null=True, blank=True)
+    _public = models.BooleanField(default=False)
+    _query_type = models.CharField(default='headlines', choices=query_types, max_length=50)
+
+    @property
+    def argument(self):
+        return self._argument
+
+    @argument.setter
+    def argument(self, new_argument):
+        if isinstance(new_argument, str):
+            self._argument = new_argument
+        else:
+            raise Exception("Invalid Value for argument")
+
+    @property
+    def choropleth(self):
+        return self._choropleth
+
+    @choropleth.setter
+    def choropleth(self, new_choropleth):
+        self._choropleth = new_choropleth
 
 
 class Post(models.Model):
+
     #  user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, )
     title = models.CharField(max_length=150)
     body = models.CharField(max_length=2500)
@@ -78,7 +151,7 @@ class Post(models.Model):
     date_last_edit = models.DateTimeField(default=None)
     query = models.ForeignKey('NewsQuery', null=False, on_delete=models.PROTECT)
 
-    def choro_map(self):
+    def get_choro_map(self):
         if self.query.choropleth:
             return self.query.choropleth
 

@@ -90,17 +90,26 @@ class QueryManager:
 
     @staticmethod
     def is_str(data):
-        if data and type(data) is str:
+        if data and isinstance(data, str):
             return data
         else:
             return None
 
     @staticmethod
-    def is_src(data: str):
-        if data and Source.objects.get(name=data):
-            return Source.objects.get(name=data)
-        else:
-            return None
+    def is_src(source_name):
+        print('is_src(data), data = ' + source_name)
+        # if data and (Source.objects.get(name=data)):
+        #     return Source.objects.get(name=data)
+        # else:
+        #     return None
+
+        if source_name:
+            try:
+                source = Source.objects.get(name=source_name)
+                print('is_src: ' + str(source.name))
+                return source
+            except AttributeError:
+                return False
 
     @staticmethod
     def format_date(date_str):
@@ -130,6 +139,8 @@ class QueryManager:
 
     def build_article_object(self, raw_article_data, query):
 
+        print('raw_data_src = ' + raw_article_data['source']['name'])
+
         title = self.is_str(raw_article_data['title'])
         author = self.is_str(raw_article_data['author'])
         source = self.is_src(raw_article_data['source']['name'])
@@ -154,19 +165,19 @@ class QueryManager:
             query=query)
 
         new_article.save()
-
+        print('new_article.source in api_mgr 166 = ' + str(new_article.source))
         return new_article
 
     def build_source_object(self, source_data):
 
-        api_id = self.is_str(source_data['id'])
         name = self.is_str(source_data['name'])
-        description = self.is_str(source_data['description'])
+        country = self.is_str(source_data['country'])
         url = source_data['url']
+        api_id = self.is_str(source_data['id'])
+        description = self.is_str(source_data['description'])
         # url = self.is_url(source_data['url'])
         category = self.is_str(source_data['category'])
         language = self.is_str(source_data['language'])
-        country = self.is_str(source_data['country'])
 
         return Source(
             api_id=api_id,
@@ -197,12 +208,12 @@ class QueryManager:
         for source in sources:
             new_source = self.build_source_object(source)
             new_source.save()
-            print('new_source: ' + str(new_source))
-            source_list.append(source)
+            print('new_source: ' + str(new_source.name))
+            source_list.append(new_source)
         return source_list
 
     @staticmethod
-    def validate_date_range(start_date, end_date):
+    def validate_date_range(_start_date, _end_date):
         # if start_date and end_date:
         #     pass
         return False

@@ -11,6 +11,7 @@ urlpatterns = [
     url(r'delete_comment/$', views.delete_comment, name='delete_comment'),
     url(r'^signup/$', views.SignUp.as_view(), name='signup'),
     url(r'^accounts/login/$', views.user_login, name='login'),
+    url(r'^media/news_mapper_web/html/(?P<choro_file_name>\d+)$', views.choro_map, name='choro_map'),
     path('accounts/', include('django.contrib.auth.urls')),
 ]
 

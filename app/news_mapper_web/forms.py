@@ -18,14 +18,14 @@ class NewCommentForm(forms.ModelForm):
 class NewQueryForm(forms.ModelForm):
     class Meta:
         model = NewsQuery
-        fields = ('argument', 'query_type')
+        fields = ('_argument', '_query_type')
 
 
 class SaveQueryForm(forms.ModelForm):
     #  add option to publish in this form
     class Meta:
         model = NewsQuery
-        fields = ('public',)
+        fields = ('_public',)
 
 
 class EditPostForm(forms.ModelForm):

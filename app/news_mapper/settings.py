@@ -17,6 +17,8 @@ import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+print('Base Dir: ' + BASE_DIR)
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
@@ -65,10 +67,11 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         # 'DIRS': ['templates'],
-        'DIRS': [
-            os.path.join(BASE_DIR, 'news_mapper_web/templates'),
-            'app/news_mapper_web/media/documents'
-        ],
+        'DIRS': [],
+        # 'DIRS': [
+        #     os.path.join(BASE_DIR, 'news_mapper_web/templates'),
+        #     'app/news_mapper_web/media/documents'
+        # ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -136,12 +139,19 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 STATIC_URL = '/static/'
+# STATIC_ROOT = os.path.join(BASE_DIR, '/news_mapper_web/static')
+STATIC_ROOT = os.path.join(BASE_DIR, '/static/')
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+MEDIA_ROOT = os.path.join(BASE_DIR, '/news_mapper_web/media/')
 
-TEMPLATE_DIRS = (os.path.join(BASE_DIR, 'news_mapper_web/templates'),)
+# STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR, 'news_mapper_web/static'),
+#     'app/static'
+# ]
+
+TEMPLATE_DIRS = (os.path.join(BASE_DIR, '/news_mapper_web/templates'),)
 
 
 LOGIN_REDIRECT_URL = 'index'
