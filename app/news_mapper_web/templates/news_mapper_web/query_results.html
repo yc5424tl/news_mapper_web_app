@@ -5,9 +5,13 @@
 
 {% block content %}
 
+{#    <a href="{% url 'view_post' news_query_pk=news_query.pk %}">Query: {{ news_query.argument }} Type: {{ news_query.query_type }}</a>#}
+
     <p>{{ news_query.argument }}</p>
 {#    <iframe src="{% url '../../media/news_mapper_web/html/{{ choropleth }}' %}"></iframe>#}
-    <iframe src="../../media/news_mapper_web/html/{{ choropleth }}"></iframe>
+{#    <iframe src="../../media/news_mapper_web/html/{{ choropleth }}"></iframe>#}
+{#    <iframe>{% autoescape off %}{{ choro_html }}{% endautoescape %}</iframe>#}
+    {{ news_query.choro_html }}
 
 {#    {% block choropleth %}#}
 {##}

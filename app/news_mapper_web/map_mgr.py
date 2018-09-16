@@ -2,6 +2,9 @@ import logging
 
 import os
 
+from IPython.core.display import display, HTML, display_html
+from ipywidgets import HTML
+
 from .models import Article, Source, NewsQuery
 
 import folium
@@ -9,6 +12,8 @@ import geopandas as gpd
 import numpy as np
 import pandas as pd
 import pycountry
+
+import jupyter
 
 import os
 
@@ -92,16 +97,6 @@ class GeoMapManager:
         folium.TileLayer("Mapbox Control Room", attr='attr').add_to(choro_map)
         folium.LayerControl().add_to(choro_map)
 
-        # choro_html = choro_map.get_root().render()
-        choro_html = choro_map.get_root().render()
-        print(isinstance(choro_html, str))
-        print(choro_html)
-        # template_html_open = "{% extends 'news_mapper_web\\base.html' %} {% block choropleth %}"
-        #
-        # template_html_close = "{% endblock %}"
-        #
-        # # choro_template_html = template_html_open + " " + choro_html + " " + template_html_close
-
         date = datetime.now()
         now = datetime.ctime(date)
 
@@ -111,8 +106,34 @@ class GeoMapManager:
         filename = map_prefix + '_' + query_type + '_query_' + argument + '_choropleth_map.html'
         file_path = "staticoutput_maps\\" + filename
 
-        with open(CHORO_MAP_ROOT + filename, "w") as file:
-            file.write(choro_html)
+
+        # choro_html = choro_map.get_root().render()
+        choro_map.save(CHORO_MAP_ROOT + filename)
+        choro_html = choro_map.get_root().render()
+        #print(isinstance(choro_html, str))
+        #print(choro_html)
+
+        print('type(choro_map.render()) = ' + str(type(choro_map.render())))
+        print('type(choro_map.render) = ' + str(type(choro_map.render)))
+        print('type(choro_map) = ' + str(type(choro_map)))
+
+
+
+
+        iframe = choro_map._repr_html_()
+        # display(HTML(iframe))
+        display_html(iframe)
+        # template_html_open = "{% extends 'news_mapper_web\\base.html' %} {% block choropleth %}"
+        #
+        # template_html_close = "{% endblock %}"
+        #
+        # # choro_template_html = template_html_open + " " + choro_html + " " + template_html_close
+
+
+
+        #
+        # with open(CHORO_MAP_ROOT + filename, "w") as file:
+        #     file.write(choro_html)
 
         # with open("test_html.html", "w") as test_file:
         #     # test_file.write(template_html_open + '\n')
@@ -147,7 +168,11 @@ class GeoMapManager:
         # with open(os.path.join('E:/Alpha/Software Development Capstone - 2905-01/My Files/Projects/news_mapper_django/app/news_mapper_web/static/news_mapper_web/output_maps/', filename), "w+") as target_file:
         #     target_file.write(choro_map)
 
-        return file, filename
+        # return file, filename, choro_html
+
+        # save_choro_to_file(argument, query_type, choro_map)
+
+        return choro_map, choro_html, filename
 
 
 def save_choro_to_file(argument, query_type, choro_map):
@@ -159,9 +184,15 @@ def save_choro_to_file(argument, query_type, choro_map):
 
     filename = query_type + '_query_' + argument + '_at_' + map_prefix + '_choropleth_map.html'
 
-    choro_html = choro_map.render()
-    with open('static/output_maps/' + filename, 'w+') as choro_file:
-        choro_file.write(choro_html)
+    choro_map.save(CHORO_MAP_ROOT + filename)
+    choro_map.render()
+    print('type(choro_map.render()) = ' + str(type(choro_map.render())))
+    print('type(choro_map.render) = ' + str(type(choro_map.render)))
+    print('type(choro_map) = ' + str(type(choro_map)))
+
+    # choro_html = choro_map.render()
+    # with open('static/output_maps/' + filename, 'w+') as choro_file:
+    #     choro_file.write(choro_html)
 
     # ui.message(str(now))
     # new_file = open('../static/output_maps/' + filename, 'w+')

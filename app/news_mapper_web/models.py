@@ -4,7 +4,11 @@ from django.conf import settings
 # from django.contrib.auth.models import User
 # from datetime import datetime
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+import os
 
+settings_dir = os.path.dirname(__file__)
+PROJECT_ROOT = os.path.abspath(os.path.dirname(settings_dir))
+CHORO_MAP_ROOT = os.path.join(PROJECT_ROOT, 'news_mapper_web/media/news_mapper_web/html/')
 
 class Source(models.Model):
 
@@ -114,11 +118,13 @@ class NewsQuery(models.Model):
     # user = models.ForeignKey('User', null=False, on_delete=models.PROTECT)
     #  user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT,)
     _argument = models.CharField(max_length=500)
-    _choropleth = models.FileField(upload_to='dociments/', null=True, blank=True, default=None)
+    _choropleth = models.FileField(upload_to=CHORO_MAP_ROOT, null=True, blank=True, default=None)
+    _choro_html = models.TextField(max_length=200000, null=True, blank=True)
     _data = models.CharField(max_length=200000, null=True, blank=True)
     _date = models.DateField(auto_now_add=True)
     _date_range_end = models.DateField(default=None, null=True, blank=True)
     _date_range_start = models.DateField(default=None, null=True, blank=True)
+    _filename = models.TextField(max_length=700, null=True, blank=True)
     _public = models.BooleanField(default=False)
     _query_type = models.CharField(default='headlines', choices=query_types, max_length=50)
 
@@ -140,6 +146,38 @@ class NewsQuery(models.Model):
     @choropleth.setter
     def choropleth(self, new_choropleth):
         self._choropleth = new_choropleth
+
+    @property
+    def query_type(self):
+        return self._query_type
+
+    @query_type.setter
+    def query_type(self, new_query_type):
+        self._query_type = new_query_type
+
+    @property
+    def date(self):
+        return self._date
+
+    @date.setter
+    def date(self, new_date):
+        self._date = new_date
+
+    @property
+    def filename(self):
+        return self._filename
+
+    @filename.setter
+    def filename(self, new_filename):
+        self._filename = new_filename
+
+    @property
+    def choro_html(self):
+        return self._choro_html
+
+    @choro_html.setter
+    def choro_html(self, new_choro_html):
+        self._choro_html = new_choro_html
 
 
 class Post(models.Model):

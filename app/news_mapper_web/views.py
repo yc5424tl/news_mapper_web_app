@@ -114,40 +114,70 @@ def new_newsquery(request):
 
         if articles_list:
 
-            print('Articles List: ')
-            print(articles_list)
+            #print('Articles List: ')
+            #print(articles_list)
             for article in articles_list:
-                print('article from article in articles (views.py 114) == ' + str(article))
+                #print('article from article in articles (views.py 114) == ' + str(article))
                 new_article = query_mgr.build_article_object(article, query_object)
-                print('new_article.source: ' + str(new_article.source))
+                #print('new_article.source: ' + str(new_article.source))
                 article_source_country = new_article.get_source_country()
                 if article_source_country:
                     country_a3_code = geo_map_mgr.get_country_alpha_3_code(article_source_country)
                     meta_data_mgr.query_data_dict[country_a3_code] += 1
 
-            choropleth_data_tuplet = geo_map_mgr.build_choropleth(q_argument, q_type, meta_data_mgr)
+            #####choropleth_data_tuplet = geo_map_mgr.build_choropleth(q_argument, q_type, meta_data_mgr)
+            #
+            # choro_file = choropleth_data_tuplet[0]
+            # choro_file_name = choropleth_data_tuplet[1]
+            # choro_html = choropleth_data_tuplet[2]
 
-            choro_file = choropleth_data_tuplet[0]
-            choro_file_name = choropleth_data_tuplet[1]
+            # choropleth_data_tuplet = geo_map_mgr.build_choropleth(q_argument, q_type, meta_data_mgr)
+            #
+            # choro_file_name = choropleth_data_tuplet[0]
+            # choro_html = choropleth_data_tuplet[1]
 
-
-
-
-            #choropleth_map.save(os.path.join('media', '/news_mapper_web/html'))
+            #######choropleth_map.save(os.path.join('media', '/news_mapper_web/html'))
             # save_choro_to_file(q_argument, q_type, choropleth_map)
 
-            print('choropleth_file type = ' + str(type(choro_file)))
+            ######print('choropleth_file type = ' + str(type(choro_file)))
             # choropleth_file.save()
-            meta_data_mgr.build_query_results_dict()
+            # meta_data_mgr.build_query_results_dict()
 
-            query_object.choropleth = choro_file
+            #####query_object.choropleth = choro_file
 
             # query_object.save()
 
-            return render(request, 'news_mapper_web/query_results.html', {
-                'news_query': query_object,
-                'choropleth': choro_file_name
-            })
+            ######## return render(request, 'news_mapper_web/query_results.html', {
+            #     'news_query': query_object,
+            #     'choropleth': choro_file_name,
+            #     'choro_html': choro_html
+            # })
+
+            choropleth_data_tuplet = geo_map_mgr.build_choropleth(q_argument, q_type, meta_data_mgr)
+
+            query_object.choropleth = choropleth_data_tuplet[0]
+            query_object.choro_html = choropleth_data_tuplet[1]
+            query_object.filename = choropleth_data_tuplet[2]
+            # query_object.save()
+
+           # return redirect('query_details', query_pk=query_object.pk)
+
+            return render(request, 'news_mapper_web/query_results.html', {'news_query': query_object})
+
+
+
+            #meta_data_mgr.build_query_results_dict()
+
+            # return render(request, 'news_mapper_web/query_results.html', {
+            #     'news_query': query_object,
+            #     'choropleth': choro_file_name,
+            #     'choro_html': choro_html
+            # })
+
+            # redirect('choro_map_embed', {'choro_file_name': choro_file_name})
+
+
+
 
 
 def choro_map(request, choro_file_name):
@@ -157,10 +187,13 @@ def choro_map(request, choro_file_name):
     return render(request, choro_path)
 
 
-
 # @login_required(login_url='/accounts/login/')
-def view_newsquery(request):
-    return None
+def view_newsquery(request, query_pk):
+
+    query = get_object_or_404(NewsQuery, pk=query_pk)
+
+    if query:
+        return render(request, 'news_mapper_web/query_results.html', {'news_query': query})
 
 
 # @login_required()
