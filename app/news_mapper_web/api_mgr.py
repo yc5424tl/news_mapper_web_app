@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 
 news_api_key = os.environ.get('NEWS_CLIENT_API_KEY')
 api_key = os.environ.get('api_key_news')  # TODO
-newsapi = NewsApiClient(api_key='daaba2aab3d54874a0a154c18715e82c')
+newsapi = NewsApiClient(api_key=news_api_key)
 
 # validate_url = URLValidator(verify_exists=True)
 
@@ -23,24 +23,17 @@ class QueryManager:
 
     def query_api(self, query_argument, query_type, start_date=None, end_date=None):
 
-        # print('Query Argument: ' + query_argument)
-        # print('Query type: ' + query_type)
         valid_date_range = self.validate_date_range(start_date, end_date)
 
-        # print('valid date range: ' + str(valid_date_range))
         if valid_date_range is False:
-            # print('in loop')
             if query_type == 'headlines':
                 return self.build_articles_list(newsapi.get_top_headlines(q=query_argument, page_size=100))  # TODO return to page_size=100
 
             if query_type == 'all':
-                # print('in search all')
-                endpoint = 'https://newsapi.org/v2/everything?q=' + query_argument + '&apiKey=' + '5df648f726dd42d69fe046b765e22667'
-                # print('endpoint' + endpoint)
+
+                endpoint = 'https://newsapi.org/v2/everything?q=' + query_argument + '&apiKey=' + 'daaba2aab3d54874a0a154c18715e82c'
                 article_count_raw = requests.get(endpoint)
                 article_count = article_count_raw.json()['totalResults']
-                # print('Article Count: ')
-                # print(article_count)
                 logger.info(article_count)
 
                 if article_count <= 100:  # 100 is max results/page.
@@ -49,9 +42,9 @@ class QueryManager:
                 elif article_count > 100:  # Multiple calls used to page through results
                     articles = []
                     # top_range = (article_count // 100 - 1)
-
+                    #
                     # if top_range > 98:
-                    # top_range = 98  # query max articles=10000, err if page past end
+                    #     top_range = 98  #  query max articles=10000, err if page past end
                     top_range = 2
 
                     for i in range(1, top_range):
@@ -59,7 +52,7 @@ class QueryManager:
 
                         try:
                             articles += results_page.json()['articles']
-                            file_name = 'api_data-' + query_argument + '_' + query_type + '-' + datetime.now().strftime('%Y%m%d-%H%M%S')
+                            file_name = 'api_data-' + query_argument + '_' + query_type + '-' + datetime.now().strftime('%Y%m%d-%H%M%S') + '.json'
                             with open(file_name, 'w+') as text_file:
                                 text_file.write(str(results_page.json()))
                         except KeyError:
@@ -82,9 +75,12 @@ class QueryManager:
 
         for i in range(len(api_query['articles'])):
             raw_article_data = api_query['articles'][i]
-            new_article_object = self.build_article_object(raw_article_data, api_query)
-            articles_list.append(new_article_object)
-
+            try:
+                new_article_object = self.build_article_object(raw_article_data, api_query)
+                if new_article_object is not False:
+                    articles_list.append(new_article_object)
+            except Source.DoesNotExist:
+                logger.exception(Source.DoesNotExist, 'api_mgr.build_articles_list')
         logger.info(str(articles_list))
         return articles_list
 
@@ -108,7 +104,7 @@ class QueryManager:
                 source = Source.objects.get(name=source_name)
                 # print('is_src: ' + str(source.name))
                 return source
-            except AttributeError:
+            except (AttributeError, Source.DoesNotExist):
                 return False
 
     @staticmethod
@@ -138,63 +134,87 @@ class QueryManager:
     #         return None
 
     def build_article_object(self, raw_article_data, query):
-
-        # print('raw_data_src = ' + raw_article_data['source']['name'])
-
-        title = self.is_str(raw_article_data['title'])
-        author = self.is_str(raw_article_data['author'])
         source = self.is_src(raw_article_data['source']['name'])
         date_published = self.is_datetime(raw_article_data['publishedAt'])
-        description = self.is_str(raw_article_data['description'])
         article_url = raw_article_data['url']
+
         if raw_article_data['urlToImage']:
             image_url = raw_article_data['urlToImage']
         else:
             image_url = None
-        # article_url = self.is_url(raw_article_data['url'])
-        # image_url = self.is_url(raw_article_data['urlToImage'])
 
-        new_article = Article(
-            title=title,
-            author=author,
-            source=source,
-            date_published=date_published,
-            description=description,
-            article_url=article_url,
-            image_url=image_url,
-            query=query)
+        try:
+            description = self.is_str(raw_article_data['description'])
+        except UnicodeDecodeError:
+            description = 'Unavailable'
 
-        new_article.save()
-        # print('new_article.source in api_mgr 166 = ' + str(new_article.source))
-        return new_article
+        try:
+            title = self.is_str(raw_article_data['title'])
+        except UnicodeDecodeError:
+            title = 'Unavaialbe'
+
+        try:
+            author = self.is_str(raw_article_data['author'])
+        except UnicodeDecodeError:
+            author = 'Unavailable'
+
+        if source is not False:
+            new_article = Article(
+                title=title,
+                author=author,
+                source=source,
+                date_published=date_published,
+                description=description,
+                article_url=article_url,
+                image_url=image_url,
+                query=query)
+            new_article.save()
+            return new_article
+
+        else:
+            return False
 
     def build_source_object(self, source_data):
 
-        name = self.is_str(source_data['name'])
-        country = self.is_str(source_data['country'])
         url = source_data['url']
-        api_id = self.is_str(source_data['id'])
-        description = self.is_str(source_data['description'])
-        # url = self.is_url(source_data['url'])
+        country  = self.is_str(source_data['country'])
+        api_id   = self.is_str(source_data['id'])
         category = self.is_str(source_data['category'])
         language = self.is_str(source_data['language'])
 
-        return Source(
-            api_id=api_id,
-            name=name,
-            description=description,
-            url=url,
-            category=category,
-            language=language,
-            country=country
-        )
+        try:
+            name = self.is_str(source_data['name'])
+        except UnicodeDecodeError:
+            name = self.is_str(source_data['id'])
+
+        try:
+            description = self.is_str(source_data['description'])
+        except UnicodeDecodeError:
+            description = 'Unavailable'
+
+        if name is not False:
+            print(name)
+
+            return Source(
+                api_id=api_id,
+                name=name,
+                description=description,
+                url=url,
+                category=category,
+                language=language,
+                country=country
+            )
+
+        else:
+            print('NO NAME')
+            return False
 
     # this should probably go to an AppManager or the like
     @staticmethod
     def write_sources_json_to_file(sources_json):
         try:
-            with open('sources.txt', 'a') as text_file:
-                text_file.write(str(sources_json))
+            with open('sources.json', 'a') as json_file:
+                json_file.write(str(sources_json))
         except UnicodeEncodeError:
             logger.exception(UnicodeEncodeError, 'UnicodeDecodeError in QueryManager.build_sources()')
         except AttributeError:

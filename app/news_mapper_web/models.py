@@ -6,6 +6,10 @@ from django.conf import settings
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 import os
 
+import matplotlib
+matplotlib.use('Agg')
+from matplotlib import pyplo
+
 settings_dir = os.path.dirname(__file__)
 PROJECT_ROOT = os.path.abspath(os.path.dirname(settings_dir))
 CHORO_MAP_ROOT = os.path.join(PROJECT_ROOT, 'news_mapper_web/media/news_mapper_web/html/')
@@ -62,21 +66,86 @@ class Source(models.Model):
 
 class Article(models.Model):
 
-    article_url = models.URLField(default=None, blank=True, null=True)
-    author = models.CharField(blank=True, null=True, max_length=75, default=None)
-    date_published = models.DateTimeField(blank=True, null=True)
-    description = models.CharField(blank=True, null=True, max_length=2500)
-    image_url = models.URLField(default=None, blank=True, null=True)
-    query = models.ForeignKey('NewsQuery', on_delete=models.CASCADE)
-    source = models.ForeignKey('Source', on_delete=models.PROTECT, blank=True, null=True)
-    title = models.CharField(max_length=250)
+    _article_url = models.URLField(default=None, blank=True, null=True)
+    _author = models.CharField(blank=True, null=True, max_length=75, default=None)
+    _date_published = models.DateTimeField(blank=True, null=True)
+    _description = models.CharField(blank=True, null=True, max_length=2500)
+    _image_url = models.URLField(default=None, blank=True, null=True)
+    _query = models.ForeignKey('NewsQuery', on_delete=models.CASCADE)
+    _source = models.ForeignKey('Source', on_delete=models.PROTECT, blank=True, null=True)
+    _title = models.CharField(max_length=250)
 
     def __str__(self):
-        return '%s - %s, %s %s' % (self.title, self.author, self.get_date_published(), self.source.name)
+        return '%s - %s, %s %s' % \
+               (self._title, self._author, self.get_date_published(), self._source.name)
+
+    @property
+    def article_url(self):
+        return self._article_url
+
+    @article_url.setter
+    def article_url(self, new_url):
+        self._article_url = new_url
+
+    @property
+    def author(self):
+        return self._author
+
+    @author.setter
+    def author(self, new_author):
+        self._author = new_author
+
+    @property
+    def date_published(self):
+        return self._date_published
+
+    @date_published.setter
+    def date_published(self, new_date):
+        self._date_published = new_date
+
+    @property
+    def description(self):
+        return self._description
+
+    @description.setter
+    def description(self, new_desc):
+        self._description = new_desc
+
+    @property
+    def image_url(self):
+        return self._image_url
+
+    @image_url.setter
+    def image_url(self, new_url):
+        self._image_url = new_url
+
+    @property
+    def query(self):
+        return self._query
+
+    @query.setter
+    def query(self, new_query):
+        self._query = new_query
+
+    @property
+    def source(self):
+        return self._source
+
+    @source.setter
+    def source(self, new_source):
+        self._source = new_source
+
+    @property
+    def title(self):
+        return self._title
+
+    @title.setter
+    def title(self, new_title):
+        self._title = new_title
 
     def get_date_published(self):
-        if self.date_published:
-            return '%s %s, %s' % (self.date_published.month, self.date_published.day, self.date_published.year)
+        if self._date_published:
+            return '%s %s, %s' % (self._date_published.month, self._date_published.day, self._date_published.year)
         else:
             return None
 
@@ -190,6 +259,10 @@ class NewsQuery(models.Model):
     @choro_html.setter
     def choro_html(self, new_choro_html):
         self._choro_html = new_choro_html
+
+    @property
+    def date_created_readable(self):
+        return '%s %s, %s' % (self._date_created.month, self._date_created.day, self._date_created.year)
 
 
 class Post(models.Model):

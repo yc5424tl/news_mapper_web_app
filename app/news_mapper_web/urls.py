@@ -5,17 +5,30 @@ from . import views
 
 urlpatterns = [
     url(r'^$', views.index, name='index'),
-    url(r'^query_details/(?P<news_query_pk>\d+)$', views.view_newsquery, name='query_result_detail'),
+
     url(r'^search/$', views.new_newsquery, name='search'),
+
+    url(r'^query_details/(?P<news_query_pk>\d+)$', views.view_newsquery, name='query_result_detail'),
+
+    # url(r'^delete_query/(?P<news_query_pk>\d+)$', views.delete_query, name='delete_query'),
+    #
+    # url(r'^save_query/(?P<news_query_pk>\d+)$', views.save_query, name='delete_query'),
+
     url(r'^post/(?P<post_pk>\d+)$', views.view_post, name='view_post'),
+
     url(r'delete_post/$', views.delete_post, name='delete_post'),
+
     url(r'delete_comment/$', views.delete_comment, name='delete_comment'),
+
     url(r'^signup/$', views.SignUp.as_view(), name='signup'),
+
     url(r'^accounts/login/$', views.user_login, name='login'),
-    path('media/news_mapper_web/html/<str:choro_file_name>/', views.choro_map, name='choro_map_embed'),
-    url(r'^media/news_mapper_web/html/(?P<choro_file_name>\d+)$', views.choro_map, name='choro_map'),
-    path('accounts/', include('django.contrib.auth.urls')),
-    # url(r'^results/(?P<query_pk>\d+)$', views.view_newsquery, name='query_details'),
+
+    # path('media/news_mapper_web/html/<str:choro_file_name>/', views.choro_map, name='choro_map_embed'),
+
+    # url(r'^media/news_mapper_web/html/(?P<choro_file_name>\d+)$', views.choro_map, name='choro_map'),
+    # path('accounts/', include('django.contrib.auth.urls')),
+
 ]
 
 # ----- Generated urls from accounts path above -----

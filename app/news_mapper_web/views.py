@@ -1,3 +1,8 @@
+
+import matplotlib
+matplotlib.use('Agg')
+from matplotlib import pyplo
+
 from django.http import HttpRequest
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
@@ -6,14 +11,19 @@ from django.contrib import messages
 from django.urls import reverse_lazy
 from django.views import generic
 from django.conf import settings
-from .models import Post, Comment, UserModel, NewsQuery, Source
+from .models import Post, Comment, UserModel, NewsQuery, Source, Article
 from .forms import EditPostForm, LoginForm, NewQueryForm
 import os
+import json
 from .forms import UserCreationForm
 
 from .api_mgr import QueryManager
 from .map_mgr import GeoMapManager
 from .metadata_mgr import MetadataManager
+
+import matplotlib
+matplotlib.use('Agg')
+from matplotlib import pyplo
 
 
 json_file = 'geo_data_for_news_choropleth.txt'
@@ -24,7 +34,7 @@ meta_data_mgr = MetadataManager(json_file)
 
 settings_dir = os.path.dirname(__file__)
 PROJECT_ROOT = os.path.abspath(os.path.dirname(settings_dir))
-CHORO_MAP_ROOT = os.path.join(PROJECT_ROOT, 'news_mapper_web/media/news_mapper_web/html/')
+CHORO_MAP_ROOT = os.path.join(PROJECT_ROOT, 'news_mapper_web/templates/news_mapper_web/choropleths/')
 
 
 def index(request):
@@ -92,19 +102,50 @@ def new_newsquery(request):
 
         try:
             source = Source.objects.get(pk=1)
+        except UnicodeDecodeError:
+            try:
+                with open('./news_mapper_web/static/js/sources.json') as sources:
+                    source_list = json.load(sources)
+                    for source in source_list['sources'][0]:
+                        api_id = source['id']
+                        name = source['name']
+                        description = source['description']
+                        url = source['url']
+                        category = source['category']
+                        language = source['language']
+                        country = source['country']
+
+                        new_source = Source(api_id=api_id, category=category, country=country, description=description, language=language, name=name, url=url)
+                        new_source.save()
+            except (FileNotFoundError, Exception):
+                source_list_txt = query_mgr.fetch_and_build_sources()
+                query_mgr.write_sources_json_to_file(source_list_txt)
+
         except Source.DoesNotExist:
-            source_list_txt = query_mgr.fetch_and_build_sources()
-            query_mgr.write_sources_json_to_file(source_list_txt)
+            try:
+                with open('./news_mapper_web/static/js/sources.json') as sources:
+                    source_list = json.load(sources)
+                    for source in source_list['sources'][0]:
+                        api_id = source['id']
+                        name = source['name']
+                        description = source['description']
+                        url = source['url']
+                        category = source['category']
+                        language = source['language']
+                        country = source['country']
+
+                        new_source = Source(api_id=api_id, category=category, country=country, description=description, language=language, name=name,
+                                            url=url)
+                        new_source.save()
+
+            except (FileNotFoundError, Exception):
+                source_list_txt = query_mgr.fetch_and_build_sources()
+                query_mgr.write_sources_json_to_file(source_list_txt)
 
         q_argument = request.POST.get('_argument')
         q_type = request.POST.get('_query_type')
 
         articles_list = query_mgr.query_api(query_argument=q_argument, query_type=q_type)
-        # query_mgr.query_api('Scientists', )
-
-        #  user_model = UserModel.objects.get(email=request.user.email)
-
-        # query_object = NewsQuery(user=user_model, query_type=q_type, data=articles_list, argument=argument)
 
         query_object = NewsQuery(_query_type=q_type, _data=articles_list, _argument=q_argument)
         query_object.save()
@@ -112,26 +153,35 @@ def new_newsquery(request):
         if articles_list:
             for article in articles_list:
                 new_article = query_mgr.build_article_object(article, query_object)
-                article_source_country = new_article.get_source_country()
-                if article_source_country:
-                    country_a3_code = geo_map_mgr.get_country_alpha_3_code(article_source_country)
-                    meta_data_mgr.query_data_dict[country_a3_code] += 1
+                if new_article is not False:
+                    new_article_pk = new_article.pk
+                    try:
+                        article_source_country = new_article.get_source_country()
+                        if article_source_country:
+                            country_a3_code = geo_map_mgr.get_country_alpha_3_code(article_source_country)
+                            meta_data_mgr.query_data_dict[country_a3_code] += 1
+                    except AttributeError:
+                        try:
+                            article = Article.objects.get(pk=new_article_pk)
+                            country = article.get_source_country()
+                            print('Country = ' + str(country))
+                            if country:
+                                country_a3_code = geo_map_mgr.get_country_alpha_3_code(country)
+                                meta_data_mgr.query_data_dict[country_a3_code] += 1
+                        except AttributeError:
+                            pass
 
             choropleth_data_tuplet = geo_map_mgr.build_choropleth(q_argument, q_type, meta_data_mgr)
 
             choropleth = choropleth_data_tuplet[0]
             choro_html = choropleth_data_tuplet[1]
             choro_filename = choropleth_data_tuplet[2]
+            # choro_html_splice = str(choro_html[16:-1])
+            # choro_html_updated = '<html lang="en">' + choro_html_splice
             query_pk = query_object.pk
             print('choro_html = ' + choro_html[0:1000])
 
             NewsQuery.objects.filter(pk=query_pk).update(_choropleth=choropleth, _choro_html=choro_html, _filename=choro_filename)
-
-            # query_object.choropleth = choropleth
-            # query_object.choro_html = choro_html
-            # query_object.filename = choro_filename
-            # print('deferred= ' + str(query_object.get_deferred_fields()))
-            # query_object.refresh_from_db()
 
             query_object = NewsQuery.objects.get(pk=query_pk)
 
@@ -139,8 +189,19 @@ def new_newsquery(request):
             print('str(html_pre) = ' + str(html_pre))
             print('redirect.query_object.pk = ' + str(query_object.pk))
 
-            return redirect('query_result_detail', news_query_pk=query_object.pk)
-            #return render(request, 'news_mapper_web/query_results.html', {'news_query': query_object})
+            article_instances = [x for x in Article.objects.filter(_query=query_object)]
+
+            for x in article_instances:
+                print('article_instance type = ' + str(type(x)))
+
+            # return redirect('query_result_detail',  news_query_pk=query_object.pk, articles=article_instances)
+
+            # return redirect('query_result_detail', news_query_pk=query_object.pk)
+
+            choro_file_path = CHORO_MAP_ROOT + query_object.filename
+
+            return render(request, 'news_mapper_web/query_results.html', {'news_query': query_object, 'articles': article_instances, 'choro_filepath': choro_file_path})
+
 
 
 def choro_map(request, choro_file_name):

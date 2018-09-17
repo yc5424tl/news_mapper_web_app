@@ -1,11 +1,17 @@
 import logging
 
+import matplotlib
+matplotlib.use('Agg')
+from matplotlib import pyplo
+
 import folium
 import geopandas as gpd
 import numpy as np
 import pandas as pd
 import pycountry
 import os
+
+
 
 from datetime import datetime
 

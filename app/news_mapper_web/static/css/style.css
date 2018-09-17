@@ -14,3 +14,34 @@ footer {
     line-height: 60px;
     display: block;
 }
+
+#choro-outer {
+    max-width: 50%;
+    border: red solid 1pt;
+    padding: 5px;
+}
+
+#choropleth-p {
+    max-width: 90%;
+    border: red solid 1pt;
+    padding: 5px;
+}
+
+.article-desc {
+    text-wrap: normal;
+    max-width: 30%;
+    text-overflow: ellipsis;
+    border-bottom: 1pt solid black;
+    background-color: dodgerblue;
+}
+
+.article-list {
+    border-bottom: 1pt black solid;
+    border-top: 1pt black solid
+}
+
+.folium-map.leaflet-container.leaflet-touch.leaflet-fade-anim.leaflet-grab.leafet-touch-drag.leaflet-touch-zoom.leaflet-retina.leaflet-safari {
+    max-width: 60%;
+    padding: 10px;
+    border: 1pt solid red;
+}

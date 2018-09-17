@@ -2,37 +2,96 @@
 {% extends 'news_mapper_web\base.html' %}
 
 
-
 {% block title %}Query Results{% endblock %}
 
 {% block scripts %}
-<script>
-    let doc = $("#choropleth-p")[0].contentWindow.document;
-    doc.open();
-    doc.write("{{ news_query.choro_html|safe }}")
-</script>
+
+    {{ block.super }}
+
+    <script>
+            //let doc = $("#choropleth-p")[0].contentWindow.document;
+           // let doc = $("#choropleth-p")[0].contentWindow.MapWidget;
+            //doc.open();
+            //doc.write("{ news_query.choro_html|safe }}")
+            // let iframe = ($("#choro-iframe")[0]).html({ news_query.choro_html|safe }})
+            //$(document.getElementById("#choro-iframe")[0].html({ news_query.choro_html|safe }}));
+        //https://stackoverflow.com/questions/494143/creating-a-new-dom-element-from-an-html-string-using-built-in-dom-methods-or-pro
+        //https://stackoverflow.com/questions/2781003/how-to-insert-html-in-iframe
+        import * as parent from "../../../../venv/Lib/site-packages/notebook/static/components/backbone/backbone-min";
+
+        function htmlToTemplate(html) {
+            let template = document.createElement('template');
+            let temp = document.getElementById('#choro-temp');
+            html = html.trim();
+            template.innerHTML = html;
+            temp.innerHTML = html;
+            return (template.content.childNodes);
+        }
+
+        function htmlToIframe(html) {
+            let iframe = document.getElementById('#choro-iframe');
+            let html_slice = html.slice(16,-1);
+            let html_tag = '<html lang="en">';
+            let new_html = html_tag.concat(' ', html_slice);
+            $(iframe).load(new_html);
+        }
+    $(document).ready(function() {
+        htmlToTemplate({{ news_query.choro_html|safe }});
+        htmlToIframe({{ news_query.choro_html|safe }});
+    });
+{#    let d1 = document.getElementById('#adjacent-target');#}
+{#    d1.insertAdjacentHTML('afterend', {{ news_query.choro_html|safe }})#}
+
+    </script>
+
 {% endblock %}
 
 {% block content %}
-
-{#    <a href="{% url 'view_post' news_query_pk=news_query.pk %}">Query: {{ news_query.argument }} Type: {{ news_query.query_type }}</a>#}
-
-    <p>{{ news_query.argument }}</p>
-    <p id="choropleth-p"></p>
-{#    <iframe src="{% url '../../media/news_mapper_web/html/{{ choropleth }}' %}"></iframe>#}
-{#    <iframe src="../../media/news_mapper_web/html/{{ choropleth }}"></iframe>#}
-{#    <iframe>{% autoescape off %}{{ choro_html }}{% endautoescape %}</iframe>#}
-    <iframe>{% autoescape off %}{{ news_query.choro_html }}{% endautoescape %} </iframe>
+    <iframe id="choro-iframe"></iframe>
+    <div class="container">
+        <div class="row">
 
 
-    <iframe id="choropleth-iframe"></iframe>
+            <div class="col-7">
+                <h2>Query Details</h2>
+                <p id="adjacent-target"> ARGUMENT: {{ news_query.argument }}
+                    TYPE: {{ news_query.query_type }}
+                    DATE: {{ news_query.date_created }}</p>
+{#                <template id="choro-temp"></template>#}
+{#                <iframe id="#choro-iframe"></iframe>#}
+{#                <div id="choro-outer">#}
+{#                    <p id="choropleth-p"></p>#}
+{#                </div>#}
+            </div>
 
 
-{#    {% block choropleth %}#}
-{##}
-{#        <div class="choro-div">#}
-{#            {% include choropleth %}#}
-{#        </div>#}
-{##}
-{#    {% endblock %}#}
+            <div class="col-5">
+                <ul>
+                    {% for article in articles %}
+                        <li class="article-list">
+                            <p>Title: {{ article.title }}</p>
+                            <sub>
+                                Author: {{ article.author }} --
+                                Published: {{ article.get_date_published }}
+                            </sub>
+                            <blockquote class="article-desc">{{ article.description }}</blockquote>
+                            <sub><a href="{{ article.article_url }}">Link to Original</a></sub>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+
+        </div>
+    </div>
+
+    <!--<div id="handle-result-div">
+        <form action="% url '' %}">
+            <input type="hidden" id="{ news_query.pk }}">
+            <button
+        </form>
+    </div>-->
+
+
+
 {% endblock %}
