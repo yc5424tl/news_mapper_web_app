@@ -108,6 +108,15 @@ class Article(models.Model):
         return self.title
 
 
+class NewsQueryManager(models.Manager):
+
+    def create_news_query(self, argument, date_created, query_type, choropleth=None, choro_html=None, data=None, date_range_end=None,date_range_start=None, filename=None,public=False):
+
+        news_query = self.create(_argument=argument, _choropleth=choropleth, _choro_html=choro_html, _data=data, _date_created=date_created, _date_range_end=date_range_end,  _date_range_start=date_range_start, _filename=filename, _public=public, _query_type=query_type )
+
+        return news_query
+
+
 class NewsQuery(models.Model):
 
     query_types = (
@@ -121,12 +130,15 @@ class NewsQuery(models.Model):
     _choropleth = models.FileField(upload_to=CHORO_MAP_ROOT, null=True, blank=True, default=None)
     _choro_html = models.TextField(max_length=200000, null=True, blank=True)
     _data = models.CharField(max_length=200000, null=True, blank=True)
-    _date = models.DateField(auto_now_add=True)
+    _date_created = models.DateField(auto_now_add=True)
     _date_range_end = models.DateField(default=None, null=True, blank=True)
     _date_range_start = models.DateField(default=None, null=True, blank=True)
     _filename = models.TextField(max_length=700, null=True, blank=True)
     _public = models.BooleanField(default=False)
     _query_type = models.CharField(default='headlines', choices=query_types, max_length=50)
+
+    objects = NewsQueryManager
+
 
     @property
     def argument(self):
@@ -157,11 +169,11 @@ class NewsQuery(models.Model):
 
     @property
     def date(self):
-        return self._date
+        return self._date_created
 
     @date.setter
     def date(self, new_date):
-        self._date = new_date
+        self._date_created = new_date
 
     @property
     def filename(self):

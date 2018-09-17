@@ -5,6 +5,7 @@ from . import views
 
 urlpatterns = [
     url(r'^$', views.index, name='index'),
+    url(r'^query_details/(?P<news_query_pk>\d+)$', views.view_newsquery, name='query_result_detail'),
     url(r'^search/$', views.new_newsquery, name='search'),
     url(r'^post/(?P<post_pk>\d+)$', views.view_post, name='view_post'),
     url(r'delete_post/$', views.delete_post, name='delete_post'),

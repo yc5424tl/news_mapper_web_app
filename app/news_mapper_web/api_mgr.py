@@ -23,24 +23,24 @@ class QueryManager:
 
     def query_api(self, query_argument, query_type, start_date=None, end_date=None):
 
-        print('Query Argument: ' + query_argument)
-        print('Query type: ' + query_type)
+        # print('Query Argument: ' + query_argument)
+        # print('Query type: ' + query_type)
         valid_date_range = self.validate_date_range(start_date, end_date)
 
-        print('valid date range: ' + str(valid_date_range))
+        # print('valid date range: ' + str(valid_date_range))
         if valid_date_range is False:
-            print('in loop')
+            # print('in loop')
             if query_type == 'headlines':
                 return self.build_articles_list(newsapi.get_top_headlines(q=query_argument, page_size=100))  # TODO return to page_size=100
 
             if query_type == 'all':
-                print('in search all')
+                # print('in search all')
                 endpoint = 'https://newsapi.org/v2/everything?q=' + query_argument + '&apiKey=' + '5df648f726dd42d69fe046b765e22667'
-                print('endpoint' + endpoint)
+                # print('endpoint' + endpoint)
                 article_count_raw = requests.get(endpoint)
                 article_count = article_count_raw.json()['totalResults']
-                print('Article Count: ')
-                print(article_count)
+                # print('Article Count: ')
+                # print(article_count)
                 logger.info(article_count)
 
                 if article_count <= 100:  # 100 is max results/page.
@@ -97,7 +97,7 @@ class QueryManager:
 
     @staticmethod
     def is_src(source_name):
-        print('is_src(data), data = ' + source_name)
+        # print('is_src(data), data = ' + source_name)
         # if data and (Source.objects.get(name=data)):
         #     return Source.objects.get(name=data)
         # else:
@@ -106,7 +106,7 @@ class QueryManager:
         if source_name:
             try:
                 source = Source.objects.get(name=source_name)
-                print('is_src: ' + str(source.name))
+                # print('is_src: ' + str(source.name))
                 return source
             except AttributeError:
                 return False
@@ -139,7 +139,7 @@ class QueryManager:
 
     def build_article_object(self, raw_article_data, query):
 
-        print('raw_data_src = ' + raw_article_data['source']['name'])
+        # print('raw_data_src = ' + raw_article_data['source']['name'])
 
         title = self.is_str(raw_article_data['title'])
         author = self.is_str(raw_article_data['author'])
@@ -165,7 +165,7 @@ class QueryManager:
             query=query)
 
         new_article.save()
-        print('new_article.source in api_mgr 166 = ' + str(new_article.source))
+        # print('new_article.source in api_mgr 166 = ' + str(new_article.source))
         return new_article
 
     def build_source_object(self, source_data):
@@ -205,7 +205,10 @@ class QueryManager:
     def fetch_and_build_sources(self):
         source_list = []
         sources = newsapi.get_sources()['sources']
+        source_count = 0
         for source in sources:
+            source_count += 1
+            print('source count: ' + str(source_count))
             new_source = self.build_source_object(source)
             new_source.save()
             print('new_source: ' + str(new_source.name))

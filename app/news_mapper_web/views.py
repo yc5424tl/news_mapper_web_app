@@ -7,7 +7,7 @@ from django.urls import reverse_lazy
 from django.views import generic
 from django.conf import settings
 from .models import Post, Comment, UserModel, NewsQuery, Source
-from .forms import EditPostForm, EditCommentForm, LoginForm, NewQueryForm
+from .forms import EditPostForm, LoginForm, NewQueryForm
 import os
 from .forms import UserCreationForm
 
@@ -15,7 +15,6 @@ from .api_mgr import QueryManager
 from .map_mgr import GeoMapManager
 from .metadata_mgr import MetadataManager
 
-from sqlite3 import OperationalError
 
 json_file = 'geo_data_for_news_choropleth.txt'
 
@@ -50,7 +49,6 @@ class SignUp(generic.CreateView):
     # fields = ['unique_id', 'email', 'first_name', 'last_name', 'password']
     success_url = reverse_lazy('login')
     template_name = 'news_mapper_web/signup.html'
-
     # def get_success_url(self):
     #   return reverse_lazy('login')
 
@@ -94,7 +92,6 @@ def new_newsquery(request):
 
         try:
             source = Source.objects.get(pk=1)
-            print('source: ' + str(source))
         except Source.DoesNotExist:
             source_list_txt = query_mgr.fetch_and_build_sources()
             query_mgr.write_sources_json_to_file(source_list_txt)
@@ -113,71 +110,37 @@ def new_newsquery(request):
         query_object.save()
 
         if articles_list:
-
-            #print('Articles List: ')
-            #print(articles_list)
             for article in articles_list:
-                #print('article from article in articles (views.py 114) == ' + str(article))
                 new_article = query_mgr.build_article_object(article, query_object)
-                #print('new_article.source: ' + str(new_article.source))
                 article_source_country = new_article.get_source_country()
                 if article_source_country:
                     country_a3_code = geo_map_mgr.get_country_alpha_3_code(article_source_country)
                     meta_data_mgr.query_data_dict[country_a3_code] += 1
 
-            #####choropleth_data_tuplet = geo_map_mgr.build_choropleth(q_argument, q_type, meta_data_mgr)
-            #
-            # choro_file = choropleth_data_tuplet[0]
-            # choro_file_name = choropleth_data_tuplet[1]
-            # choro_html = choropleth_data_tuplet[2]
-
-            # choropleth_data_tuplet = geo_map_mgr.build_choropleth(q_argument, q_type, meta_data_mgr)
-            #
-            # choro_file_name = choropleth_data_tuplet[0]
-            # choro_html = choropleth_data_tuplet[1]
-
-            #######choropleth_map.save(os.path.join('media', '/news_mapper_web/html'))
-            # save_choro_to_file(q_argument, q_type, choropleth_map)
-
-            ######print('choropleth_file type = ' + str(type(choro_file)))
-            # choropleth_file.save()
-            # meta_data_mgr.build_query_results_dict()
-
-            #####query_object.choropleth = choro_file
-
-            # query_object.save()
-
-            ######## return render(request, 'news_mapper_web/query_results.html', {
-            #     'news_query': query_object,
-            #     'choropleth': choro_file_name,
-            #     'choro_html': choro_html
-            # })
-
             choropleth_data_tuplet = geo_map_mgr.build_choropleth(q_argument, q_type, meta_data_mgr)
 
-            query_object.choropleth = choropleth_data_tuplet[0]
-            query_object.choro_html = choropleth_data_tuplet[1]
-            query_object.filename = choropleth_data_tuplet[2]
-            # query_object.save()
+            choropleth = choropleth_data_tuplet[0]
+            choro_html = choropleth_data_tuplet[1]
+            choro_filename = choropleth_data_tuplet[2]
+            query_pk = query_object.pk
+            print('choro_html = ' + choro_html[0:1000])
 
-           # return redirect('query_details', query_pk=query_object.pk)
+            NewsQuery.objects.filter(pk=query_pk).update(_choropleth=choropleth, _choro_html=choro_html, _filename=choro_filename)
 
-            return render(request, 'news_mapper_web/query_results.html', {'news_query': query_object})
+            # query_object.choropleth = choropleth
+            # query_object.choro_html = choro_html
+            # query_object.filename = choro_filename
+            # print('deferred= ' + str(query_object.get_deferred_fields()))
+            # query_object.refresh_from_db()
 
+            query_object = NewsQuery.objects.get(pk=query_pk)
 
+            html_pre = str(query_object.choro_html[0:1000])
+            print('str(html_pre) = ' + str(html_pre))
+            print('redirect.query_object.pk = ' + str(query_object.pk))
 
-            #meta_data_mgr.build_query_results_dict()
-
-            # return render(request, 'news_mapper_web/query_results.html', {
-            #     'news_query': query_object,
-            #     'choropleth': choro_file_name,
-            #     'choro_html': choro_html
-            # })
-
-            # redirect('choro_map_embed', {'choro_file_name': choro_file_name})
-
-
-
+            return redirect('query_result_detail', news_query_pk=query_object.pk)
+            #return render(request, 'news_mapper_web/query_results.html', {'news_query': query_object})
 
 
 def choro_map(request, choro_file_name):
@@ -188,11 +151,20 @@ def choro_map(request, choro_file_name):
 
 
 # @login_required(login_url='/accounts/login/')
-def view_newsquery(request, query_pk):
+def view_newsquery(request, news_query_pk):
 
-    query = get_object_or_404(NewsQuery, pk=query_pk)
+    print('in newsquery views.py')
+    print('news_query_pk = ' + str(news_query_pk))
+    query = NewsQuery.objects.get(pk=news_query_pk)
 
     if query:
+        html_pre = query.choro_html
+        print('Meta Type: ' + str(type(query)))
+        print('html = ' + (html_pre[0:300]))
+        print('type = ' + query.query_type)
+        # print('filename = ' + str(query.filename))
+        print('type(choropleth = ' + str(type(query.choropleth)))
+        print('argument = ' + query.argument)
         return render(request, 'news_mapper_web/query_results.html', {'news_query': query})
 
 
