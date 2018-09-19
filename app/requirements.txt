@@ -7,6 +7,7 @@ cligj==0.4.0
 cycler==0.10.0
 descartes==1.1.0
 Django==2.1.1
+django-crispy-forms==1.7.2
 Fiona==1.7.13
 folium==0.5.0
 GDAL==2.2.4

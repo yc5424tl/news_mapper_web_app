@@ -2,7 +2,6 @@ import logging
 
 import matplotlib
 matplotlib.use('Agg')
-from matplotlib import pyplo
 
 import folium
 import geopandas as gpd
@@ -11,10 +10,7 @@ import pandas as pd
 import pycountry
 import os
 
-
-
 from datetime import datetime
-
 
 settings_dir = os.path.dirname(__file__)
 PROJECT_ROOT = os.path.abspath(os.path.dirname(settings_dir))
@@ -22,6 +18,7 @@ CHORO_MAP_ROOT = os.path.join(PROJECT_ROOT, 'news_mapper_web/media/news_mapper_w
 
 
 class GeoMapManager:
+
 
     @staticmethod
     def get_country_alpha_3_code(source_country):

@@ -1,0 +1,103 @@
+
+{% extends 'news_mapper_web/base.html' %}
+
+{% block scripts %}
+    {{ block.super }}
+{% endblock %}
+
+{% block content %}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-*-12">
+                <div class="jumbotron">
+                    {% if request.user.pk == member.pk %}
+                        <h2>
+                            Welcome, {{ member.full_name }}! </h2>
+                    {% else %}
+                        <h2>Viewing {{ member.first_name }}'s Profile</h2>
+                    {% endif %}
+                     <small>Member Since {{ member.registration_date }}</small>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-*-7">
+                {% if last_post %}
+                    <h3>
+                        Title: {{ last_post.title }}
+                        <small>{{ last_post.date_published }}</small>
+                    </h3>
+                    <div>
+                        <blockquote>
+                            {{ last_post.body }}
+                        </blockquote>
+                    </div>
+                    <a href="{% url 'view_post' last_post.pk %}">View Full Post</a>
+                {% endif %}
+            </div>
+            <div class="col-*-7">
+
+                {% for comment in post.comments|slice:4 %}
+                    {% if comment %}
+                        <h3>Comment by {{ comment.author }} - {{ comment.date_published }}</h3>
+                        <blockquote>{{ comment.body }}</blockquote>
+                    {% endif %}
+                {% empty %}
+                    <p>No Comments Yet</p>
+                {% endfor %}
+            </div>
+            <div class="col-*-5">
+                <div class="row">
+                    <div class="col-*-12">
+                        <h3>RECENT POSTS</h3>
+                        <small>By {{ member.first_name }}</small>
+                        <ul>
+                            {% for post in posts %}
+                                {% if post %}
+                                    <li>
+                                        <a href="{% url 'view_post' post.pk %}">
+                                            {{ post.title }}</a>
+                                    </li>
+                                {% endif %}
+                            {% empty %}
+                                <li>No Posts Yet</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div class="col-*-12">
+                        <h3>RECENT COMMENTS</h3>
+                        <small>By {{ member.first_name }}</small>
+                        <ul>
+                            {% for comment in comments %}
+                                {% if comment %}
+                                    <li>
+                                        <a href="{% url 'view_comment' comment.pk %}">
+                                            {{ comment.body|truncatewords:5 }}</a>
+                                    </li>
+                                {% endif %}
+                            {% empty %}
+                                <li>No Comments Yet</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+ {% endblock %}
+
+
+
+{% comment %}
+
+    top = Welcome, {{ usermame }}! Member since {{  }}
+
+    (right)List of Posts
+    (right)List of Comments
+
+     left -> Either the users last post/comment. Or an example output choropleth and instructions/explanation
+
+
+{% endcomment %}

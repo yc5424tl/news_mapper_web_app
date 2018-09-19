@@ -16,6 +16,11 @@ class MetadataManager(object):
         with open(self.json_filename) as f:
             return f
 
+    def check_geo_data(self):
+        if self.json_geo_data is None or self.request_geo_data is None:
+            self.get_geo_data()
+            self.fix_cyprus_country_code()
+
     def get_geo_data(self):
 
         self.request_geo_data = requests.get('https://raw.githubusercontent.com/johan/world.geo.json/master/countries.geo.json')
@@ -32,7 +37,6 @@ class MetadataManager(object):
             if self.json_geo_data[key] == '-99':
                 self.json_geo_data[key] = 'CYP'
 
-    @staticmethod
-    def write_json_to_file(filename, json_data):
-        with open(filename, 'w') as outfile:
-            json.dump(json_data, outfile)
+    def write_json_to_file(self):
+        with open(self.json_filename, 'w') as outfile:
+            json.dump(self.json_geo_data, outfile)

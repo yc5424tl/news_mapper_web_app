@@ -48,8 +48,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'news_mapper_web',
+    # 'crispy_forms',
     # 'news_mapper_web.apps.WebNewsMapperConfig',
 ]
+
+CRISPY_TEMPLATE_PACK = 'boostrap4'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -66,14 +69,21 @@ ROOT_URLCONF = 'news_mapper.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        # 'DIRS': ['templates'],
         'DIRS': [],
-        # 'DIRS': [
+        # 'DIRS': ['templates'],
+        # 'DIRS': [os.path.join(BASE_DIR, 'news_mapper_web/templates')],
+        # 'DIRS': [/
         #     os.path.join(BASE_DIR, 'news_mapper_web/templates'),
         #     'app/news_mapper_web/media/documents'
         # ],
         'APP_DIRS': True,
         'OPTIONS': {
+            # 'loaders': [
+            #     ('django.template.loaders.cached.Loader', [
+            #         'django.template.loaders.filesystem.Loader',
+            #         'django.template.loaders.app_directories.Loader',
+            #     ]),
+            # ],
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',

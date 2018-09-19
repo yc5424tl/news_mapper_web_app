@@ -1,0 +1,29 @@
+{% extends 'news_mapper_web/base.html' %}
+
+{% block title %}View Comment - {{ block.super }}{% endblock %}
+
+{% block scripts %} {{ block.super }} {% endblock %}
+
+{% block content%}
+
+    <h2>
+        Comment by
+        <a href="{% url 'view_user' comment.author.pk %}">{{ comment.author.first_name }}</a>
+        to post
+        <a href="{% url 'view_post' comment.post.pk %}">comment.post.title</a>
+        by
+        <a href="{% url 'view_user' comment.post.author.pk %}">{{ comment.post.author.first_name }}</a>
+        <small>Published {{ comment.date_published }}</small>
+    </h2>
+
+    <blockquote>{{ comment.body }}</blockquote>
+
+    {% if user.pk == comment.author.pk %}
+        <form method="post" action={% url 'delete_comment' comment.pk %}>
+            {% csrf_token %}
+            <input type="hidden" name="redirect_url" value="{% url 'view_post' comment.post.pk %}">
+            <button type="submit"><small>Delete Comment</small></button>
+        </form>
+    {% endif %}
+
+{% endblock %}

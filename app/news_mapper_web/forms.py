@@ -1,37 +1,45 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-from .models import Post, Comment, NewsQuery, UserModel
+from .models import Post, Comment, Query, UserModel
 
 
 class NewPostForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super(NewPostForm, self).__init__(*args, **kwargs)
+        self.fields['_body'].widget.attrs['readonly'] = True
+        self.fields['_query'].widget.attrs['readonly'] = True
+
+
     class Meta:
         model = Post
-        fields = ('title', 'body')
+        fields = ('_title', '_public', '_body', '_query')
+        disabled = ('_body', '_query')
 
 
 class NewCommentForm(forms.ModelForm):
     class Meta:
         model = Comment
-        fields = ('body',)
+        fields = ('_body',)
 
 
 class NewQueryForm(forms.ModelForm):
     class Meta:
-        model = NewsQuery
+        model = Query
         fields = ('_argument', '_query_type')
 
 
 class SaveQueryForm(forms.ModelForm):
     #  add option to publish in this form
     class Meta:
-        model = NewsQuery
+        model = Query
         fields = ('_public',)
 
 
 class EditPostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ('title', 'body')
+        fields = ('_title', '_body')
 
 
 class EditCommentForm(forms.ModelForm):

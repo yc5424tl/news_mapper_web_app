@@ -1,18 +1,17 @@
 
 import matplotlib
 matplotlib.use('Agg')
-from matplotlib import pyplo
 
-from django.http import HttpRequest
-from django.shortcuts import render, redirect, get_object_or_404
+# from django.http import HttpRequest
+from django.shortcuts import render, redirect, get_object_or_404, Http404
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
+# from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.urls import reverse_lazy
 from django.views import generic
-from django.conf import settings
-from .models import Post, Comment, UserModel, NewsQuery, Source, Article
-from .forms import EditPostForm, LoginForm, NewQueryForm
+# from django.conf import settings
+from .models import Post, Comment, UserModel, Query, Source, Article
+from .forms import EditPostForm, LoginForm, NewQueryForm, NewPostForm
 import os
 import json
 from .forms import UserCreationForm
@@ -23,8 +22,6 @@ from .metadata_mgr import MetadataManager
 
 import matplotlib
 matplotlib.use('Agg')
-from matplotlib import pyplo
-
 
 json_file = 'geo_data_for_news_choropleth.txt'
 
@@ -36,23 +33,25 @@ settings_dir = os.path.dirname(__file__)
 PROJECT_ROOT = os.path.abspath(os.path.dirname(settings_dir))
 CHORO_MAP_ROOT = os.path.join(PROJECT_ROOT, 'news_mapper_web/templates/news_mapper_web/choropleths/')
 
+def authenticated(request):
+    if request.user.is_authenticated:
+        return True
+    else:
+        return False
 
 def index(request):
+
     user = request.user
     form = LoginForm()
-    if request.user.is_authenticated:
-        logged_in = True
-    else:
-        logged_in = False
 
     return render(request, 'news_mapper_web/index.html', {
         'user': user,
-        'logged_in': logged_in,
+        'logged_in': authenticated(request),
         'form': form
     })
 
 
-class SignUp(generic.CreateView):
+class RegisterUser(generic.CreateView):
     model = UserModel
     form_class = UserCreationForm
     # success_url = reverse_lazy('login')
@@ -63,45 +62,62 @@ class SignUp(generic.CreateView):
     #   return reverse_lazy('login')
 
 
-def user_login(request):
+def login_user(request):
+
     username = request.POST.get('username')
     password = request.POST.get('password')
     user = authenticate(request, username=username, password=password)
+
     if user is not None:
         login(request, user)
-        return redirect('index')
+        return redirect('view_user', {
+            'member_pk': user.pk,
+            'logged_in': True
+        })
+        # latest_post = user.most_recent()
+        # if latest_post is not False: # returns a Post object, or False if no posts have yet been made by the user
+        #     return render(request, 'news_mapper_web/view_user.html', {
+        #         'user': user,
+        #         'last_post': latest_post,
+        #         'logged_in': logged_in})
+        # else:
+        #     read_me = "You haven't made any posts yet!\n" \
+        #               "Once you have, this area will display your most recent post. To start, click the 'New Query' button at the top of your screen."
+        #     return render(request, 'news_mapper_web/view_user.html', {
+        #         'user': user,
+        #         'read_me': read_me,
+        #         'logged_in': logged_in
+        #     })
     else:
         messages.error(request, 'Incorrect Password and/or Username')
-        return redirect('index')
+        return redirect('login_user', {'logged_in': False})
         # TODO - redirect to login page with invalid login message
 
 
-def user_logout(request):
+def logout_user(request, user_pk):
     logout(request)
-    redirect(None)  # TODO - redirect to home
+    redirect('index', {'logged_in': False})  # TODO - redirect to home
 
 
-def new_newsquery(request):
+def new_query(request):
 
     if request.method == 'GET':
         form = NewQueryForm()
-        return render(request, 'news_mapper_web/search.html', {'search_form': form})
+        return render(request, 'news_mapper_web/new_query.html', {
+            'search_form': form
+        })
 
     elif request.method == 'POST':
 
-        if meta_data_mgr.json_geo_data is None or meta_data_mgr.request_geo_data is None:
-            meta_data_mgr.get_geo_data()
-            meta_data_mgr.fix_cyprus_country_code()
-
-        meta_data_mgr.write_json_to_file(
-            meta_data_mgr.json_filename,
-            meta_data_mgr.json_geo_data
-        )
-
+        # if meta_data_mgr.json_geo_data is None or meta_data_mgr.request_geo_data is None:
+        #     meta_data_mgr.get_geo_data()
+        #     meta_data_mgr.fix_cyprus_country_code()
+        meta_data_mgr.check_geo_data()
+        meta_data_mgr.write_json_to_file()
         meta_data_mgr.build_query_results_dict()
 
         try:
-            source = Source.objects.get(pk=1)
+            Source.objects.get(pk=1)
         except UnicodeDecodeError:
             try:
                 with open('./news_mapper_web/static/js/sources.json') as sources:
@@ -147,29 +163,34 @@ def new_newsquery(request):
 
         articles_list = query_mgr.query_api(query_argument=q_argument, query_type=q_type)
 
-        query_object = NewsQuery(_query_type=q_type, _data=articles_list, _argument=q_argument)
+        query_object = Query(_query_type=q_type, _data=articles_list, _argument=q_argument)
         query_object.save()
 
         if articles_list:
             for article in articles_list:
-                new_article = query_mgr.build_article_object(article, query_object)
-                if new_article is not False:
-                    new_article_pk = new_article.pk
-                    try:
-                        article_source_country = new_article.get_source_country()
-                        if article_source_country:
-                            country_a3_code = geo_map_mgr.get_country_alpha_3_code(article_source_country)
-                            meta_data_mgr.query_data_dict[country_a3_code] += 1
-                    except AttributeError:
-                        try:
-                            article = Article.objects.get(pk=new_article_pk)
-                            country = article.get_source_country()
-                            print('Country = ' + str(country))
-                            if country:
-                                country_a3_code = geo_map_mgr.get_country_alpha_3_code(country)
-                                meta_data_mgr.query_data_dict[country_a3_code] += 1
-                        except AttributeError:
-                            pass
+                # new_article = query_mgr.build_article_object(article, query_object)
+                # if new_article is not False:
+                #     new_article_pk = new_article.pk
+                query_mgr.build_article_object(article, query_object)
+                try:
+                    country_a3_code = geo_map_mgr.get_country_alpha_3_code(article.source.country)
+                    meta_data_mgr.query_data_dict[country_a3_code] += 1
+                except AttributeError:
+                    pass
+                    #     article_source_country = new_article.get_source_country()
+                    #     if article_source_country:
+                    #         country_a3_code = geo_map_mgr.get_country_alpha_3_code(article_source_country)
+                    #         meta_data_mgr.query_data_dict[country_a3_code] += 1
+                    # except AttributeError:
+                    #     try:
+                    #         article = Article.objects.get(pk=new_article_pk)
+                    #         country = article.get_source_country()
+                    #         print('Country = ' + str(country))
+                    #         if country:
+                    #             country_a3_code = geo_map_mgr.get_country_alpha_3_code(country)
+                    #             meta_data_mgr.query_data_dict[country_a3_code] += 1
+                    #     except AttributeError:
+                    #         pass
 
             choropleth_data_tuplet = geo_map_mgr.build_choropleth(q_argument, q_type, meta_data_mgr)
 
@@ -181,9 +202,9 @@ def new_newsquery(request):
             query_pk = query_object.pk
             print('choro_html = ' + choro_html[0:1000])
 
-            NewsQuery.objects.filter(pk=query_pk).update(_choropleth=choropleth, _choro_html=choro_html, _filename=choro_filename)
+            Query.objects.filter(pk=query_pk).update(_choropleth=choropleth, _choro_html=choro_html, _filename=choro_filename)
 
-            query_object = NewsQuery.objects.get(pk=query_pk)
+            query_object = Query.objects.get(pk=query_pk)
 
             html_pre = str(query_object.choro_html[0:1000])
             print('str(html_pre) = ' + str(html_pre))
@@ -193,30 +214,23 @@ def new_newsquery(request):
 
             for x in article_instances:
                 print('article_instance type = ' + str(type(x)))
-
             # return redirect('query_result_detail',  news_query_pk=query_object.pk, articles=article_instances)
 
             # return redirect('query_result_detail', news_query_pk=query_object.pk)
-
             choro_file_path = CHORO_MAP_ROOT + query_object.filename
+            query_object.filepath = choro_file_path
 
-            return render(request, 'news_mapper_web/query_results.html', {'news_query': query_object, 'articles': article_instances, 'choro_filepath': choro_file_path})
-
-
-
-def choro_map(request, choro_file_name):
-
-    print('TYPE choro_file_name = ' + str(type(choro_file_name)))
-    choro_path = CHORO_MAP_ROOT + choro_file_name
-    return render(request, choro_path)
+            return render(request, 'news_mapper_web/view_query.html', {
+                'query': query_object,
+                'choro_filepath': choro_file_path,
+            })
 
 
-# @login_required(login_url='/accounts/login/')
-def view_newsquery(request, news_query_pk):
+def view_query(request, query_pk):
 
     print('in newsquery views.py')
-    print('news_query_pk = ' + str(news_query_pk))
-    query = NewsQuery.objects.get(pk=news_query_pk)
+    print('news_query_pk = ' + str(query_pk))
+    query = Query.objects.get(pk=query_pk)
 
     if query:
         html_pre = query.choro_html
@@ -226,18 +240,75 @@ def view_newsquery(request, news_query_pk):
         # print('filename = ' + str(query.filename))
         print('type(choropleth = ' + str(type(query.choropleth)))
         print('argument = ' + query.argument)
-        return render(request, 'news_mapper_web/query_results.html', {'news_query': query})
-
-
-# @login_required()
-def save_query(request):
-    return None
-
+        return render(request, 'news_mapper_web/view_query.html', {
+            'query': query
+        })
 
 # @login_required()
-def user_page(request):
+def delete_query(request, query_pk):
     return None
 
+# @login_required()
+def view_user(request, member_pk):
+
+    user = request.user
+    try:
+        member = get_object_or_404(UserModel, pk=member_pk)
+    except UserModel.DoesNotExist:
+        raise Http404
+    recent_posts = member.posts.order_by('-id')[1:5]  # https://stackoverflow.com/a/44575224
+    last_post = member.posts.order_by('-id')[0]
+    recent_comments = member.comments.order_by('-id')[0:4]
+
+    return render(request, 'news_mapper_web/view_user.html', {
+        'user': user,
+        'member': member,
+        'posts': recent_posts,
+        'comments': recent_comments,
+        'last_post': last_post,
+    })
+
+def new_post(request, query_pk):
+
+    if request.GET:
+
+        form = NewPostForm()
+
+        try:
+            query = Query.objects.get(pk=query_pk)
+        except Query.DoesNotExist:
+            raise Http404
+
+        return render(request, 'news_mapper_web/new_post.html', {
+            'form': form,
+            'query': query
+        })
+
+    if request.POST:
+        form = NewPostForm(request.POST)
+
+        try:
+            pk = request.user.pk
+            author = UserModel.objects.get(pk=pk)
+        except UserModel.DoesNotExist:
+            raise Http404
+
+        if form.is_valid():
+            title = form.cleaned_data['_title']
+            public = form.cleaned_data['_public']
+            body = form.cleaned_data['_body']
+            query = form.cleaned_data['_query']
+
+            post = Post(title=title, public=public, body=body, query=query, author=author)
+
+            post.save()
+
+            return render(request, 'news_mapper_web/new_post.html', {'post_pk': post.pk})
+
+
+
+def update_post(request, post_pk):
+    pass
 
 # @login_required()
 def view_post(request, post_pk):
@@ -252,18 +323,17 @@ def view_post(request, post_pk):
         return redirect('post_details', post_pk=post_pk)
 
     else: # GET request
-        if post.user.id == request.user.id:
+        if post.author.id == request.user.id:
             edit_post_form = EditPostForm(instance=post) # Pre-populate form with the post's current field values
-            return render(request, 'news_mapper_web/post_details.html', { 'post': post, 'edit_post_form': edit_post_form})
+            return render(request, 'news_mapper_web/view_post.html', { 'post': post, 'edit_post_form': edit_post_form})
         else: # user is not OP
-            return render(request, 'news_mapper_web/post_details.html', { 'post': post })
-
+            return render(request, 'news_mapper_web/view_post.html', { 'post': post })
 
 #@login_required()
-def delete_post(request):
+def delete_post(request, post_pk):
     pk = request.POST['post_pk']
     post = get_object_or_404(Post, pk=pk)
-    if post.user.id == request.user.id:
+    if post.author.id == request.user.id:
         post.delete()
         messages.info(request, 'Post Removed')
         return redirect('index')
@@ -271,13 +341,29 @@ def delete_post(request):
         messages.error(request, 'Action Not Authorized')
 
 
+def new_comment(request, post_pk):
+    pass
+
+
+def view_comment(request, comment_pk):
+    comment = Comment.objects.get(pk=comment_pk)
+
 #@login_required()
-def delete_comment(request):
-    pk = request.POST['comment_pk']
-    comment = get_object_or_404(Comment, pk=pk)
-    if comment.user.id == request.user.id:
+def delete_comment(request, comment_pk):
+        comment = get_object_or_404(Comment, pk=comment_pk)
         comment.delete()
-        messages.info(request, 'Comment Removed')
-        return redirect('index')
-    else:
-        messages.error(request, 'Action Not Authorized')
+        last_url = request.POST['redirect_url']
+        messages.info(request, 'Failed to Delete Comment')
+        return redirect(request, last_url)
+
+
+
+def password_reset(request):
+    pass
+
+        # def choro_map(request, choro_file_name):
+        #
+        #     print('TYPE choro_file_name = ' + str(type(choro_file_name)))
+        #     choro_path = CHORO_MAP_ROOT + choro_file_name
+        #     return render(request, choro_path)
+        # @login_required(login_url='/accounts/login/')

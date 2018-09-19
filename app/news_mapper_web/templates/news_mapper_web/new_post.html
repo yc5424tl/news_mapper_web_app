@@ -1,0 +1,10 @@
+{% extends 'news_mapper_web/base.html' %}
+
+{% block title %} New Post - {{ block.super }}{% endblock %}
+
+{% block content %}
+    <p>New Post Form</p>
+    <form method="post" action="{% url 'new_post' query.pk %}"></form>
+
+
+{% endblock %}
