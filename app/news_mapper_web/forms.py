@@ -1,6 +1,20 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-from .models import Post, Comment, Query, UserModel
+from .models import Post, Comment, Query, CustomUser
+
+
+class CustomUserCreationForm(UserCreationForm):
+
+    class Meta(UserCreationForm):
+        model = CustomUser
+        fields = ('_username', '_email')
+
+
+class CustomUserChangeForm(UserChangeForm):
+
+    class Meta:
+        model = CustomUser
+        fields = ('username', 'email')
 
 
 class NewPostForm(forms.ModelForm):
@@ -50,8 +64,8 @@ class EditCommentForm(forms.ModelForm):
 
 class LoginForm(forms.ModelForm):
     class Meta:
-        model = UserModel
-        fields = []
+        model = CustomUser
+        fields = ['_email']
 
 
 class LogoutForm(forms.ModelForm):
@@ -62,13 +76,13 @@ class LogoutForm(forms.ModelForm):
 
 class NewUserForm(UserCreationForm):
     class Meta:
-        model = UserModel
-        fields = []
+        model = CustomUser
+        fields = ['_email',]
 
 
 class UpdateUserForm(UserChangeForm):
-    model = UserModel
-    fields = []
+    model = CustomUser
+    fields = ['_email']
 
 
 

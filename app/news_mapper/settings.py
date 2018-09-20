@@ -17,8 +17,6 @@ import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-print('Base Dir: ' + BASE_DIR)
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
@@ -31,10 +29,10 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
-AUTHENTICATION_BACKENDS = (
-    'django.contrib.auth.backends.ModelBackend',
-    'news_mapper_web.backends.MyAuthBackend',
-)
+# AUTHENTICATION_BACKENDS = (
+#     'django.contrib.auth.backends.ModelBackend',
+#     'news_mapper_web.backends.MyAuthBackend',
+# )
 
 # Application definition
 
@@ -47,12 +45,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'news_mapper_web',
-    # 'crispy_forms',
-    # 'news_mapper_web.apps.WebNewsMapperConfig',
-]
+    'app.news_mapper_web',
+    'app.accounts',
 
-CRISPY_TEMPLATE_PACK = 'boostrap4'
+]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -70,20 +66,13 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [],
-        # 'DIRS': ['templates'],
-        # 'DIRS': [os.path.join(BASE_DIR, 'news_mapper_web/templates')],
-        # 'DIRS': [/
+        # # 'DIRS': ['templates'],
+        # 'DIRS': [
         #     os.path.join(BASE_DIR, 'news_mapper_web/templates'),
         #     'app/news_mapper_web/media/documents'
         # ],
         'APP_DIRS': True,
         'OPTIONS': {
-            # 'loaders': [
-            #     ('django.template.loaders.cached.Loader', [
-            #         'django.template.loaders.filesystem.Loader',
-            #         'django.template.loaders.app_directories.Loader',
-            #     ]),
-            # ],
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
@@ -111,7 +100,7 @@ DATABASES = {
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
 
-AUTH_USER_MODEL = 'news_mapper_web.UserModel'
+AUTH_USER_MODEL = 'news_mapper_web.CustomUser'
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -149,19 +138,12 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 STATIC_URL = '/static/'
-# STATIC_ROOT = os.path.join(BASE_DIR, '/news_mapper_web/static')
-STATIC_ROOT = os.path.join(BASE_DIR, '/static/')
 
 MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'news_mapper_web/media')
 
-MEDIA_ROOT = os.path.join(BASE_DIR, '/news_mapper_web/media/')
 
-# STATICFILES_DIRS = [
-#     os.path.join(BASE_DIR, 'news_mapper_web/static'),
-#     'app/static'
-# ]
-
-TEMPLATE_DIRS = (os.path.join(BASE_DIR, '/news_mapper_web/templates'),)
+TEMPLATE_DIRS = (os.path.join(BASE_DIR, 'news_mapper_web/templates'),)
 
 
 LOGIN_REDIRECT_URL = 'index'

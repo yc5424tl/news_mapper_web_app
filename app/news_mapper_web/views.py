@@ -1,16 +1,13 @@
 
-import matplotlib
-matplotlib.use('Agg')
 
-# from django.http import HttpRequest
 from django.shortcuts import render, redirect, get_object_or_404, Http404
 from django.contrib.auth import authenticate, login, logout
-# from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.urls import reverse_lazy
-from django.views import generic
+# from django.urls import reverse_lazy
+# from django.views import generic
 # from django.conf import settings
-from .models import Post, Comment, UserModel, Query, Source, Article
+from .models import Post, Comment, Query, Source, Article, CustomUser
 from .forms import EditPostForm, LoginForm, NewQueryForm, NewPostForm
 import os
 import json
@@ -19,9 +16,6 @@ from .forms import UserCreationForm
 from .api_mgr import QueryManager
 from .map_mgr import GeoMapManager
 from .metadata_mgr import MetadataManager
-
-import matplotlib
-matplotlib.use('Agg')
 
 json_file = 'geo_data_for_news_choropleth.txt'
 
@@ -33,33 +27,31 @@ settings_dir = os.path.dirname(__file__)
 PROJECT_ROOT = os.path.abspath(os.path.dirname(settings_dir))
 CHORO_MAP_ROOT = os.path.join(PROJECT_ROOT, 'news_mapper_web/templates/news_mapper_web/choropleths/')
 
-def authenticated(request):
-    if request.user.is_authenticated:
-        return True
-    else:
-        return False
 
 def index(request):
-
     user = request.user
     form = LoginForm()
+    return render(request, 'news_mapper_web/index.html', {'user': user, 'form': form})
+# class RegisterUser(generic.CreateView):
+#     model = UserModel
+#     form_class = UserCreationForm
+#     # success_url = reverse_lazy('login')
+#     # fields = ['unique_id', 'email', 'first_name', 'last_name', 'password']
+#     success_url = reverse_lazy('login')
+#     template_name = 'news_mapper_web/signup.html'
+#     # def get_success_url(self):
+#     #   return reverse_lazy('login')
 
-    return render(request, 'news_mapper_web/index.html', {
-        'user': user,
-        'logged_in': authenticated(request),
-        'form': form
-    })
-
-
-class RegisterUser(generic.CreateView):
-    model = UserModel
-    form_class = UserCreationForm
-    # success_url = reverse_lazy('login')
-    # fields = ['unique_id', 'email', 'first_name', 'last_name', 'password']
-    success_url = reverse_lazy('login')
-    template_name = 'news_mapper_web/signup.html'
-    # def get_success_url(self):
-    #   return reverse_lazy('login')
+def signup_user(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect('view_user', user.pk)
+        else:
+            form = UserCreationForm()
+        return render(request, 'news_mapper_web/new_user.html', {'form': form})
 
 
 def login_user(request):
@@ -70,10 +62,7 @@ def login_user(request):
 
     if user is not None:
         login(request, user)
-        return redirect('view_user', {
-            'member_pk': user.pk,
-            'logged_in': True
-        })
+        return redirect('view_user', {'member_pk': user.pk,})
         # latest_post = user.most_recent()
         # if latest_post is not False: # returns a Post object, or False if no posts have yet been made by the user
         #     return render(request, 'news_mapper_web/view_user.html', {
@@ -89,23 +78,23 @@ def login_user(request):
         #         'logged_in': logged_in
         #     })
     else:
-        messages.error(request, 'Incorrect Password and/or Username')
-        return redirect('login_user', {'logged_in': False})
+        messages.error(request, 'Incorrect Password and/or Username', extra_tags='error')
+        return redirect('login_user')
         # TODO - redirect to login page with invalid login message
 
 
-def logout_user(request, user_pk):
-    logout(request)
-    redirect('index', {'logged_in': False})  # TODO - redirect to home
+def logout_user(request):
+    user = request.user
+    logout(user)
+    messages.info(request, 'You have been logged out.', extra_tags='alert')
+    return redirect('index')
 
 
 def new_query(request):
 
     if request.method == 'GET':
         form = NewQueryForm()
-        return render(request, 'news_mapper_web/new_query.html', {
-            'search_form': form
-        })
+        return render(request, 'news_mapper_web/new_query.html', {'search_form': form})
 
     elif request.method == 'POST':
 
@@ -253,20 +242,24 @@ def view_user(request, member_pk):
 
     user = request.user
     try:
-        member = get_object_or_404(UserModel, pk=member_pk)
-    except UserModel.DoesNotExist:
-        raise Http404
-    recent_posts = member.posts.order_by('-id')[1:5]  # https://stackoverflow.com/a/44575224
-    last_post = member.posts.order_by('-id')[0]
-    recent_comments = member.comments.order_by('-id')[0:4]
+        member = CustomUser.objects.get(pk=member_pk)
+        recent_posts = member.posts.order_by('-id')[1:5]  # https://stackoverflow.com/a/44575224
+        last_post = member.posts.order_by('-id')[0]
+        recent_comments = member.comments.order_by('-id')[0:4]
 
-    return render(request, 'news_mapper_web/view_user.html', {
-        'user': user,
-        'member': member,
-        'posts': recent_posts,
-        'comments': recent_comments,
-        'last_post': last_post,
-    })
+        return render(request, 'news_mapper_web/view_user.html', {
+            'user': user,
+            'member': member,
+            'posts': recent_posts,
+            'comments': recent_comments,
+            'last_post': last_post
+        })
+
+    except CustomUser.DoesNotExist:
+        raise Http404
+
+
+
 
 def new_post(request, query_pk):
 
@@ -289,8 +282,8 @@ def new_post(request, query_pk):
 
         try:
             pk = request.user.pk
-            author = UserModel.objects.get(pk=pk)
-        except UserModel.DoesNotExist:
+            author = CustomUser.objects.get(pk=pk)
+        except CustomUser.DoesNotExist:
             raise Http404
 
         if form.is_valid():
@@ -330,7 +323,7 @@ def view_post(request, post_pk):
             return render(request, 'news_mapper_web/view_post.html', { 'post': post })
 
 #@login_required()
-def delete_post(request, post_pk):
+def delete_post(request):
     pk = request.POST['post_pk']
     post = get_object_or_404(Post, pk=pk)
     if post.author.id == request.user.id:
@@ -346,7 +339,11 @@ def new_comment(request, post_pk):
 
 
 def view_comment(request, comment_pk):
-    comment = Comment.objects.get(pk=comment_pk)
+    try:
+        comment = Comment.objects.get(pk=comment_pk)
+        return render(request, 'news_mapper_web/view_comment.html', {'comment_pk': comment.pk})
+    except Comment.DoesNotExist:
+        raise Http404
 
 #@login_required()
 def delete_comment(request, comment_pk):

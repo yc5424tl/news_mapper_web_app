@@ -1,9 +1,10 @@
 from django.db import models
-# from django.contrib.auth.models import AbstractUser, UserManager
-from django.conf import settings
-# from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
+# from django.db.models.signals import post_save
+# from django.dispatch import receiver
+
 # from datetime import datetime
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+
 import os
 
 import matplotlib
@@ -13,155 +14,181 @@ settings_dir = os.path.dirname(__file__)
 PROJECT_ROOT = os.path.abspath(os.path.dirname(settings_dir))
 CHORO_MAP_ROOT = os.path.join(PROJECT_ROOT, 'news_mapper_web/media/news_mapper_web/html/')
 
-class MyUserManager(BaseUserManager):
-    use_in_migrations = True
+# class MyUserManager(BaseUserManager):
+#     use_in_migrations = True
+#
+#     def create_superuser(self, email, is_staff, password):
+#         user = self.model(
+#             _email=email,
+#             is_staff=is_staff,
+#         )
+#         user.set_password(password)
+#         user.save(using=self._db)
+#         return user
+#
+#     # def create_superuser(self, email, first_name, last_name, password):
+#     #     user = self.model(_email=email,_first_name=first_name,_last_name=last_name,)
+#     #
+#     #     user.set_password(password)
+#     #     user.save(using=self.db)
+#     #     return user
+#
+# class UserModel(AbstractBaseUser):
+#     sys_id = models.AutoField(primary_key=True, blank=True)
+#     _email = models.EmailField(max_length=127, unique=True, null=False, blank=False)
+#     is_staff = models.BooleanField(default=False)
+#     is_active = models.BooleanField(default=True)
+#     registration_date = models.DateField(auto_now_add=True)
+#     first_name = models.CharField(blank=True, max_length=50)
+#     last_name = models.CharField(blank=True, max_length=50)
+#
+#     objects = MyUserManager()
+#
+#     USERNAME_FIELD = "_email"
+#     REQUIRED_FIELDS = ['is_staff']
+#
+#     class Meta:
+#         app_label = 'news_mapper_web'
+#         db_table = 'users'
+#
+#     def __str__(self):
+#         return self._email
+#
+#     @property
+#     def sys_id(self):
+#         return self.sys_id
+#
+#     @sys_id.setter
+#     def sys_id(self, new_id):
+#         self.sys_id = new_id
+#
+#     @property
+#     def email(self):
+#         return self._email
+#
+#     @email.setter
+#     def email(self, new_email):
+#         self._email = new_email
+#
+#     @property
+#     def is_staff(self):
+#         return self.is_staff
+#
+#     @is_staff.setter
+#     def is_staff(self, boolean):
+#         self.is_staff = boolean
+#
+#     @property
+#     def is_active(self):
+#         return self.is_active
+#
+#     @is_active.setter
+#     def is_active(self, boolean):
+#         self.is_active = boolean
+#
+#     @property
+#     def registration_date(self):
+#         return self.registration_date
+#
+#     @registration_date.setter
+#     def registration_date(self, new_date):
+#         self.registration_date = new_date
+#
+#     @property
+#     def first_name(self):
+#         return self.first_name
+#
+#     @first_name.setter
+#     def first_name(self, new_first):
+#         self.first_name = new_first
+#
+#     @property
+#     def last_name(self):
+#         return self.last_name
+#
+#     @last_name.setter
+#     def last_name(self, new_last):
+#         self.last_name = new_last
+#
+#
+#     # def get_full_name(self):
+#     #     return self.email
+#     #
+#     # def get_short_name(self):
+#     #     return self.email
+#     #
+#     # def has_perm(self, perm, obj=None):
+#     #     return self.is_staff
+#     #
+#     # def has_module_perms(self, app_label):
+#     #     return self.is_staff
+#
+#     @property
+#     def full_name(self):
+#         full_name = self.first_name + ' ' + self.last_name
+#         if full_name == '':
+#             full_name = 'Friend'
+#         return full_name
+#
+#     def last_post(self):
+#         try:
+#             latest = Post.objects.filter(pk=self.pk).order_by('-id')[:1]
+#             return latest
+#         except Post.DoesNotExist:
+#             return False
+#
+#
+#
+#
+#
+# # class User(AbstractUser):
+# #     username = models.CharField(max_length=40, unique=True)
+# #     email = models.EmailField(unique=True, max_length=75)
+# #     first_name = models.CharField(max_length=150)
+# #     last_name = models.CharField(max_length=150)
+# #     is_active = models.BooleanField(default=True)
+# #     is_admin = models.BooleanField(default=False)
+# #     # groups = models.ForeignKey('Permission', null=True, blank=True, on_delete=models.CASCADE)
+# #
+# #     objects = UserManager()
+# #
+# #     USERNAME_FIELD = 'email'
+# #     REQUIRED_FIELDS = ['first_name', 'last_name']
+# #
+# #     def __str__(self):
+# #         return self.email
+#
+#
+# # class Member(models.Model):
+# #     user = models.ForeignKey('auth.User', null=False, on_delete=models.CASCADE)
+#     #  it seems that the use of auth.User as a FK within the other classes negates the need of this class:
+#     # fields = queries, maps, posts, comments, (e-mail)
 
-    def create_superuser(self, email, is_staff, password):
-        user = self.model(
-            email=email,
-            is_staff=is_staff,
-        )
-        user.set_password(password)
-        user.save(using=self._db)
-        return user
 
-    # def create_superuser(self, email, first_name, last_name, password):
-    #     user = self.model(_email=email,_first_name=first_name,_last_name=last_name,)
-    #
-    #     user.set_password(password)
-    #     user.save(using=self.db)
-    #     return user
 
-class UserModel(AbstractBaseUser):
-    sys_id = models.AutoField(primary_key=True, blank=True)
-    email = models.EmailField(max_length=127, unique=True, null=False, blank=False)
-    is_staff = models.BooleanField(default=False)
-    is_active = models.BooleanField(default=True)
-    registration_date = models.DateField(auto_now_add=True)
-    first_name = models.CharField(blank=True, max_length=50)
-    last_name = models.CharField(blank=True, max_length=50)
+# class Profile(models.Model):
+#     user = models.OneToOneField(User, on_delete=models.CASCADE)
+#     bio = models.TextField(max_length=1000, blank=True)
+#     location = models.CharField(max_length=100, blank=True)
+#     date_joined = models.DateField(auto_now_add=True)
+#
+#
+# @receiver(post_save, sender=User)
+# def create_user_profile(sender, instance, created, **kwargs):
+#     if created:
+#         Profile.objects.create(user=instance)
+#
+# @receiver(post_save, sender=User)
+# def save_user_profile(sender, instance, **kwargs):
+#     instance.profile.save()
 
-    objects = MyUserManager()
+class CustomUser(AbstractUser):
 
-    USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = ['is_staff']
-
-    class Meta:
-        app_label = 'news_mapper_web'
-        db_table = 'users'
+    bio = models.CharField(max_length=1000, blank=True)
+    location = models.CharField(max_length=100, blank=True)
 
     def __str__(self):
         return self.email
-
-    @property
-    def sys_id(self):
-        return self.sys_id
-
-    @sys_id.setter
-    def sys_id(self, new_id):
-        self.sys_id = new_id
-
-    @property
-    def email(self):
-        return self.email
-
-    @email.setter
-    def email(self, new_email):
-        self.email = new_email
-
-    @property
-    def is_staff(self):
-        return self.is_staff
-
-    @is_staff.setter
-    def is_staff(self, boolean):
-        self.is_staff = boolean
-
-    @property
-    def is_active(self):
-        return self.is_active
-
-    @is_active.setter
-    def is_active(self, boolean):
-        self.is_active = boolean
-
-    @property
-    def registration_date(self):
-        return self.registration_date
-
-    @registration_date.setter
-    def registration_date(self, new_date):
-        self.registration_date = new_date
-
-    @property
-    def first_name(self):
-        return self.first_name
-
-    @first_name.setter
-    def first_name(self, new_first):
-        self.first_name = new_first
-
-    @property
-    def last_name(self):
-        return self.last_name
-
-    @last_name.setter
-    def last_name(self, new_last):
-        self.last_name = new_last
-
-
-    # def get_full_name(self):
-    #     return self.email
-    #
-    # def get_short_name(self):
-    #     return self.email
-    #
-    # def has_perm(self, perm, obj=None):
-    #     return self.is_staff
-    #
-    # def has_module_perms(self, app_label):
-    #     return self.is_staff
-
-    @property
-    def full_name(self):
-        full_name = self.first_name + ' ' + self.last_name
-        if full_name == '':
-            full_name = 'Friend'
-        return full_name
-
-    def last_post(self):
-        try:
-            latest = Post.objects.filter(pk=self.pk).order_by('-id')[:1]
-            return latest
-        except Post.DoesNotExist:
-            return False
-
-
-
-
-
-# class User(AbstractUser):
-#     username = models.CharField(max_length=40, unique=True)
-#     email = models.EmailField(unique=True, max_length=75)
-#     first_name = models.CharField(max_length=150)
-#     last_name = models.CharField(max_length=150)
-#     is_active = models.BooleanField(default=True)
-#     is_admin = models.BooleanField(default=False)
-#     # groups = models.ForeignKey('Permission', null=True, blank=True, on_delete=models.CASCADE)
-#
-#     objects = UserManager()
-#
-#     USERNAME_FIELD = 'email'
-#     REQUIRED_FIELDS = ['first_name', 'last_name']
-#
-#     def __str__(self):
-#         return self.email
-
-
-# class Member(models.Model):
-#     user = models.ForeignKey('auth.User', null=False, on_delete=models.CASCADE)
-    #  it seems that the use of auth.User as a FK within the other classes negates the need of this class:
-    # fields = queries, maps, posts, comments, (e-mail)
 
 
 class Source(models.Model):
@@ -292,7 +319,7 @@ class Query(models.Model):
     _filename = models.TextField(max_length=700, blank=True)
     _public = models.BooleanField(default=False)
     _query_type = models.CharField(default='all', choices=query_types, max_length=50)
-    _author = models.ForeignKey(UserModel, on_delete=models.PROTECT, related_name='queries'),
+    _author = models.ForeignKey(CustomUser, on_delete=models.PROTECT, related_name='queries'),
     _saved = models.BooleanField(default=False)
 
     objects = QueryManager
@@ -463,13 +490,12 @@ class Article(models.Model):
 
 class Post(models.Model):
 
-    #  user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, )
     _title = models.CharField(max_length=150)
     _body = models.CharField(max_length=2500)
     _date_published = models.DateTimeField(auto_now_add=True)
     _date_last_edit = models.DateTimeField(default=None)
-    _query = models.ForeignKey(Query, on_delete=models.PROTECT, related_name='posts')
-    _author = models.ForeignKey(UserModel, on_delete=models.PROTECT, related_name='posts'),
+    _query = models.ForeignKey(Query, on_delete=models.PROTECT, related_name='posts'),
+    _author = models.ForeignKey(CustomUser, on_delete=models.PROTECT, related_name='posts'),
     _public = models.BooleanField(default=False)
 
     @property
@@ -534,13 +560,11 @@ class Post(models.Model):
 
 
 class Comment(models.Model):
-    # user = models.ForeignKey('User', null=False, on_delete=models.PROTECT)
-    #  user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
     _post = models.ForeignKey(Post, on_delete=models.PROTECT, related_name='comments')
     _body = models.CharField(max_length=2500)
     _date_published = models.DateTimeField(auto_now_add=True)
     _date_last_edit = models.DateTimeField(default=None)
-    _author = models.ForeignKey(UserModel, on_delete=models.PROTECT, related_name='comments')
+    _author = models.ForeignKey(CustomUser, on_delete=models.PROTECT, related_name='comments')
 
     def __str__(self):
         return "comment from " + self.author.full_name + ' on the post ' + "'" + self.post.title + "', made " + self.date_published
@@ -584,10 +608,6 @@ class Comment(models.Model):
     @author.setter
     def author(self, new_author):
         self._author = new_author
-
-
-
-
 
 
 #======================================================================================#

@@ -15,13 +15,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from django.views.generic.base import TemplateView
+# from accounts import views as account_views
+
 
 urlpatterns = [
-    # path('', TemplateView.as_view(template_name='news_mapper_web/index.html'), name='index' ),
+
     path('admin/', admin.site.urls),
     path('', include('news_mapper_web.urls')),
-
+    # url(r'^signup/$', account_views.signup, name='signup')
     # path('admin/', admin.site.urls),
     # path('', include('news_mapper_web.urls')) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
