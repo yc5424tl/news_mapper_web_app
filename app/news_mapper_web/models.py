@@ -1,3 +1,5 @@
+from django.conf import settings
+# from django.contrib.auth import get_user_model
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 # from django.db.models.signals import post_save
@@ -13,6 +15,7 @@ matplotlib.use('Agg')
 settings_dir = os.path.dirname(__file__)
 PROJECT_ROOT = os.path.abspath(os.path.dirname(settings_dir))
 CHORO_MAP_ROOT = os.path.join(PROJECT_ROOT, 'news_mapper_web/media/news_mapper_web/html/')
+
 
 # class MyUserManager(BaseUserManager):
 #     use_in_migrations = True
@@ -184,11 +187,20 @@ CHORO_MAP_ROOT = os.path.join(PROJECT_ROOT, 'news_mapper_web/media/news_mapper_w
 
 class CustomUser(AbstractUser):
 
-    bio = models.CharField(max_length=1000, blank=True)
-    location = models.CharField(max_length=100, blank=True)
+    _bio = models.CharField(max_length=1000, blank=True)
+    _location = models.CharField(max_length=100, blank=True)
+    _first_name = models.CharField(max_length=100)
+    _last_name = models.CharField(max_length=100)
+    _email = models.EmailField()
+    _registration_date = models.DateField(auto_now_add=True)
+    _username = models.CharField(max_length=50)
+    _is_staff = models.BooleanField(default=False)
+    _is_active = models.BooleanField(default=False)
+
+
 
     def __str__(self):
-        return self.email
+        return self._email
 
 
 class Source(models.Model):
@@ -319,7 +331,7 @@ class Query(models.Model):
     _filename = models.TextField(max_length=700, blank=True)
     _public = models.BooleanField(default=False)
     _query_type = models.CharField(default='all', choices=query_types, max_length=50)
-    _author = models.ForeignKey(CustomUser, on_delete=models.PROTECT, related_name='queries'),
+    _author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, related_name='queries'),
     _saved = models.BooleanField(default=False)
 
     objects = QueryManager
@@ -493,9 +505,9 @@ class Post(models.Model):
     _title = models.CharField(max_length=150)
     _body = models.CharField(max_length=2500)
     _date_published = models.DateTimeField(auto_now_add=True)
+    _author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, related_name='posts')
     _date_last_edit = models.DateTimeField(default=None)
     _query = models.ForeignKey(Query, on_delete=models.PROTECT, related_name='posts'),
-    _author = models.ForeignKey(CustomUser, on_delete=models.PROTECT, related_name='posts'),
     _public = models.BooleanField(default=False)
 
     @property

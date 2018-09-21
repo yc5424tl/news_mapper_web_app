@@ -3,15 +3,16 @@
 from django.shortcuts import render, redirect, get_object_or_404, Http404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+
 from django.contrib import messages
 # from django.urls import reverse_lazy
 # from django.views import generic
 # from django.conf import settings
 from .models import Post, Comment, Query, Source, Article, CustomUser
-from .forms import EditPostForm, LoginForm, NewQueryForm, NewPostForm
+from .forms import EditPostForm, CustomAuthenticationForm, NewQueryForm, NewPostForm, CustomUserCreationForm
 import os
 import json
-from .forms import UserCreationForm
+# from .forms import UserCreationForm
 
 from .api_mgr import QueryManager
 from .map_mgr import GeoMapManager
@@ -29,9 +30,16 @@ CHORO_MAP_ROOT = os.path.join(PROJECT_ROOT, 'news_mapper_web/templates/news_mapp
 
 
 def index(request):
-    user = request.user
-    form = LoginForm()
-    return render(request, 'news_mapper_web/index.html', {'user': user, 'form': form})
+
+    if request.method == 'GET':
+        user = request.user
+        print('type for user is ' + str(type(user)))
+        # form = LoginForm()
+        form = CustomAuthenticationForm()
+        print('type for form is ' + str(type(form)))
+        return render(request, 'news_mapper_web/index.html', {'user': user, 'form': form})
+
+
 # class RegisterUser(generic.CreateView):
 #     model = UserModel
 #     form_class = UserCreationForm
@@ -42,9 +50,10 @@ def index(request):
 #     # def get_success_url(self):
 #     #   return reverse_lazy('login')
 
-def signup_user(request):
+def register_user(request):
+
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
             login(request, user)
@@ -53,34 +62,69 @@ def signup_user(request):
             form = UserCreationForm()
         return render(request, 'news_mapper_web/new_user.html', {'form': form})
 
+    if request.method == 'GET':
+        form = UserCreationForm()
+        return render(request, 'news_mapper_web/new_user.html', {'form': form})
+
 
 def login_user(request):
+    print('in login usesr view')
 
-    username = request.POST.get('username')
-    password = request.POST.get('password')
-    user = authenticate(request, username=username, password=password)
 
-    if user is not None:
-        login(request, user)
-        return redirect('view_user', {'member_pk': user.pk,})
-        # latest_post = user.most_recent()
-        # if latest_post is not False: # returns a Post object, or False if no posts have yet been made by the user
-        #     return render(request, 'news_mapper_web/view_user.html', {
-        #         'user': user,
-        #         'last_post': latest_post,
-        #         'logged_in': logged_in})
-        # else:
-        #     read_me = "You haven't made any posts yet!\n" \
-        #               "Once you have, this area will display your most recent post. To start, click the 'New Query' button at the top of your screen."
-        #     return render(request, 'news_mapper_web/view_user.html', {
-        #         'user': user,
-        #         'read_me': read_me,
-        #         'logged_in': logged_in
-        #     })
-    else:
-        messages.error(request, 'Incorrect Password and/or Username', extra_tags='error')
-        return redirect('login_user')
-        # TODO - redirect to login page with invalid login message
+    if request.method == 'POST':
+        print('in login user method==post')
+        form = CustomAuthenticationForm(request.POST)
+        if form.is_valid():
+            print('form is valid')
+
+            username = form.cleaned_data['username']
+            print('username = ' + str(username))
+            password = form.cleaned_data['password']
+            print('password = ' + str(password))
+            user = authenticate(request, username=username, password=password)
+
+            if user is not None:
+                login(request, user)
+                return redirect('view_user', user.pk)
+            # user = authenticate(**request.POST)
+            # if user is not None:
+            #     login(request, user)
+            #     return redirect('view_user', {'user_pk':user.pk})
+
+
+
+    form = CustomAuthenticationForm()
+    messages.error(request, 'Incorrect Password and/or Username', extra_tags='error')
+    return render(request, 'news_mapper_web/login_user.html', {'form': form})
+
+
+    # username = request.POST.get('username')
+    # print('username: ' + str(username))
+    # password = request.POST.get('password')
+    # print('password: ' + str(password))
+    # user = authenticate(request, username=username, password=password)
+    #
+    # if user is not None:
+    #     login(request, user)
+    #     return redirect('view_user', {'member_pk': user.pk,})
+    #     # latest_post = user.most_recent()
+    #     # if latest_post is not False: # returns a Post object, or False if no posts have yet been made by the user
+    #     #     return render(request, 'news_mapper_web/view_user.html', {
+    #     #         'user': user,
+    #     #         'last_post': latest_post,
+    #     #         'logged_in': logged_in})
+    #     # else:
+    #     #     read_me = "You haven't made any posts yet!\n" \
+    #     #               "Once you have, this area will display your most recent post. To start, click the 'New Query' button at the top of your screen."
+    #     #     return render(request, 'news_mapper_web/view_user.html', {
+    #     #         'user': user,
+    #     #         'read_me': read_me,
+    #     #         'logged_in': logged_in
+    #     #     })
+    # else:
+    #     messages.error(request, 'Incorrect Password and/or Username', extra_tags='error')
+    #     return redirect('login_user')
+    #     # TODO - redirect to login page with invalid login message
 
 
 def logout_user(request):
@@ -237,6 +281,7 @@ def view_query(request, query_pk):
 def delete_query(request, query_pk):
     return None
 
+
 # @login_required()
 def view_user(request, member_pk):
 
@@ -257,8 +302,6 @@ def view_user(request, member_pk):
 
     except CustomUser.DoesNotExist:
         raise Http404
-
-
 
 
 def new_post(request, query_pk):
@@ -297,7 +340,6 @@ def new_post(request, query_pk):
             post.save()
 
             return render(request, 'news_mapper_web/new_post.html', {'post_pk': post.pk})
-
 
 
 def update_post(request, post_pk):
@@ -352,7 +394,6 @@ def delete_comment(request, comment_pk):
         last_url = request.POST['redirect_url']
         messages.info(request, 'Failed to Delete Comment')
         return redirect(request, last_url)
-
 
 
 def password_reset(request):

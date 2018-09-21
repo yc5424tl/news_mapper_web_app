@@ -26,14 +26,14 @@
             <div id="user_panel">
                 {% if user.is_authenticated %}
                 <a href="{% url 'view_user' user.pk  %}">Account</a>
-                <a href="{% url 'logout_user' %}">Logout</a>
+                <a href="{% url 'logout' %}">Logout</a>
             {% else %}
-                <form method="post" action="{% url 'login_user' %}">
+                <form method="post" action="{% url 'login' %}">
                     {% csrf_token %}
                     {{ form.as_p }}
                     <button type="submit">Login</button>
                 </form>
-                <a href="{% url 'signup_user' %}"><button class="btn btb-info">Sign Up</button></a>
+                <a href="{% url 'register_user' %}"><button class="btn btb-info">Sign Up</button></a>
             {% endif %}
             </div>
         </div>
