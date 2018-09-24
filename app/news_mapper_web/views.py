@@ -201,14 +201,13 @@ def new_query(request):
                             category = source['category']
                             language = source['language']
                             country = source['country']
-                            print('id = ' + str(id))
-                            print('name = ' + str(name))
-                            print('description = ' + str(description))
-                            print('url = ' + str(url))
-                            print('category = ' + str(category))
-                            print('language = ' + str(language))
-                            print('country = ' + str(country))
-
+                            # print('id = ' + str(id))
+                            # print('name = ' + str(name))
+                            # print('description = ' + str(description))
+                            # print('url = ' + str(url))
+                            # print('category = ' + str(category))
+                            # print('language = ' + str(language))
+                            # print('country = ' + str(country))
                             new_source = Source(_api_id=api_id, _category=category, _country=country, _description=description, _language=language, _name=name, _url=url)
                             new_source.save()
                         except TypeError:
@@ -218,42 +217,40 @@ def new_query(request):
                 source_list_txt = query_mgr.fetch_and_build_sources()
                 query_mgr.write_sources_json_to_file(source_list_txt)
 
-        except Source.DoesNotExist:
-            try:
-                with open('./news_mapper_web/static/js/sources.json') as sources:
-                    source_list = json.load(sources)
-                    for source in source_list['sources'][0]:
-                        api_id = source['id']
-                        name = source['name']
-                        description = source['description']
-                        url = source['url']
-                        category = source['category']
-                        language = source['language']
-                        country = source['country']
-
-                        new_source = Source(_api_id=api_id, _category=category, _country=country, _description=description, _language=language, _name=name, _url=url)
-                        new_source.save()
-
-            except (FileNotFoundError, Exception):
-                source_list_txt = query_mgr.fetch_and_build_sources()
-                query_mgr.write_sources_json_to_file(source_list_txt)
+        # except Source.DoesNotExist:
+        #     try:
+        #         with open('./news_mapper_web/static/js/sources.json') as sources:
+        #             source_list = json.load(sources)
+        #             for source in source_list['sources'][0]:
+        #                 api_id = source['id']
+        #                 name = source['name']
+        #                 description = source['description']
+        #                 url = source['url']
+        #                 category = source['category']
+        #                 language = source['language']
+        #                 country = source['country']
+        #
+        #                 new_source = Source(_api_id=api_id, _category=category, _country=country, _description=description, _language=language, _name=name, _url=url)
+        #                 new_source.save()
+        #
+        #     except (FileNotFoundError, Exception):
+        #         source_list_txt = query_mgr.fetch_and_build_sources()
+        #         query_mgr.write_sources_json_to_file(source_list_txt)
 
         q_argument = request.POST.get('_argument')
         q_type = request.POST.get('_query_type')
         # q_author = request.POST.get('_author')
 
-
         articles_list = query_mgr.query_api(query_argument=q_argument, query_type=q_type)
-
         query_in_progress = Query.objects.create(_query_type=q_type, _data=articles_list, _argument=q_argument)
-        if request.user.is_authenticated:
+
+        if request.user.is_authenticated:  # TODO after adding @login-required => adjust this
             query_in_progress.author = request.user
             query_in_progress.save()
 
         if articles_list:
             #print('in if articles_list')
             for article in articles_list:
-
                 #print('in for article in articles_list')
                 #print(article)
                 # new_article = query_mgr.build_article_object(article, query_object)
@@ -264,10 +261,8 @@ def new_query(request):
                 #print('type for new_article = ' + str(type(new_article)))
                 if new_article is not False:
                     new_article.save()
-
                     #print('article country = ' + str(new_article.source.country))
                     country_a3_code = geo_map_mgr.get_country_alpha_3_code(new_article.source.country)
-
                     #print('article alpha_3_code = ' + country_a3_code)
                     #print('before adding to query_data_dic, total = ' + str(meta_data_mgr.query_data_dict[country_a3_code]))
                     meta_data_mgr.query_data_dict[country_a3_code] += 1
@@ -298,11 +293,9 @@ def new_query(request):
                     #             meta_data_mgr.query_data_dict[country_a3_code] += 1
                     #     except AttributeError:
                     #         pass
-
             #print('After all articles: ' + str(meta_data_mgr.query_data_dict))
 
             choropleth_data_tuplet = geo_map_mgr.build_choropleth(q_argument, q_type, meta_data_mgr)
-
             choropleth = choropleth_data_tuplet[0]
             choro_html = choropleth_data_tuplet[1]
             choro_filename = choropleth_data_tuplet[2]
@@ -313,10 +306,6 @@ def new_query(request):
 
             Query.objects.filter(pk=query_pk).update(_choropleth=choropleth, _choro_html=choro_html, _filename=choro_filename)
             query_in_progress.save()
-
-
-
-
             #html_pre = str(query_object.choro_html[0:1000])
             #print('str(html_pre) = ' + str(html_pre))
             #print('redirect.query_object.pk = ' + str(query_object.pk))
@@ -333,48 +322,70 @@ def new_query(request):
             query_in_progress.filepath = choro_file_path
             query_in_progress.save()
 
+            return redirect('view_query', query_in_progress.pk)
+
             # query_object.save()
             # print('past .save()')
 
 
             # articles = [x for x in Article.objects.all().select_related(query_object)]
 
-            articles = Article.objects.filter(_query=query_in_progress)
+            # articles = Article.objects.filter(_query=query_in_progress)
             #print('articles as str: ')
             #print(str(articles))
 
-            #print('query.author = ' + str(query_object.author))
+            # print('query.author = ' + str(query_in_progress.author))
+            #
+            #
+            # print('after building articles, before return')
+            # return render(request, 'news_mapper_web/view_query.html', {
+            #     'query_pk': query_in_progress.pk,
+            #     'query': query_in_progress,
+            #     'choro_filepath': choro_file_path,
+            #     'articles': articles,
+            #     'query_author': query_in_progress.author
+            # })
+
+            # print('type query_in_progress = ' + str(type(query_in_progress)))
 
 
-            print('after building articles, before return')
-            return render(request, 'news_mapper_web/view_query.html', {
-                'query': query_in_progress,
-                'choro_filepath': choro_file_path,
-                'articles': articles,
-                'query_author': query_in_progress.author
-            })
+            # return render(request, 'news_mapper_web/view_query.html', query_in_progress.pk,
+            #                 {'query': query_in_progress,
+            #                  'choro_filepath': choro_file_path,
+            #                  'articles': articles,
+            #                  'query_author': query_in_progress.author})
 
 
 def view_query(request, query_pk):
 
-    print('in newsquery views.py')
-    print('news_query_pk = ' + str(query_pk))
+
     query = Query.objects.get(pk=query_pk)
     query_author = query.author
+    query_articles = Article.objects.filter(_query=query)
+    # query_filename = query.filename
+    # query_choro_path = CHORO_MAP_ROOT
 
     if query:
-        html_pre = query.choro_html
-        print('Meta Type: ' + str(type(query)))
-        print('html = ' + (html_pre[0:300]))
-        print('type = ' + query.query_type)
-        # print('filename = ' + str(query.filename))
-        print('type(choropleth = ' + str(type(query.choropleth)))
-        print('argument = ' + query.argument)
-        print('before render view_quiery in views.view_query')
         return render(request, 'news_mapper_web/view_query.html', {
             'query': query,
-            'query_author': query_author
+            'query_author': query_author,
+            'articles': query_articles
         })
+
+
+    # if query:
+    #     html_pre = query.choro_html
+    #     print('Meta Type: ' + str(type(query)))
+    #     print('html = ' + (html_pre[0:300]))
+    #     print('type = ' + query.query_type)
+    #     # print('filename = ' + str(query.filename))
+    #     print('type(choropleth = ' + str(type(query.choropleth)))
+    #     print('argument = ' + query.argument)
+    #     print('before render view_quiery in views.view_query')
+    #     return render(request, 'news_mapper_web/view_query.html', {
+    #         'query': query,
+    #         'query_author': query_author
+    #     })
 
 # @login_required()
 def delete_query(request, query_pk):
@@ -445,29 +456,29 @@ def new_post(request, query_pk):
         form = NewPostForm(request.POST)
 
         if request.user.is_authenticated:
+
             try:
                 pk = request.user.pk
                 author = User.objects.get(pk=pk)
+
+                if form.is_valid():
+                    title = form.cleaned_data['_title']
+                    public = form.cleaned_data['_public']
+                    body = form.cleaned_data['_body']
+                    query = form.cleaned_data['_query']
+
+                    post = Post(title=title, public=public, body=body, query=query, author=author)
+                    post.save()
+                    # return redirect('view_post', {'post_pk': post.pk})
+                    return render('')
+
+            # return render(request, 'news_mapper_web/new_post.html', {'post_pk': post.pk})
             except User.DoesNotExist:
                 raise Http404
 
-            if form.is_valid():
-                title = form.cleaned_data['_title']
-                public = form.cleaned_data['_public']
-                body = form.cleaned_data['_body']
-                query = form.cleaned_data['_query']
-
-                post = Post(title=title, public=public, body=body, query=query, author=author)
-
-                post.save()
-
-            # return render(request, 'news_mapper_web/new_post.html', {'post_pk': post.pk})
-                return redirect('view_post', {'post_pk': post.pk})
-
 
 def update_post(request, post_pk):
-    if post_pk:
-        pass
+    return render(request, 'news_mapper_web/update_post.html')
 
 # @login_required()
 def view_post(request, post_pk):

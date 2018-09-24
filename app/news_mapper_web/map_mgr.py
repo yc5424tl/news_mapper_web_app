@@ -81,21 +81,19 @@ class GeoMapManager:
 
         date = datetime.now()
         now = datetime.ctime(date)
-
         map_prefix = str(now).replace(' ', '_')
         map_prefix = map_prefix.replace(':', '-')
-
         filename = map_prefix + '_' + query_type + '_query_' + argument + '_choropleth_map.html'
-
         choro_map.save(CHORO_MAP_ROOT + filename)
         choro_html = choro_map.get_root().render()
 
-        print('type(choro_map.render()) = ' + str(type(choro_map.render())))
-        print('type(choro_map.render) = ' + str(type(choro_map.render)))
-        print('type(choro_map) = ' + str(type(choro_map)))
+        # print('type(choro_map.render()) = ' + str(type(choro_map.render())))
+        # print('type(choro_map.render) = ' + str(type(choro_map.render)))
+        # print('type(choro_map) = ' + str(type(choro_map)))
 
         if save_choro_to_file(choro_html, filename):
             return choro_map, choro_html, filename
+
         else:
             return None
 

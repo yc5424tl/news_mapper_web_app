@@ -4,12 +4,15 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser, User
 # from django.db.models.signals import post_save
 # from django.dispatch import receiver
+from datetime import datetime
 
-# from datetime import datetime
+
 
 import os
 
 import matplotlib
+
+
 matplotlib.use('Agg')
 
 settings_dir = os.path.dirname(__file__)
@@ -294,30 +297,27 @@ class Source(models.Model):
 
 class QueryManager(models.Manager):
 
-    def create_query(self, argument, date_created, query_type, author=None, choropleth=None, choro_html=None, data=None, date_range_end=None, date_range_start=None, filename=None,public=False):
+    def create_query(self, argument, date_created, query_type, author=None, choropleth=None, choro_html=None, data=None, date_range_end=None, date_range_start=None,public=False):
 
         news_query = self.create(
             _argument =argument,
+            _author=author,
             _choropleth=choropleth,
             _choro_html=choro_html,
             _data=data,
             _date_created=date_created,
             _date_range_end=date_range_end,
             _date_range_start=date_range_start,
-            _filename=filename,
+            _filename=self.filename,
             _public=public,
-            _query_type=query_type,
-            _author=author)
-
+            _query_type=query_type
+        )
         return news_query
 
 
 class Query(models.Model):
 
-    query_types = (
-        ('headlines', 'Headlines'),
-        ('all', 'All')
-    )
+    query_types = ( ('headlines', 'Headlines'), ('all', 'All') )
 
     # user = models.ForeignKey('User', null=False, on_delete=models.PROTECT)
     #  user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT,)
@@ -355,6 +355,14 @@ class Query(models.Model):
     @choropleth.setter
     def choropleth(self, new_choropleth):
         self._choropleth = new_choropleth
+
+    @property
+    def filename(self):
+        date_now = datetime.now()
+        now = datetime.ctime(date_now)
+        file_date = (str(now).replace(' ', '_')).replace(':', '-')
+        filename = file_date + '_' + self.query_type + '_query_' + self.argument + '_choropleth_map.html'
+        return filename
 
     @property
     def query_type(self):
@@ -402,7 +410,7 @@ class Query(models.Model):
 
     @property
     def archived(self):
-        return self._saved
+        return self._archived
 
     @archived.setter
     def archived(self, is_archived:bool):

@@ -9,7 +9,7 @@
 
     <div class="container">
         <div class="row">
-            <div class="col-9">
+            <div class="col-10 center-block">
                 <div class="jumbotron">
                     {% if request.user.pk == member.pk %}
                         <h2>
@@ -20,30 +20,31 @@
                      <small>Member Since {{ member.date_joined }}</small>
                 </div>
             </div>
-            <div class="col-3">
-                {% if request.user.pk == member.pk %}
-                    <a href="{% url 'password_change' %}">Change Password</a>
-                    <a href="{% url 'password_reset' %}">Forgot Password</a>
-                {% endif %}
-            </div>
+{#            <div class="col-4">#}
+{#                {% if request.user.pk == member.pk %}#}
+{#                    <a href="{% url 'password_change' %}">Change Password</a>#}
+{#                {% else %}#}
+{#                    <a href="{% url 'password_reset' %}">Forgot Password</a>#}
+{#                {% endif %}#}
+{#            </div>#}
         </div>
 
         <div class="row">
 
-            <div class="col-9">
+            <div class="col-8">
 
                 <div class="col-12">
                     {% if last_post %}
-                    <h3>
-                        Title: {{ last_post.title }}
-                        <small>{{ last_post.date_published }}</small>
-                    </h3>
-                    <div>
-                        <blockquote>
-                            {{ last_post.body }}
-                        </blockquote>
-                    </div>
-                    <a href="{% url 'view_post' last_post.pk %}">View Full Post</a>
+                        <h3>
+                            Title: {{ last_post.title }}
+                            <small>{{ last_post.date_published }}</small>
+                        </h3>
+                        <div>
+                            <blockquote>
+                                {{ last_post.body }}
+                            </blockquote>
+                        </div>
+                        <a href="{% url 'view_post' last_post.pk %}">View Full Post</a>
                     {% else %}
                             Add How To Guide for Posts
                     {% endif %}
@@ -63,11 +64,13 @@
             </div>
 
 
-            <div class="col-3">
+            <div class="col-4">
 
-                <div class="col-12">
-                    <h3>RECENT POSTS</h3>
-                    <small>By {{ member.first_name }}</small>
+                <div class="col-12" id="user-recent-posts">
+
+                    {% if request.user.pk == member.pk %}<h3>YOUR RECENT POSTS</h3>
+                    {% else %}<h3>{{ member.first_name|upper }}'s RECENT POSTS</h3>
+                    {% endif %}
                     <ul>
                         {% for post in posts %}
                             {% if post %}
@@ -79,9 +82,10 @@
                     </ul>
                 </div>
 
-                <div class="col-12">
-                    <h3>RECENT COMMENTS</h3>
-                    <small>By {{ member.first_name }}</small>
+                <div class="col-12" id="user-recent-comments">
+                    {% if request.user.pk == member.pk %}<h3>YOUR RECENT COMMENTS</h3>
+                    {% else %}<h3>{{ member.first_name|upper }}'s RECENT COMMENTS</h3>
+                    {% endif %}
                     <ul>
                         {% for comment in comments %}
                             {% if comment %}

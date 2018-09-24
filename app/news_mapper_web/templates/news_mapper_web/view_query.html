@@ -25,13 +25,14 @@
             temp.innerHTML = html;
             return (template.content.childNodes);
         }
-//        function htmlToIframe(html) {
-//          let iframe = document.getElementById('#choro-iframe');
-//           let html_slice = html.slice(15,-1);  // Removing <!DOCTYPE html>
-//            let html_tag = '<html lang="en">';
-//            let new_html = html_tag.concat(' ', html_slice);
-//            $(iframe).load(new_html);
-//        }
+{#        function htmlToIframe(html) {#}
+{#          let iframe = document.getElementById('#choro-iframe');#}
+{#           let html_slice = html.slice(15,-1);  // Removing <!DOCTYPE html>#}
+{#            let html_tag = '<html lang="en">';#}
+{#            let new_html = html_tag.concat(' ', html_slice);#}
+{#            $(iframe).load(new_html);#}
+{#        }#}
+
         $(document).ready(function() {
             htmlToTemplate({{ query.choro_html|safe }});
         });
@@ -46,7 +47,7 @@
 
 {% block content %}
 
-{#    <iframe id="choro-iframe"></iframe>#}
+    <iframe id="choro-iframe"></iframe>
     <div class="container">
 
         <div class="row">
@@ -58,19 +59,19 @@
                 <p id="adjacent-target">
                     ARGUMENT: {{ query.argument }}
                     TYPE: {{ query.query_type }}
-                    DATE: {{ query.date_created }}
-                    SAVED: {{ query.saved }}
+                    DATE: {{ query.date_created_readable }}
+                    ARCHIVED: {{ query.archived }}
                 </p>
 
                 USER.PK = {{ user.pk }}
                 USER.ID = {{ user.id }}
                 QUERY.AUTHOR.PK = {{ query_author.pk }}
                 QUERY.AUTHOR.ID = {{ query_author.id }}
-                QUERY.AUTHOR.set.all() = {{ query_author.set.all }}
+
 
                 {% if user.pk == query_author.id %}
 
-                    {% if query.saved is False %}
+                    {% if query.archived is False %}
 
                         IN QUERY.SAVED is FALSE
                         <div>
@@ -101,8 +102,10 @@
                             </form>
 
                         </div>
+                    {% endif %}
 
-                    {% else %}
+
+                    {% if query.archived is True %}
 
                         IN ELSE
                         <form method="post" action="{% url 'update_post' post.pk %}">
