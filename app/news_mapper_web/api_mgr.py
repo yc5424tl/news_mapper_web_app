@@ -77,7 +77,7 @@ class QueryManager:
             raw_article_data = api_query['articles'][i]
             try:
                 new_article_object = self.build_article_object(raw_article_data, api_query)
-                if new_article_object is not False:
+                if new_article_object:
                     articles_list.append(new_article_object)
             except Source.DoesNotExist:
                 logger.exception(Source.DoesNotExist, 'api_mgr.build_articles_list')
@@ -101,7 +101,7 @@ class QueryManager:
 
         if source_name:
             try:
-                source = Source.objects.get(name=source_name)
+                source = Source.objects.get(_name=source_name)
                 # print('is_src: ' + str(source.name))
                 return source
             except (AttributeError, Source.DoesNotExist):
@@ -138,7 +138,8 @@ class QueryManager:
         date_published = self.is_datetime(raw_article_data['publishedAt'])
         article_url = raw_article_data['url']
 
-        if raw_article_data['urlToImage']:
+
+        if raw_article_data['urlToImage'] is not None:
             image_url = raw_article_data['urlToImage']
         else:
             image_url = None
@@ -151,23 +152,32 @@ class QueryManager:
         try:
             title = self.is_str(raw_article_data['title'])
         except UnicodeDecodeError:
-            title = 'Unavaialbe'
+            title = 'Unavailable'
 
         try:
             author = self.is_str(raw_article_data['author'])
+            if author is None:
+                author = 'Unknown'
         except UnicodeDecodeError:
             author = 'Unavailable'
 
+            print(str(source))
+            print(str(date_published))
+            print(str(description))
+            print(str(title))
+            print(str(author))
+            print(str(article_url))
+
         if source is not False:
             new_article = Article(
-                title=title,
-                author=author,
-                source=source,
-                date_published=date_published,
-                description=description,
-                article_url=article_url,
-                image_url=image_url,
-                query=query)
+                _title=title,
+                _author=author,
+                _source=source,
+                _date_published=date_published,
+                _description=description,
+                _article_url=article_url,
+                _image_url=image_url,
+                _query=query)
             new_article.save()
             return new_article
 
@@ -176,8 +186,12 @@ class QueryManager:
 
     def build_source_object(self, source_data):
 
+        print('source data = ' + str(source_data))
+
         url = source_data['url']
+        print('url = ' + str(url))
         country  = self.is_str(source_data['country'])
+        print('country = ' + str(country))
         api_id   = self.is_str(source_data['id'])
         category = self.is_str(source_data['category'])
         language = self.is_str(source_data['language'])
@@ -192,17 +206,17 @@ class QueryManager:
         except UnicodeDecodeError:
             description = 'Unavailable'
 
-        if name is not False:
+        if name:
             print(name)
 
             return Source(
-                api_id=api_id,
-                name=name,
-                description=description,
-                url=url,
-                category=category,
-                language=language,
-                country=country
+                _api_id=api_id,
+                _name=name,
+                _description=description,
+                _url=url,
+                _category=category,
+                _language=language,
+                _country=country
             )
 
         else:
@@ -230,9 +244,10 @@ class QueryManager:
             source_count += 1
             print('source count: ' + str(source_count))
             new_source = self.build_source_object(source)
-            new_source.save()
-            print('new_source: ' + str(new_source.name))
-            source_list.append(new_source)
+            if new_source:
+                new_source.save()
+                print('new_source: ' + str(new_source.name))
+                source_list.append(new_source)
         return source_list
 
     @staticmethod

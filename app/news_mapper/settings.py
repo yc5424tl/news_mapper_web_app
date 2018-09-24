@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
+import debug_toolbar
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 # from django.conf.global_settings import AUTHENTICATION_BACKENDS
@@ -29,6 +31,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
+INTERNAL_IPS = ['127.0.0.1']
+
+
 # AUTHENTICATION_BACKENDS = (
 #     'django.contrib.auth.backends.ModelBackend',
 #     'news_mapper_web.backends.MyAuthBackend',
@@ -36,7 +41,6 @@ ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 # Application definition
 
-LOGIN_URL = '/admin'
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -46,6 +50,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'news_mapper_web',
+    'debug_toolbar',
 
 
 
@@ -59,6 +64,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'news_mapper.urls'
@@ -100,8 +106,8 @@ DATABASES = {
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
-
-AUTH_USER_MODEL = 'news_mapper_web.CustomUser'
+#
+# AUTH_USER_MODEL = 'news_mapper_web.CustomUser'
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
@@ -150,6 +156,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'news_mapper_web/media')
 
 TEMPLATE_DIRS = (os.path.join(BASE_DIR, 'news_mapper_web/templates'),)
 
+LOGIN_URL = 'login'
 
-LOGIN_REDIRECT_URL = 'index'
+# LOGIN_REDIRECT_URL = ''
 LOGOUT_REDIRECT_URL = 'index'

@@ -7,53 +7,60 @@
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}News Mapper{% endblock %}</title>
-
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+          crossorigin="anonymous">
 </head>
 
 <body>
-    <nav class="navbar" role="navigation">
-        <div class="container-fluid">
-            <div id="messages">
-                {% if messages %}
-                  <ul class="messages">
-                    {% for message in messages %}
-                      <li class="{{ message.tags }}">{{ message }}</li>
-                    {% endfor %}
-                  </ul>
-                {% endif %}
-            </div>
-            <div id="user_panel">
+    <div class="container-fluid">
+
+        <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+            <a class="navbar-brand" href="{% url 'index' %}">N.M.</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-content">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        <div class="collapse navbar-collapse" id="navbar-content">
+            <ul class="navbar-nav">
+                <li class="nav-item"><a class="nav-link" href="{% url 'index' %}">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'new_query' %}">Map the News</a></li>
                 {% if user.is_authenticated %}
-                <a href="{% url 'view_user' user.pk  %}">Account</a>
-                <a href="{% url 'logout' %}">Logout</a>
-            {% else %}
-                <form method="post" action="{% url 'login' %}">
-                    {% csrf_token %}
-                    {{ form.as_p }}
-                    <button type="submit">Login</button>
-                </form>
-                <a href="{% url 'register_user' %}"><button class="btn btb-info">Sign Up</button></a>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'view_user' user.pk %}">Profile</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Logout</a></li>
+                {% else %}
+                    <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'register_user' %}">Register</a></li>
+                {% endif %}
+            </ul>
+        </div>
+            {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                        <li class="{{ message.tags }}">{{ message }}</li>
+                    {% endfor %}
+                </ul>
             {% endif %}
+
+        </nav>
+
+
+        {% block content %}
+        {% endblock %}
+
+        <footer class="footer">
+            <div class="container">
+                <span class="text-muted">Jacob Boline 2018 </span>
+                <a href="#">this.github</a>
             </div>
-        </div>
-    </nav>
+        </footer>
+   </div>
 
-    {% block content %}
+    {% block scripts %}
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
     {% endblock %}
-
-    <footer class="footer">
-        <div class="container">
-            <span class="text-muted">Jacob Boline 2018 </span>
-            <a href="#">this.github</a>
-        </div>
-    </footer>
-
-{% block scripts %}
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-{% endblock %}
 
 </body>
 </html>

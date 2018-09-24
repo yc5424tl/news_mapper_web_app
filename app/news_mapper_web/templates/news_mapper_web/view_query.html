@@ -1,11 +1,9 @@
 
 {% extends 'news_mapper_web/base.html' %}
 
-
 {% block title %}Query Results - {{ block.super }}{% endblock %}
 
 {% block scripts %}
-
     {{ block.super }}
 
     <script>
@@ -27,112 +25,150 @@
             temp.innerHTML = html;
             return (template.content.childNodes);
         }
+//        function htmlToIframe(html) {
+//          let iframe = document.getElementById('#choro-iframe');
+//           let html_slice = html.slice(15,-1);  // Removing <!DOCTYPE html>
+//            let html_tag = '<html lang="en">';
+//            let new_html = html_tag.concat(' ', html_slice);
+//            $(iframe).load(new_html);
+//        }
+        $(document).ready(function() {
+            htmlToTemplate({{ query.choro_html|safe }});
+        });
 
-        function htmlToIframe(html) {
-            let iframe = document.getElementById('#choro-iframe');
-            let html_slice = html.slice(15,-1);  {% comment %}Removing <!DOCTYPE html>{% endcomment %}
-            let html_tag = '<html lang="en">';
-            let new_html = html_tag.concat(' ', html_slice);
-            $(iframe).load(new_html);
-        }
-    $(document).ready(function() {
-        htmlToTemplate({{ query.choro_html|safe }});
-        htmlToIframe({{ query.choro_html|safe }});
-    });
-
-{#    let d1 = document.getElementById('#adjacent-target');#}
-{#    d1.insertAdjacentHTML('afterend', {{ news_query.choro_html|safe }})#}
+//        htmlToIframe({ query.choro_html|safe }});
+//    let d1 = document.getElementById('#adjacent-target');
+//    d1.insertAdjacentHTML('afterend', { news_query.choro_html|safe }})
 
     </script>
 
 {% endblock %}
 
-
 {% block content %}
 
-    <iframe id="choro-iframe"></iframe>
+{#    <iframe id="choro-iframe"></iframe>#}
     <div class="container">
+
         <div class="row">
-            <div class="col-*-7">
+
+            <div class="col-7">
+
                 <h2>Query Details</h2>
+
                 <p id="adjacent-target">
                     ARGUMENT: {{ query.argument }}
                     TYPE: {{ query.query_type }}
                     DATE: {{ query.date_created }}
+                    SAVED: {{ query.saved }}
                 </p>
-            </div>
-            {% if request.user.pk == user.pk %}
-                {% if query.saved is False %}
-                    <div>
-                        <form method="post" action="{% url 'new_post' %}">
+
+                USER.PK = {{ user.pk }}
+                USER.ID = {{ user.id }}
+                QUERY.AUTHOR.PK = {{ query_author.pk }}
+                QUERY.AUTHOR.ID = {{ query_author.id }}
+                QUERY.AUTHOR.set.all() = {{ query_author.set.all }}
+
+                {% if user.pk == query_author.id %}
+
+                    {% if query.saved is False %}
+
+                        IN QUERY.SAVED is FALSE
+                        <div>
+
+                            <form method="post" action="{% url 'new_post' query.pk %}">
+                                {% csrf_token %}
+                                <div class="input-group">
+                                    <div class="form-check form-check-inline">
+                                        <label class="form-check-label"> Private
+                                            <input type="radio" class="form-check-input" id="private-save-false" name="save_radio" checked>
+                                        </label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <label class="form-check-label"> Public
+                                            <input type="radio" class="form-check-input" id="public-save-false" name="save_radio">
+                                        </label>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-default">Post Query</button>
+                                <input type="hidden" name="user_pk" value="{{ user.pk }}">
+                                <input type="hidden" name="query_pk" value="{{ query.pk }}">
+                            </form>
+
+
+                            <form method="post" action="{% url 'delete_query' query.pk %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger">Delete Query</button>
+                            </form>
+
+                        </div>
+
+                    {% else %}
+
+                        IN ELSE
+                        <form method="post" action="{% url 'update_post' post.pk %}">
                             {% csrf_token %}
                             <div class="input-group">
                                 <div class="form-check form-check-inline">
                                     <label class="form-check-label"> Private
-                                        <input type="radio" class="form-check-input" id="private-save-false" name="save_radio" checked>
+                                        <input type="radio" class="form-check-input" id="private-save-true" name="save_radio" checked>
                                     </label>
                                 </div>
                                 <div class="form-check form-check-inline">
                                     <label class="form-check-label"> Public
-                                        <input type="radio" class="form-check-input" id="public-save-false" name="save_radio">
+                                        <input type="radio" class="form-check-input" id="public-save-true" name="save_radio">
                                     </label>
                                 </div>
                             </div>
-                            <button type="submit" class="btn btn-default">Post Query</button>
+                            <button type="submit" class="btn btn-default">Update Post</button>
                             <input type="hidden" name="user_pk" value="{{ user.pk }}">
                             <input type="hidden" name="query_pk" value="{{ query.pk }}">
                         </form>
-                        <form method="post" action="{% url 'delete_query' query.pk %}">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-danger">Delete Query</button>
-                        </form>
-                    </div>
-                {% endif %}
-                {% if query.saved is True %}
-                    <form method="post" action="{% url 'update_post' post.pk %}">
-                        {% csrf_token %}
-                        <div class="input-group">
-                            <div class="form-check form-check-inline">
-                                <label class="form-check-label"> Private
-                                    <input type="radio" class="form-check-input" id="private-save-true" name="save_radio" checked>
-                                </label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <label class="form-check-label"> Public
-                                    <input type="radio" class="form-check-input" id="public-save-true" name="save_radio">
-                                </label>
-                            </div>
-                        </div>
-                        <button type="submit" class="btn btn-default">Update Post</button>
-                        <input type="hidden" name="user_pk" value="{{ user.pk }}">
-                        <input type="hidden" name="query_pk" value="{{ query.pk }}">
-                    </form>
-                    <form method="post" action="{% url 'delete_post' post.pk %}">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-danger">Delete Post</button>
-                        <sub>* Query will also be deleted</sub>
-                    </form>
-                {% endif %}
-            {% endif %}
 
+
+                        <form method="post" action="{% url 'delete_post' post.pk %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger">Delete Post</button>
+                            <sub>* Query will also be deleted</sub>
+                        </form>
+
+
+                    {% endif %}
+                {% endif %}
+            </div>
+
+            <!--
             <div class="col-5">
-                <ul>
-                    {% for article in query.articles|slice:20 %}
-                        {% if article %}
-                            <li class="article-list">
-                                <p>Title: {{ article.title }}</p>
-                                <sub>
-                                    Author: {{ article.author }} --
-                                    Published: {{ article.get_date_published }}
-                                </sub>
-                                <blockquote class="article-desc">{{ article.description }}</blockquote>
-                                <sub><a href="{{ article.article_url }}">Link to Original</a></sub>
-                            </li>
-                        {% endif %}
-                    {% empty %}
-                        <li>No Articles Found for Query</li>
-                    {% endfor %}
-                </ul>
+            <div class="panel panel-info" id="query-articles-panel">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Articles Returned by Query</h3>
+                </div>
+                <div class="panel-body">
+                    <ul class="list-group">
+            -->
+
+            <div class="col-5 flex-column d-flex">
+                <div class="card">
+                    <div class="card-header">Card Header</div>
+                    <div class="list-group scrolly">                        {% comment %}{% for article in query.articles|slice:20 %}
+                        {% for article in query.articles|slice:'20' %}{% endcomment %}
+                        {% for article in articles %}
+                            {% if article %}
+                                <div class="list-group-item">
+                                    <p>Title: {{ article.title }}</p>
+                                    <sub>
+                                        Author: {{ article.author }} --
+                                        Published: {{ article.get_date_published }}
+                                    </sub>
+                                    <blockquote class="article-desc">{{ article.description }}</blockquote>
+                                    <sub><a href="{{ article.article_url }}">Link to Original</a></sub>
+                                </div>>
+                            {% endif %}
+                        {% empty %}
+                            <p class="list-group-item">No Articles Found for Query</p>
+                        {% endfor %}
+
+                    </div>
+                </div>
             </div>
         </div>
     </div>

@@ -9,21 +9,31 @@
 
     <div class="container">
         <div class="row">
-            <div class="col-*-12">
+            <div class="col-9">
                 <div class="jumbotron">
                     {% if request.user.pk == member.pk %}
                         <h2>
-                            Welcome, {{ member.full_name }}! </h2>
+                            Welcome, {{ member.username }}! </h2>
                     {% else %}
-                        <h2>Viewing {{ member.first_name }}'s Profile</h2>
+                        <h2>Viewing {{ member.username }}'s Profile</h2>
                     {% endif %}
-                     <small>Member Since {{ member.registration_date }}</small>
+                     <small>Member Since {{ member.date_joined }}</small>
                 </div>
             </div>
+            <div class="col-3">
+                {% if request.user.pk == member.pk %}
+                    <a href="{% url 'password_change' %}">Change Password</a>
+                    <a href="{% url 'password_reset' %}">Forgot Password</a>
+                {% endif %}
+            </div>
         </div>
+
         <div class="row">
-            <div class="col-*-7">
-                {% if last_post %}
+
+            <div class="col-9">
+
+                <div class="col-12">
+                    {% if last_post %}
                     <h3>
                         Title: {{ last_post.title }}
                         <small>{{ last_post.date_published }}</small>
@@ -34,57 +44,60 @@
                         </blockquote>
                     </div>
                     <a href="{% url 'view_post' last_post.pk %}">View Full Post</a>
-                {% endif %}
-            </div>
-            <div class="col-*-7">
-
-                {% for comment in post.comments|slice:4 %}
-                    {% if comment %}
-                        <h3>Comment by {{ comment.author }} - {{ comment.date_published }}</h3>
-                        <blockquote>{{ comment.body }}</blockquote>
+                    {% else %}
+                            Add How To Guide for Posts
                     {% endif %}
-                {% empty %}
-                    <p>No Comments Yet</p>
-                {% endfor %}
-            </div>
-            <div class="col-*-5">
-                <div class="row">
-                    <div class="col-*-12">
-                        <h3>RECENT POSTS</h3>
-                        <small>By {{ member.first_name }}</small>
-                        <ul>
-                            {% for post in posts %}
-                                {% if post %}
-                                    <li>
-                                        <a href="{% url 'view_post' post.pk %}">
-                                            {{ post.title }}</a>
-                                    </li>
-                                {% endif %}
-                            {% empty %}
-                                <li>No Posts Yet</li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                    <div class="col-*-12">
-                        <h3>RECENT COMMENTS</h3>
-                        <small>By {{ member.first_name }}</small>
-                        <ul>
-                            {% for comment in comments %}
-                                {% if comment %}
-                                    <li>
-                                        <a href="{% url 'view_comment' comment.pk %}">
-                                            {{ comment.body|truncatewords:5 }}</a>
-                                    </li>
-                                {% endif %}
-                            {% empty %}
-                                <li>No Comments Yet</li>
-                            {% endfor %}
-                        </ul>
-                    </div>
                 </div>
+
+                <div class="col-12">
+                    {% for comment in post.comments|slice:':4' %}
+                        {% if comment %}
+                            <h3>Comment by {{ comment.author }} - {{ comment.date_published }}</h3>
+                            <blockquote>{{ comment.body }}</blockquote>
+                        {% endif %}
+                    {% empty %}
+                        <p>No Comments Yet</p>
+                    {% endfor %}
+                </div>
+
             </div>
-        </div>
-    </div>
+
+
+            <div class="col-3">
+
+                <div class="col-12">
+                    <h3>RECENT POSTS</h3>
+                    <small>By {{ member.first_name }}</small>
+                    <ul>
+                        {% for post in posts %}
+                            {% if post %}
+                                <li><a href="{% url 'view_post' post.pk %}">{{ post.title }}</a></li>
+                            {% endif %}
+                        {% empty %}
+                            <li>No Posts Yet</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <div class="col-12">
+                    <h3>RECENT COMMENTS</h3>
+                    <small>By {{ member.first_name }}</small>
+                    <ul>
+                        {% for comment in comments %}
+                            {% if comment %}
+                                <li><a href="{% url 'view_comment' comment.pk %}">{{ comment.body|truncatewords:':5' }}</a></li>
+                            {% endif %}
+                        {% empty %}
+                            <li>No Comments Yet</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+            </div>  {% comment %} END COL-*-5 {% endcomment %}
+
+        </div>  {% comment %} END ROW {% endcomment %}
+
+    </div>  {% comment %} END CONTAINER {% endcomment %}
 
  {% endblock %}
 

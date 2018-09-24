@@ -1,3 +1,16 @@
+{#{% extends 'news_mapper_web/base.html' %}#}
+{##}
+{#{% block title %}Login{% endblock %}#}
+{##}
+{#{% block content %}#}
+{#    <h2>Login</h2>#}
+{#    <form method="post" action="{% url 'login' %}">#}
+{#        {% csrf_token %}#}
+{#        {{ form.as_p }}#}
+{#        <button type="submit">Login</button>#}
+{#    </form>#}
+{#{% endblock %}#}
+
 {% extends "news_mapper_web/base.html" %}
 
 {% block title %}Login - {{ block.super }}{% endblock %}
@@ -17,7 +30,7 @@
     {% endif %}
 {% endif %}
 
-<form method="post" action="{% url 'user_login' %}">
+<form method="post" action="{% url 'login' %}">
 {% csrf_token %}
 <table>
 <tr>
@@ -31,7 +44,7 @@
 </table>
 
 <input type="submit" value="login">
-<input type="hidden" name="next" value="{{ next }}">
+<input type="hidden" name="next" value="{% url 'view_user' user.pk %}">
 </form>
 
 {# Assumes you setup the password_reset view in your URLconf #}

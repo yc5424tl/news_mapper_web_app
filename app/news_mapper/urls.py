@@ -15,16 +15,31 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-# from accounts import views as account_views
 
+from django.conf import settings
+
+
+
+# from accounts import views as account_views
 
 urlpatterns = [
 
     path('admin/', admin.site.urls),
     path('', include('news_mapper_web.urls')),
+    path('accounts/', include('django.contrib.auth.urls')),
+
     # url(r'^signup/$', account_views.signup, name='signup')
     # path('admin/', admin.site.urls),
     # path('', include('news_mapper_web.urls')) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
     # path('', include('django.contrib.auth.urls')),
 ]
+
+if settings.DEBUG:
+    import debug_toolbar
+    urlpatterns = [
+        path(r'^__debug__/', include(debug_toolbar.urls)),
+    ] + urlpatterns
+
+
+
