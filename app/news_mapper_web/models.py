@@ -356,13 +356,13 @@ class Query(models.Model):
     def choropleth(self, new_choropleth):
         self._choropleth = new_choropleth
 
-    @property
-    def filename(self):
-        date_now = datetime.now()
-        now = datetime.ctime(date_now)
-        file_date = (str(now).replace(' ', '_')).replace(':', '-')
-        filename = file_date + '_' + self.query_type + '_query_' + self.argument + '_choropleth_map.html'
-        return filename
+    # @property
+    # def filename(self):
+    #     date_now = datetime.now()
+    #     now = datetime.ctime(date_now)
+    #     file_date = (str(now).replace(' ', '_')).replace(':', '-')
+    #     filename = file_date + '_' + self.query_type + '_query_' + self.argument + '_choropleth_map.html'
+    #     return filename
 
     @property
     def query_type(self):

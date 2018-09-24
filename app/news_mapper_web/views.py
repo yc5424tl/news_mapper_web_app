@@ -240,13 +240,20 @@ def new_query(request):
         q_argument = request.POST.get('_argument')
         q_type = request.POST.get('_query_type')
         # q_author = request.POST.get('_author')
+        q_author = User.objects.get(pk=request.user.pk)
 
         articles_list = query_mgr.query_api(query_argument=q_argument, query_type=q_type)
-        query_in_progress = Query.objects.create(_query_type=q_type, _data=articles_list, _argument=q_argument)
+        # query_in_progress = Query.objects.create(_query_type=q_type, _data=articles_list, _argument=q_argument)
+        print('before making query object')
+        query_in_progress = Query.objects.create(_query_type=q_type, _argument=q_argument, _data=articles_list, author=q_author)
+        print('after')
+        print('type of query_in_progress = ' + str(type(query_in_progress)))
+        print('pk of ^ = ' + str(query_in_progress.pk))
+        query_in_progress.save()
 
-        if request.user.is_authenticated:  # TODO after adding @login-required => adjust this
-            query_in_progress.author = request.user
-            query_in_progress.save()
+        # if request.user.is_authenticated:  # TODO after adding @login-required => adjust this
+        #     query_in_progress.author = request.user
+        #     query_in_progress.save()
 
         if articles_list:
             #print('in if articles_list')
@@ -302,13 +309,19 @@ def new_query(request):
             # choro_html_splice = str(choro_html[16:-1])
             # choro_html_updated = '<html lang="en">' + choro_html_splice
             query_pk = query_in_progress.pk
+            print('str query_pk = ' + str(query_pk))
             #print('choro_html = ' + choro_html[0:1000])
 
             Query.objects.filter(pk=query_pk).update(_choropleth=choropleth, _choro_html=choro_html, _filename=choro_filename)
-            query_in_progress.save()
-            #html_pre = str(query_object.choro_html[0:1000])
-            #print('str(html_pre) = ' + str(html_pre))
-            #print('redirect.query_object.pk = ' + str(query_object.pk))
+            query_in_progress = Query.objects.get(pk=query_pk)
+            # query_in_progress.choropleth = choropleth
+            # query_in_progress.choro_html = choro_html
+            # query_in_progress.filename = choro_filename
+            # query_in_progress.save()
+            # Query.objects.all().save()
+            html_pre = str(query_in_progress.choro_html[0:1000])
+            print('str(html_pre) = ' + str(html_pre))
+            print('redirect.query_object.pk = ' + str(query_in_progress.pk))
 
             # article_instances = [Article.objects.filter(_query=query_object)]
 
@@ -361,6 +374,8 @@ def view_query(request, query_pk):
 
     query = Query.objects.get(pk=query_pk)
     query_author = query.author
+    author_pk = query.author
+    print('author_pk = ' + str(author_pk))
     query_articles = Article.objects.filter(_query=query)
     # query_filename = query.filename
     # query_choro_path = CHORO_MAP_ROOT

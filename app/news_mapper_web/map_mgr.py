@@ -92,9 +92,11 @@ class GeoMapManager:
         # print('type(choro_map) = ' + str(type(choro_map)))
 
         if save_choro_to_file(choro_html, filename):
+            print('saved choro to file in map_mgr')
             return choro_map, choro_html, filename
 
         else:
+            print('save choro to file failed')
             return None
 
 

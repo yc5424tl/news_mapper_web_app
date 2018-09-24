@@ -25,21 +25,22 @@
             temp.innerHTML = html;
             return (template.content.childNodes);
         }
-{#        function htmlToIframe(html) {#}
-{#          let iframe = document.getElementById('#choro-iframe');#}
-{#           let html_slice = html.slice(15,-1);  // Removing <!DOCTYPE html>#}
-{#            let html_tag = '<html lang="en">';#}
-{#            let new_html = html_tag.concat(' ', html_slice);#}
-{#            $(iframe).load(new_html);#}
-{#        }#}
+        function htmlToIframe(html) {
+          let iframe = document.getElementById('#choro-iframe');
+           let html_slice = html.slice(15,-1);  // Removing <!DOCTYPE html>
+            let html_tag = '<html lang="en">';
+            let new_html = html_tag.concat(' ', html_slice);
+            $(iframe).load(new_html);
+        }
 
         $(document).ready(function() {
             htmlToTemplate({{ query.choro_html|safe }});
+            htmlToIframe({{ query.choro_html|safe }});
         });
 
-//        htmlToIframe({ query.choro_html|safe }});
-//    let d1 = document.getElementById('#adjacent-target');
-//    d1.insertAdjacentHTML('afterend', { news_query.choro_html|safe }})
+
+    let d1 = document.getElementById('#adjacent-target');
+    d1.insertAdjacentHTML('afterend', {{ query.choro_html|safe }})
 
     </script>
 
@@ -65,8 +66,8 @@
 
                 USER.PK = {{ user.pk }}
                 USER.ID = {{ user.id }}
-                QUERY.AUTHOR.PK = {{ query_author.pk }}
-                QUERY.AUTHOR.ID = {{ query_author.id }}
+                QUERY.AUTHOR.PK = {{ query.author }}
+                QUERY.AUTHOR = {{ query_author }}
 
 
                 {% if user.pk == query_author.id %}
@@ -164,7 +165,7 @@
                                     </sub>
                                     <blockquote class="article-desc">{{ article.description }}</blockquote>
                                     <sub><a href="{{ article.article_url }}">Link to Original</a></sub>
-                                </div>>
+                                </div>
                             {% endif %}
                         {% empty %}
                             <p class="list-group-item">No Articles Found for Query</p>
