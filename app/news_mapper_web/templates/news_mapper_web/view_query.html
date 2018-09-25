@@ -5,69 +5,126 @@
 
 {% block scripts %}
     {{ block.super }}
+{#    <script>#}
+{##}
+{#    $(function() {#}
+{#        $("#choro-div").resizable({#}
+{#            start: function(event, ui) {#}
+{#                ui.element.append($("<div/>", {#}
+{#                    id: "iframe-barrier",#}
+{#                    css: {#}
+{#                        position: "absolute",#}
+{#                        top: 0,#}
+{#                        right: 0,#}
+{#                        bottom: 0,#}
+{#                        left: 0,#}
+{#                        "z-index": 10#}
+{#                    }#}
+{#                }));#}
+{#                },#}
+{#            stop: function(event, ui) {#}
+{#                $("#iframe-barrier", ui.element).remove();#}
+{#                },#}
+{#            resize: function(event, ui) {#}
+{#                $("iframe", ui.element).width(ui.size.width).height(ui.size.height);#}
+{#            }#}
+{#        });#}
+{#    });#}
+{##}
+{##}
+{#        $(document).ready(function(){#}
+{#            $("#choro-div").resizable({#}
+{#                alsoResize: '#choro-iframe'#}
+{#            });#}
+{##}
+{##}
+{#        })#}
+{##}
+{#    </script>#}
 
+
+{#    <script>#}
+{#            //let doc = $("#choropleth-p")[0].contentWindow.document;#}
+{#           // let doc = $("#choropleth-p")[0].contentWindow.MapWidget;#}
+{#            //doc.open();#}
+{#            //doc.write("{ news_query.choro_html|safe }}")#}
+{#            // let iframe = ($("#choro-iframe")[0]).html({ news_query.choro_html|safe }})#}
+{#            //$(document.getElementById("#choro-iframe")[0].html({ news_query.choro_html|safe }}));#}
+{#        //https://stackoverflow.com/questions/494143/creating-a-new-dom-element-from-an-html-string-using-built-in-dom-methods-or-pro#}
+{#        //https://stackoverflow.com/questions/2781003/how-to-insert-html-in-iframe#}
+{#        import * as parent from "../../../../venv/Lib/site-packages/notebook/static/components/backbone/backbone-min";#}
+{##}
     <script>
-            //let doc = $("#choropleth-p")[0].contentWindow.document;
-           // let doc = $("#choropleth-p")[0].contentWindow.MapWidget;
-            //doc.open();
-            //doc.write("{ news_query.choro_html|safe }}")
-            // let iframe = ($("#choro-iframe")[0]).html({ news_query.choro_html|safe }})
-            //$(document.getElementById("#choro-iframe")[0].html({ news_query.choro_html|safe }}));
-        //https://stackoverflow.com/questions/494143/creating-a-new-dom-element-from-an-html-string-using-built-in-dom-methods-or-pro
-        //https://stackoverflow.com/questions/2781003/how-to-insert-html-in-iframe
-        import * as parent from "../../../../venv/Lib/site-packages/notebook/static/components/backbone/backbone-min";
-
         function htmlToTemplate(html) {
             let template = document.createElement('template');
-            let temp = document.getElementById('#choro-temp');
+{#            let temp = document.getElementById('#choro-temp');#}
+{#            let template = document.getElementById('#choro-template');#}
             html = html.trim();
             template.innerHTML = html;
-            temp.innerHTML = html;
+{#            temp.innerHTML = html;#}
             return (template.content.childNodes);
         }
-        function htmlToIframe(html) {
-          let iframe = document.getElementById('#choro-iframe');
-           let html_slice = html.slice(15,-1);  // Removing <!DOCTYPE html>
-            let html_tag = '<html lang="en">';
-            let new_html = html_tag.concat(' ', html_slice);
-            $(iframe).load(new_html);
-        }
-
+{#        function htmlToIframe(html) {#}
+{#          let iframe = document.getElementById('#choro-iframe');#}
+{#           let html_slice = html.slice(15,-1);  // Removing <!DOCTYPE html>#}
+{#            let html_tag = '<html lang="en">';#}
+{#            let new_html = html_tag.concat(' ', html_slice);#}
+{#            $(iframe).load(new_html);#}
+{#        }#}
+{##}
         $(document).ready(function() {
-            htmlToTemplate({{ query.choro_html|safe }});
-            htmlToIframe({{ query.choro_html|safe }});
-        });
-
-
-    let d1 = document.getElementById('#adjacent-target');
-    d1.insertAdjacentHTML('afterend', {{ query.choro_html|safe }})
-
+            htmlToTemplate({{ query.choro_html|safe }}
+{#            htmlToIframe({{ query.choro_html|safe }});});#}
+{##}
+{##}
+{##}
+{##}
+{#    let d1 = document.getElementById('#adjacent-target');#}
+{#    d1.insertAdjacentHTML('afterend', {{ query.choro_html|safe }})#}
+{##}
     </script>
 
 {% endblock %}
 
 {% block content %}
 
-    <iframe id="choro-iframe"></iframe>
+{#       <div id="choro-div">#}
+{#            <iframe id="choro-iframe" srcdoc="{{ query.choro_html }}" scrolling="no" allowfullscreen></iframe>#}
+{#        </div>#}
+
+    <div id="choro-div">
+        <template id="choro-template"></template>
+    </div>
+
+    <iframe class="choro-iframe" srcdoc="{{ query.choro_html }}"></iframe>
+
     <div class="container">
 
         <div class="row">
 
             <div class="col-7">
 
+{#                <div class="col-12">#}
+{#                    {{ query.choro_html }}#}
+{#                </div>#}
+
+
+
                 <h2>Query Details</h2>
 
-                <p id="adjacent-target">
-                    ARGUMENT: {{ query.argument }}
-                    TYPE: {{ query.query_type }}
-                    DATE: {{ query.date_created_readable }}
-                    ARCHIVED: {{ query.archived }}
-                </p>
+                <div id="adjacent-target">
+                    <p>ARGUMENT: {{ query.argument }}</p>
+                    <p>TYPE: {{ query.query_type }}</p>
+                    <p>DATE: {{ query.date_created_readable }}</p>
+                    <p>ARCHIVED: {{ query.archived }}</p>
+                    <p>FILEPATH: {{ query.filepath }}</p>
+                    <p>USER.PK = {{ user.pk }}</p>
+                    <p>USER.ID = {{ user.id }}</p>
+                    <p>QUERY.AUTHOR.PK = {{ query.author }}</p>
+                    <p>QUERY.AUTHOR = {{ query_author }}</p>
+                </div>
 
-                USER.PK = {{ user.pk }}
-                USER.ID = {{ user.id }}
-                QUERY.AUTHOR.PK = {{ query.author }}
-                QUERY.AUTHOR = {{ query_author }}
+
 
 
                 {% if user.pk == query_author.id %}
@@ -79,6 +136,21 @@
 
                             <form method="post" action="{% url 'new_post' %}">
                                 {% csrf_token %}
+
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">Post Title</span>
+                                    </div>
+                                    <input type="text" class="form-control" placeholder="Enter Title Here" aria-label="Post Title" name="_title">
+                                </div>
+
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">Post Body</span>
+                                    </div>
+                                    <textarea class="form-control" aria-label="Post Body" name="_body"></textarea>
+                                </div>
+
                                 <div class="input-group">
                                     <div class="form-check form-check-inline">
                                         <label class="form-check-label"> Private
@@ -150,14 +222,15 @@
                     <ul class="list-group">
             -->
 
-            <div class="col-5 flex-column d-flex">
+{#            <div class="col-5 flex-column d-flex">#}
+            <div class="col-5">
                 <div class="card">
-                    <div class="card-header">Card Header</div>
-                    <div class="list-group scrolly">                        {% comment %}{% for article in query.articles|slice:20 %}
+                    <div class="card-header">Articles from Query</div>
+                    <ul class="list-group list-group-flush">                        {% comment %}{% for article in query.articles|slice:20 %}
                         {% for article in query.articles|slice:'20' %}{% endcomment %}
                         {% for article in articles %}
                             {% if article %}
-                                <div class="list-group-item">
+                                <li class="list-group-item">
                                     <p>Title: {{ article.title }}</p>
                                     <sub>
                                         Author: {{ article.author }} --
@@ -165,16 +238,17 @@
                                     </sub>
                                     <blockquote class="article-desc">{{ article.description }}</blockquote>
                                     <sub><a href="{{ article.article_url }}">Link to Original</a></sub>
-                                </div>
+                                </li>
                             {% endif %}
                         {% empty %}
                             <p class="list-group-item">No Articles Found for Query</p>
                         {% endfor %}
 
-                    </div>
+                    </ul>
                 </div>
             </div>
         </div>
     </div>
+
 
 {% endblock %}

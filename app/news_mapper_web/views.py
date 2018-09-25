@@ -340,10 +340,12 @@ def new_query(request):
             # return redirect('query_result_detail',  news_query_pk=query_object.pk, articles=article_instances)
 
             # return redirect('query_result_detail', news_query_pk=query_object.pk)
-            choro_file_path = CHORO_MAP_ROOT + query_in_progress.filename
+            # choro_file_path = CHORO_MAP_ROOT + query_in_progress.filename
             #print('choro file path = ' + choro_file_path)
-            query_in_progress.filepath = choro_file_path
-            query_in_progress.save()
+            # query_in_progress.filepath = choro_file_path
+            Query.objects.filter(pk=query_pk).update(_filepath=(CHORO_MAP_ROOT+choro_filename))
+            # query_in_progress.filepath = CHORO_MAP_ROOT + query_in_progress.filename
+            # query_in_progress.save()
 
             test_data_saved = Query.objects.get(pk=query_pk)
 
@@ -477,11 +479,12 @@ def view_user(request, member_pk):
         raise Http404
 
 
-def new_post(request, query_pk):
+def new_post(request):
 
-    if request.GET:
-
+    if request.method == 'GET':
+        print('in request == get')
         form = NewPostForm()
+        query_pk = request.POST.get('query_pk')
 
         try:
             query = Query.objects.get(pk=query_pk)
@@ -493,29 +496,41 @@ def new_post(request, query_pk):
             'query': query
         })
 
-    if request.POST:
+    elif request.method == 'POST':
+        print('in request == post')
         form = NewPostForm(request.POST)
 
+        print('before auth')
         if request.user.is_authenticated:
-
+            print('after auth')
             try:
                 pk = request.user.pk
                 author = User.objects.get(pk=pk)
 
+                print('before form.is_valid')
                 if form.is_valid():
+                    print('after form.is_valid')
                     title = form.cleaned_data['_title']
                     public = form.cleaned_data['_public']
                     body = form.cleaned_data['_body']
-                    query = form.cleaned_data['_query']
+                    # query = form.cleaned_data['_query']
+                    query_pk = request.POST['query_pk']
+                    query = Query.objects.get(pk=query_pk)
+
 
                     post = Post(title=title, public=public, body=body, query=query, author=author)
                     post.save()
                     # return redirect('view_post', {'post_pk': post.pk})
-                    return render('')
+                    return redirect('view_post', post.pk)
+                else:
+                    print('Errors = ' + form.errors)
 
             # return render(request, 'news_mapper_web/new_post.html', {'post_pk': post.pk})
             except User.DoesNotExist:
                 raise Http404
+    else:
+        print('did not match request POST or GET')
+        raise Http404
 
 
 def update_post(request, post_pk):
@@ -553,7 +568,9 @@ def delete_post(request):
 
 
 def new_comment(request, post_pk):
-    if post_pk:
+    if request.method == 'GET':
+        pass
+    elif request.method == 'POST':
         pass
 
 

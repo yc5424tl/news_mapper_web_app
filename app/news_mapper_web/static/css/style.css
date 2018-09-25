@@ -21,64 +21,85 @@ footer {
     margin-top: 100%;
 }
 
-#choro-outer {
-    max-width: 50%;
-    border: red solid 1pt;
-    padding: 5px;
+
+
+
+/*.article-desc {*/
+    /*text-wrap: normal;*/
+    /*max-width: 30%;*/
+    /*text-overflow: ellipsis;*/
+    /*border-bottom: 1pt solid black;*/
+    /*background-color: dodgerblue;*/
+/*}*/
+
+/*.article-list {*/
+    /*border-bottom: 1pt black solid;*/
+    /*border-top: 1pt black solid*/
+/*}*/
+
+/*.folium-map.leaflet-container.leaflet-touch.leaflet-fade-anim.leaflet-grab.leafet-touch-drag.leaflet-touch-zoom.leaflet-retina.leaflet-safari {*/
+    /*max-width: 60%;*/
+    /*padding: 10px;*/
+    /*border: 1pt solid red;*/
+/*}*/
+
+
+/*#choro-iframe {*/
+    /*width: 1000px;*/
+    /*height: 500px;*/
+    /*resize: both;*/
+    /*overflow: auto;*/
+/*}*/
+
+#choro-div {
+
+    /*overflow: auto;*/
+    /*padding-top: 66.66%;*/
+    /*position: relative;*/
+    /*width: 1000px;*/
+    /*height: 500px;*/
+    /*resize: both;*/
+    width: 100%;
+    height: 100%;
 }
 
-#choropleth-p {
-    max-width: 90%;
-    border: red solid 1pt;
-    padding: 5px;
-}
+#choro-iframe {
+    /*border: 0;*/
+    /*min-height: 100%;*/
+    /*left: 0;*/
+    /*position: absolute;*/
+    /*top: 0;*/
+    /*min-width: 100%;*/
+    width: 100%;
+    height: 100%;
 
-.article-desc {
-    text-wrap: normal;
-    max-width: 30%;
-    text-overflow: ellipsis;
-    border-bottom: 1pt solid black;
-    background-color: dodgerblue;
-}
-
-.article-list {
-    border-bottom: 1pt black solid;
-    border-top: 1pt black solid
-}
-
-.folium-map.leaflet-container.leaflet-touch.leaflet-fade-anim.leaflet-grab.leafet-touch-drag.leaflet-touch-zoom.leaflet-retina.leaflet-safari {
-    max-width: 60%;
-    padding: 10px;
-    border: 1pt solid red;
 }
 
 
 
-.list-group-horizontal {
-    display: inline;
+
+.card {
+    height: calc(100vh - 60px);
+    max-height: calc(100vh - 60px)
 }
 
-.folium-map {
-    position: relative;
-    width: auto;
-    height: auto;
-    left: auto;
-    top: auto;
-}
-
-.list-group {
-    max-height: 75vh;
-    margin-bottom: 30px;
+.card .list-group {
     overflow-y: scroll;
-    -webkit-overflow-scrolling: touch;
 }
 
-.list-group-item {
-    background-color: #0a001f;
-    color: #eee8d5;
-    margin: 2em;
-    border-bottom: 2pt solid black;
-}
+/*.list-group {*/
+    /*max-height: 75vh;*/
+    /*margin-bottom: 30px;*/
+    /*overflow-y: scroll;*/
+    /*-webkit-overflow-scrolling: touch;*/
+/*}*/
+
+/*.list-group-item {*/
+    /*background-color: #0a001f;*/
+    /*color: #eee8d5;*/
+    /*margin: 2em;*/
+    /*border-bottom: 2pt solid black;*/
+/*}*/
 /*.list-group-horizontal .list-group-item {*/
 	/*margin-bottom: 0;*/
 	/*margin-left:-4px;*/

@@ -30,7 +30,7 @@ class NewPostForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(NewPostForm, self).__init__(*args, **kwargs)
         self.fields['_body'].widget.attrs['readonly'] = True
-        self.fields['_query'].widget.attrs['readonly'] = True
+        # self.fields['_query'].widget.attrs['readonly'] = True
 
 
     class Meta:

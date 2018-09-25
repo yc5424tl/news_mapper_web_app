@@ -329,6 +329,7 @@ class Query(models.Model):
     _date_range_end = models.DateField(default=None, null=True, blank=True)
     _date_range_start = models.DateField(default=None, null=True, blank=True)
     _filename = models.TextField(max_length=700, blank=True)
+    _filepath = models.TextField(max_length=1000, blank=True)
     _public = models.BooleanField(default=False)
     _query_type = models.CharField(default='all', choices=query_types, max_length=50)
     # _author = models.ForeignKey(User, unique=True,  on_delete=models.PROTECT, related_name='queries', related_query_name='query'),
@@ -428,6 +429,16 @@ class Query(models.Model):
         else:
             raise TypeError('Property "archived" must be type bool.')
 
+    @property
+    def filepath(self):
+        return self._filepath
+
+    @filepath.setter
+    def filepath(self, path): # path to directory containing the file
+        self._filepath = path
+
+
+
 class Article(models.Model):
 
     _article_url = models.URLField()
@@ -524,8 +535,8 @@ class Post(models.Model):
     _title = models.CharField(max_length=150)
     _body = models.CharField(max_length=2500)
     _date_published = models.DateTimeField(auto_now_add=True)
-    _author = models.ForeignKey(User, on_delete=models.PROTECT, related_name='posts')
-    _date_last_edit = models.DateTimeField(default=None)
+    _author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, related_name='posts')
+    _date_last_edit = models.DateTimeField(auto_now_add=True)
     _query = models.ForeignKey(Query, on_delete=models.PROTECT, related_name='posts'),
     _public = models.BooleanField(default=False)
 
@@ -595,7 +606,7 @@ class Comment(models.Model):
     _body = models.CharField(max_length=2500)
     _date_published = models.DateTimeField(auto_now_add=True)
     _date_last_edit = models.DateTimeField(default=None)
-    _author = models.ForeignKey(User, on_delete=models.PROTECT, related_name='comments')
+    _author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, related_name='comments')
 
     def __str__(self):
         return "comment from " + self.author.full_name + ' on the post ' + "'" + self.post.title + "', made " + self.date_published
