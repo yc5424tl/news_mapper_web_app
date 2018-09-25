@@ -244,18 +244,27 @@ def new_query(request):
 
         articles_list = query_mgr.query_api(query_argument=q_argument, query_type=q_type)
         # query_in_progress = Query.objects.create(_query_type=q_type, _data=articles_list, _argument=q_argument)
+        print('request.user.pk = ' + str(request.user.pk))
+
         print('before making query object')
-        query_in_progress = Query.objects.create(_query_type=q_type, _argument=q_argument, _data=articles_list, author=q_author)
+        query_in_progress = Query.objects.create(_query_type=q_type, _argument=q_argument, _data=articles_list, _author=request.user)
+        # author=q_author works, returns a object memory location <django.db.models.fields.related.ForeignKey>
+        #  _author=q_author raises a TypeError of '_author is an invalid keyword argument for this function'
         print('after')
         print('type of query_in_progress = ' + str(type(query_in_progress)))
         print('pk of ^ = ' + str(query_in_progress.pk))
         query_in_progress.save()
 
-        # if request.user.is_authenticated:  # TODO after adding @login-required => adjust this
-        #     query_in_progress.author = request.user
-        #     query_in_progress.save()
+        if request.user.is_authenticated:  # TODO after adding @login-required => adjust this
+            print('user is authenticated')
+            print('request.user = ' + str(request.user) + ' , req.user.username = ' + str(request.user.username))
+            query_in_progress.author = request.user
+            query_in_progress.save()
+
 
         if articles_list:
+            print('query_in_progress.author = ' + str(query_in_progress.author))
+            print('query_inprogress date_created = ' + str(query_in_progress.date_created_readable))
             #print('in if articles_list')
             for article in articles_list:
                 #print('in for article in articles_list')
@@ -312,7 +321,8 @@ def new_query(request):
             print('str query_pk = ' + str(query_pk))
             #print('choro_html = ' + choro_html[0:1000])
 
-            Query.objects.filter(pk=query_pk).update(_choropleth=choropleth, _choro_html=choro_html, _filename=choro_filename)
+
+            Query.objects.filter(pk=query_pk).update(_choropleth=choropleth, _choro_html=choro_html, _filename=choro_filename, _author=request.user.pk)
             query_in_progress = Query.objects.get(pk=query_pk)
             # query_in_progress.choropleth = choropleth
             # query_in_progress.choro_html = choro_html
@@ -335,7 +345,22 @@ def new_query(request):
             query_in_progress.filepath = choro_file_path
             query_in_progress.save()
 
-            return redirect('view_query', query_in_progress.pk)
+            test_data_saved = Query.objects.get(pk=query_pk)
+
+            print(test_data_saved)
+
+
+            author = test_data_saved._meta.get_fields(include_hidden=True)
+            print('Author = ' + str(author))
+
+
+            # q1 = Query.objects.get(pk=query_pk)
+            # a1 = 'queries' #'_author' # 'queries' ?
+            # a1 = getattr(q1, a1)
+            # print('a1 = ' + str(a1))
+
+
+            return redirect('view_query', query_pk)
 
             # query_object.save()
             # print('past .save()')
@@ -374,7 +399,8 @@ def view_query(request, query_pk):
 
     query = Query.objects.get(pk=query_pk)
     query_author = query.author
-    author_pk = query.author
+    print('Author = ' + str(query_author))
+    author_pk = query.author.pk
     print('author_pk = ' + str(author_pk))
     query_articles = Article.objects.filter(_query=query)
     # query_filename = query.filename

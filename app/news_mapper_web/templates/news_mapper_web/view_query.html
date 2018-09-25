@@ -77,7 +77,7 @@
                         IN QUERY.SAVED is FALSE
                         <div>
 
-                            <form method="post" action="{% url 'new_post' query.pk %}">
+                            <form method="post" action="{% url 'new_post' %}">
                                 {% csrf_token %}
                                 <div class="input-group">
                                     <div class="form-check form-check-inline">
