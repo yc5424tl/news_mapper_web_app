@@ -258,7 +258,7 @@ def new_query(request):
         print('pk of ^ = ' + str(query_in_progress.pk))
         query_in_progress.save()
 
-        if request.user.is_authenticated:  # TODO after adding @login-required => adjust this
+        if request.user.is_authenticated:  # TODO after adding @login-required => adjust this -- DONT -- removing this breaks it -- even with _author declared and saved just a few lines ago...??
             print('user is authenticated')
             print('request.user = ' + str(request.user) + ' , req.user.username = ' + str(request.user.username))
             query_in_progress.author = request.user
@@ -431,6 +431,19 @@ def view_query(request, query_pk):
 
 
 @login_required()
+def delete_comment(request, comment_pk):
+    if request.method == 'POST':
+        comment = Comment.objects.get(pk=comment_pk)
+        post_pk = comment.post.pk
+        if comment.author.pk == request.user.pk:
+            comment.delete()
+            messages.info(request, 'Comment Deleted')
+
+    return redirect('view_post', post_pk)
+
+
+
+@login_required()
 def delete_query(request, query_pk):
     if query_pk:
         return None
@@ -459,6 +472,7 @@ def view_user(request, member_pk):
         print('last post = ' + str(last_post))
 
         recent_comments = member.comments.order_by('-id')[0:4]
+        queries = member.queries.order_by('-id')[0:4]
 
         comments = [comment for comment in recent_comments if comment is not (None or False)]
         print('comments = ' + str(comments))
@@ -470,7 +484,8 @@ def view_user(request, member_pk):
             'member': member,
             'posts': recent_posts,
             'comments': recent_comments,
-            'last_post': last_post
+            'last_post': last_post,
+            'queries': queries
         })
 
     except User.DoesNotExist:
@@ -548,11 +563,18 @@ def view_post(request, post_pk):
         return redirect('post_details', post_pk=post_pk)
 
     else:  # GET request
+        post = Post.objects.get(pk=post_pk)
+        print('post.query = ' + str(post.query))
+        print('post.query.pk =>')
+        print(str(post.query.pk))
+        # print('query.pk = ' + str(query.pk))
+        query = post.query
+
         if post.author.id == request.user.id:
             edit_post_form = EditPostForm(instance=post)  # Pre-populate form with the post's current field values
-            return render(request, 'news_mapper_web/view_post.html', {'post': post, 'edit_post_form': edit_post_form})
+            return render(request, 'news_mapper_web/view_post.html', {'post': post, 'edit_post_form': edit_post_form, 'query': query})
         else:  # user is not OP
-            return render(request, 'news_mapper_web/view_post.html', {'post': post})
+            return render(request, 'news_mapper_web/view_post.html', {'post': post, 'query': query})
 
 def view_sources(request):
     get_or_build_sources()
@@ -648,6 +670,14 @@ def password_reset(request):
     #     choro_path = CHORO_MAP_ROOT + choro_file_name
     #     return render(request, choro_path)
     # @login_required(login_url='/accounts/login/')
+
+
+def view_choro(request, query_pk):
+    query = Query.objects.get(pk=query_pk)
+    return render(request, 'news_mapper_web/view_choro.html', {
+        'query': query
+    })
+
 
 @login_required()
 def view_test_page(request):

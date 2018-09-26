@@ -333,7 +333,7 @@ class Query(models.Model):
     _public = models.BooleanField(default=False)
     _query_type = models.CharField(default='all', choices=query_types, max_length=50)
     # _author = models.ForeignKey(User, unique=True,  on_delete=models.PROTECT, related_name='queries', related_query_name='query'),
-    _author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
+    _author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, related_name='queries')
     _archived = models.BooleanField(default=False)
 
     objects = QueryManager
@@ -532,11 +532,12 @@ class Article(models.Model):
 class Post(models.Model):
 
     _title = models.CharField(max_length=150)
-    _body = models.CharField(max_length=2500)
+    _body = models.CharField(max_length=50000)
     _date_published = models.DateTimeField(auto_now_add=True)
     _author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, related_name='posts')
     _date_last_edit = models.DateTimeField(auto_now_add=True)
-    _query = models.ForeignKey(Query, on_delete=models.PROTECT, related_name='posts'),
+    # _query = models.ForeignKey(Query, on_delete=models.PROTECT, related_name='posts'),
+    _query = models.OneToOneField(Query, on_delete=models.PROTECT)
     _public = models.BooleanField(default=False)
 
     @property

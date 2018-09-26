@@ -9,6 +9,8 @@ html {
 body {
     margin-bottom: 60px;
     height: 100%;
+    background-color: #010414;
+    color: #eee8d5;
 }
 
 footer {
@@ -116,9 +118,9 @@ footer {
 
 }
 
-.col-6 {
-    margin-bottom: 30px;
-}
+/*.col-6 {*/
+    /*margin-bottom: 30px;*/
+/*}*/
 
 .card-header h1 {
     align-content: center;
@@ -154,7 +156,51 @@ footer {
     /*border-bottom: 2pt solid black;*/
 }
 
+.view-post-comment {
+    border: 1pt solid darkslategray;
+    margin: 1em;
+    padding: 1em;
+    background-color: #002b36;
+    color: #B0D7FF;
+}
 
+#view-post-post {
+    margin: 1em;
+    padding: 2em;
+    background-color: #ADACB5;
+    color: #010414;
+    overflow-y: scroll;;
+
+}
+
+#view-post-iframe-div {
+    margin: 1em;
+    overflow: hidden;
+    padding-top: 66.66%;
+    position: relative;
+}
+
+#view-post-iframe {
+    border: 0;
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+}
+
+#content-div {
+    padding: 1em;
+}
+
+footer {
+    padding: 1em;
+    right: 0;
+    margin: auto;
+    display: block;
+    width: 100%;
+    left: -100%;
+}
 /*.list-group-horizontal .list-group-item {*/
 	/*margin-bottom: 0;*/
 	/*margin-left:-4px;*/

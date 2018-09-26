@@ -5,21 +5,38 @@
 {% block scripts %} {{ block.super }} {% endblock %}
 
 {% block content%}
-
-    <h2>
-        {{ post.title }} by
-        <a href="{% url 'view_user' post.author.pk %}">{{ post.author.first_name }}</a>
-        <small>Published {{ post.date_published }}</small>
-    </h2>
-
-    <blockquote>{{ post.body }}</blockquote>
+    <div class="row">
+        <div class="col-6">
+            <div id="view-post-post">
+                <h3>{{ post.title }} by <a href="{% url 'view_user' post.author.pk %}">{{ post.author.first_name }}</a></h3>
+                <small>Published {{ post.date_published }}</small>
+                <blockquote>{{ post.body }}</blockquote>
+            </div>
+        </div>
+        <div class="col-6">
+            <div id="view-post-iframe-div">
+                <iframe id="view-post-iframe" src="{% url 'view_choro' query.pk %}"></iframe>
+            </div>
+        </div>
+    </div>
+{#    <div class="view-post-post">#}
+{#        <h3>#}
+{#            {{ post.title }} by#}
+{#            <a href="{% url 'view_user' post.author.pk %}">{{ post.author.first_name }}</a>#}
+{#            <small>Published {{ post.date_published }}</small>#}
+{#        </h3>#}
+{#        <blockquote>{{ post.body }}</blockquote>#}
+{#    </div>#}
 
     <h3>Comments</h3>
+
     {% for comment in post.comments.all %}
-        <blockquote>{{ comment.body }}</blockquote>
-        <small>
-            Comment by<a href="{% url 'view_user' comment.author.pk %}">{{ comment.author.first_name }}</a> - {{ comment.date_published }}
-        </small>
+        <div class="view-post-comment">
+            <blockquote>{{ comment.body }}</blockquote>
+            <small>
+                Comment by <a href="{% url 'view_user' comment.author.pk %}">{{ comment.author.first_name }}</a> - {{ comment.date_published }}
+            </small>
+        </div>
     {% empty %}
         <p>No Comments Yet</p>
     {% endfor %}

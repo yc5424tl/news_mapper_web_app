@@ -96,7 +96,23 @@
                         {% endfor %}
                     </ul>
                 </div>
-
+                {% if request.user.pk == member.pk %}
+                    <div class="col-12" id="user-recent-queries">
+                        <h3>YOUR RECENT QUERIES</h3>
+                        <ul>
+                            {% for query in queries %}
+                                {% if query %}
+                                    <li>
+                                        Searched: {{ query.query_type }}
+                                        For: {{ query.argument }}
+                                        Date: {{ query.date_created }}
+                                        <a href="{% url 'view_query' query.pk %}">Details</a>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
             </div>  {% comment %} END COL-*-5 {% endcomment %}
 
         </div>  {% comment %} END ROW {% endcomment %}
