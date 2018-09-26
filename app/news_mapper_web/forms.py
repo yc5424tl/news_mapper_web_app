@@ -40,9 +40,15 @@ class NewPostForm(forms.ModelForm):
 
 
 class NewCommentForm(forms.ModelForm):
+
     class Meta:
         model = Comment
         fields = ('_body',)
+
+    _body = forms.CharField(widget=forms.Textarea)
+    # class Meta:
+    #     model = Comment
+    #     fields = ('_body',)
 
 
 class NewQueryForm(forms.ModelForm):

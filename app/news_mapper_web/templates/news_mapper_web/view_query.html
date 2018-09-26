@@ -92,17 +92,18 @@
 {#            <iframe id="choro-iframe" srcdoc="{{ query.choro_html }}" scrolling="no" allowfullscreen></iframe>#}
 {#        </div>#}
 
-    <div id="choro-div">
-        <template id="choro-template"></template>
-    </div>
+{#    <div id="choro-div">#}
+{#        <template id="choro-template"></template>#}
+{#        <iframe class="choro-iframe" srcdoc="{{ query.choro_html }}"></iframe>#}
+{#    </div>#}
 
-    <iframe class="choro-iframe" srcdoc="{{ query.choro_html }}"></iframe>
+
 
     <div class="container">
 
         <div class="row">
 
-            <div class="col-7">
+            <div class="col-6">
 
 {#                <div class="col-12">#}
 {#                    {{ query.choro_html }}#}
@@ -110,17 +111,17 @@
 
 
 
-                <h2>Query Details</h2>
+                <h1>Query Details</h1>
 
                 <div id="adjacent-target">
                     <p>ARGUMENT: {{ query.argument }}</p>
                     <p>TYPE: {{ query.query_type }}</p>
                     <p>DATE: {{ query.date_created_readable }}</p>
                     <p>ARCHIVED: {{ query.archived }}</p>
-                    <p>FILEPATH: {{ query.filepath }}</p>
-                    <p>USER.PK = {{ user.pk }}</p>
-                    <p>USER.ID = {{ user.id }}</p>
-                    <p>QUERY.AUTHOR.PK = {{ query.author }}</p>
+{#                    <p>FILEPATH: {{ query.filepath }}</p>#}
+{#                    <p>USER.PK = {{ user.pk }}</p>#}
+{#                    <p>USER.ID = {{ user.id }}</p>#}
+{#                    <p>QUERY.AUTHOR.PK = {{ query.author }}</p>#}
                     <p>QUERY.AUTHOR = {{ query_author }}</p>
                 </div>
 
@@ -148,7 +149,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">Post Body</span>
                                     </div>
-                                    <textarea class="form-control" aria-label="Post Body" name="_body"></textarea>
+                                    <textarea class="form-control" id="new-post-textarea" aria-label="Post Body" name="_body" rows="11"></textarea>
                                 </div>
 
                                 <div class="input-group">
@@ -223,21 +224,21 @@
             -->
 
 {#            <div class="col-5 flex-column d-flex">#}
-            <div class="col-5">
+            <div class="col-6">
                 <div class="card">
-                    <div class="card-header">Articles from Query</div>
-                    <ul class="list-group list-group-flush">                        {% comment %}{% for article in query.articles|slice:20 %}
+                    <div class="card-header"><h1>Articles from Query</h1></div>
+                    <ul class="list-group">                        {% comment %}{% for article in query.articles|slice:20 %}
                         {% for article in query.articles|slice:'20' %}{% endcomment %}
                         {% for article in articles %}
                             {% if article %}
                                 <li class="list-group-item">
-                                    <p>Title: {{ article.title }}</p>
-                                    <sub>
+                                    <p class="lgi-t">Title: {{ article.title }}</p>
+                                    <sub class="lgi-t">
                                         Author: {{ article.author }} --
                                         Published: {{ article.get_date_published }}
                                     </sub>
-                                    <blockquote class="article-desc">{{ article.description }}</blockquote>
-                                    <sub><a href="{{ article.article_url }}">Link to Original</a></sub>
+                                    <blockquote class="article-desc lgi-t">{{ article.description }}</blockquote>
+                                    <sub class="lgi-t"><a href="{{ article.article_url }}">Link to Original</a></sub>
                                 </li>
                             {% endif %}
                         {% empty %}

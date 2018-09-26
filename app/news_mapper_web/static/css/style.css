@@ -12,14 +12,53 @@ body {
 }
 
 footer {
-    position: absolute;
-    bottom: 0;
+    /*position: absolute;*/
+    /*bottom: 0;*/
     width: 100%;
     height: 60px;
     line-height: 60px;
     display: block;
-    margin-top: 100%;
+    /*margin-top: 100%;*/
 }
+
+#clock {
+    right: 0;
+    color: grey;
+}
+
+.sources {
+    margin-left: 0;
+    margin-right: 0;
+    /*border-left: 1pt dashed grey;*/
+    /*border-right: 1pt dashed grey;*/
+    border-collapse: separate;
+}
+
+.row {
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    /*margin: 0;*/
+    /*padding: 0;*/
+    /*display: block;*/
+}
+
+.container {
+    /*width: 100%;*/
+    /*margin: 30px;*/
+    width: 100%;
+    max-width: 100%;
+    min-width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.container-fluid {
+    padding-left: 0;
+    padding-right: 0;
+    margin: 0;
+}
+
 
 
 
@@ -53,53 +92,69 @@ footer {
 
 #choro-div {
 
-    /*overflow: auto;*/
-    /*padding-top: 66.66%;*/
-    /*position: relative;*/
-    /*width: 1000px;*/
-    /*height: 500px;*/
-    /*resize: both;*/
-    width: 100%;
-    height: 100%;
+    overflow: auto;
+    padding-top: 66.66%;
+    position: relative;
+    width: 1000px;
+    height: 500px;
+    resize: both;
+
 }
 
 #choro-iframe {
-    /*border: 0;*/
-    /*min-height: 100%;*/
-    /*left: 0;*/
-    /*position: absolute;*/
-    /*top: 0;*/
-    /*min-width: 100%;*/
-    width: 100%;
-    height: 100%;
+    border: 0;
+
+    left: 0;
+    right: 0;
+    bottom: 0;
+    position: absolute;
+    top: 0;
+
+    width: 1000px;
+    height: 500px;
+    resize: both;
 
 }
 
+.col-6 {
+    margin-bottom: 30px;
+}
 
-
+.card-header h1 {
+    align-content: center;
+}
 
 .card {
     height: calc(100vh - 60px);
-    max-height: calc(100vh - 60px)
+    max-height: calc(100vh - 550px);
+    margin-bottom: 60px;
 }
 
 .card .list-group {
     overflow-y: scroll;
 }
 
-/*.list-group {*/
-    /*max-height: 75vh;*/
+.list-group {
+    max-height: calc(100vh - 150px);
     /*margin-bottom: 30px;*/
-    /*overflow-y: scroll;*/
-    /*-webkit-overflow-scrolling: touch;*/
-/*}*/
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+}
 
-/*.list-group-item {*/
+.lgi-t {
     /*background-color: #0a001f;*/
-    /*color: #eee8d5;*/
-    /*margin: 2em;*/
+}
+
+.list-group-item {
+    /*background-color: #0a001f;*/
+    /*color: white;*/
+    margin: 2em;
+    border: 2pt solid black;
+
     /*border-bottom: 2pt solid black;*/
-/*}*/
+}
+
+
 /*.list-group-horizontal .list-group-item {*/
 	/*margin-bottom: 0;*/
 	/*margin-left:-4px;*/

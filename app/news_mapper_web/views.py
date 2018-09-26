@@ -1,3 +1,4 @@
+import pycountry
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect, get_object_or_404, Http404
 from django.contrib.auth import authenticate, login, logout
@@ -8,7 +9,7 @@ from django.contrib import messages
 # from django.views import generic
 # from django.conf import settings
 from .models import Post, Comment, Query, Source, Article
-from .forms import EditPostForm, NewQueryForm, NewPostForm, CustomUserCreationForm
+from .forms import EditPostForm, NewQueryForm, NewPostForm, CustomUserCreationForm, NewCommentForm
 import os
 import json
 from .forms import AuthenticationForm
@@ -26,6 +27,7 @@ meta_data_mgr = MetadataManager(json_file)
 settings_dir = os.path.dirname(__file__)
 PROJECT_ROOT = os.path.abspath(os.path.dirname(settings_dir))
 CHORO_MAP_ROOT = os.path.join(PROJECT_ROOT, 'news_mapper_web/templates/news_mapper_web/choropleths/')
+
 
 #
 # def index(request):
@@ -51,15 +53,15 @@ CHORO_MAP_ROOT = os.path.join(PROJECT_ROOT, 'news_mapper_web/templates/news_mapp
 
 
 def index(request):
-
     if request.method == 'GET':
         form = AuthenticationForm
         return render(request, 'news_mapper_web/index.html', {'form': form})
 
-    # if request.method == 'GET':
-    #     form = CustomAuthenticationForm()
-    #     print('type for form is ' + str(type(form)))
-    #     return render(request, 'news_mapper_web/index.html', {'form': form})
+        # if request.method == 'GET':
+        #     form = CustomAuthenticationForm()
+        #     print('type for form is ' + str(type(form)))
+        #     return render(request, 'news_mapper_web/index.html', {'form': form})
+
 
 def register_user(request):
     #
@@ -89,11 +91,10 @@ def register_user(request):
         form = CustomUserCreationForm()
         return render(request, 'news_mapper_web/new_user.html', {'form': form})
 
-    # user = User.objects.create_user('firstname', 'email@example.com', 'examplePassword')
+        # user = User.objects.create_user('firstname', 'email@example.com', 'examplePassword')
 
 
 def login_user(request):
-
     if request.method == 'POST':
         form = AuthenticationForm(request.POST)
         if form.is_valid():
@@ -105,26 +106,25 @@ def login_user(request):
                 return redirect('view_user', user.pk)
 
 
-    # if request.method == 'POST':
-    #     print('in login user method==post')
-    #     form = CustomAuthenticationForm(request.POST)
-    #     if form.is_valid():
-    #         print('form is valid')
-    #
-    #         username = form.cleaned_data['username']
-    #         print('username = ' + str(username))
-    #         password = form.cleaned_data['password']
-    #         print('password = ' + str(password))
-    #         user = authenticate(request, username=username, password=password)
-    #
-    #         if user is not None:
-    #             login(request, user)
-    #             return redirect('view_user', user.pk)
-            # user = authenticate(**request.POST)
-            # if user is not None:
-            #     login(request, user)
-            #     return redirect('view_user', {'user_pk':user.pk})
-
+                # if request.method == 'POST':
+                #     print('in login user method==post')
+                #     form = CustomAuthenticationForm(request.POST)
+                #     if form.is_valid():
+                #         print('form is valid')
+                #
+                #         username = form.cleaned_data['username']
+                #         print('username = ' + str(username))
+                #         password = form.cleaned_data['password']
+                #         print('password = ' + str(password))
+                #         user = authenticate(request, username=username, password=password)
+                #
+                #         if user is not None:
+                #             login(request, user)
+                #             return redirect('view_user', user.pk)
+                # user = authenticate(**request.POST)
+                # if user is not None:
+                #     login(request, user)
+                #     return redirect('view_user', {'user_pk':user.pk})
 
         form = AuthenticationForm()
         messages.error(request, 'Incorrect Password and/or Username', extra_tags='error')
@@ -133,33 +133,33 @@ def login_user(request):
     if request.method == 'GET':
         form = AuthenticationForm()
         return render(request, 'news_mapper_web/login_user.html', {'form': form})
-    # username = request.POST.get('username')
-    # print('username: ' + str(username))
-    # password = request.POST.get('password')
-    # print('password: ' + str(password))
-    # user = authenticate(request, username=username, password=password)
-    #
-    # if user is not None:
-    #     login(request, user)
-    #     return redirect('view_user', {'member_pk': user.pk,})
-    #     # latest_post = user.most_recent()
-    #     # if latest_post is not False: # returns a Post object, or False if no posts have yet been made by the user
-    #     #     return render(request, 'news_mapper_web/view_user.html', {
-    #     #         'user': user,
-    #     #         'last_post': latest_post,
-    #     #         'logged_in': logged_in})
-    #     # else:
-    #     #     read_me = "You haven't made any posts yet!\n" \
-    #     #               "Once you have, this area will display your most recent post. To start, click the 'New Query' button at the top of your screen."
-    #     #     return render(request, 'news_mapper_web/view_user.html', {
-    #     #         'user': user,
-    #     #         'read_me': read_me,
-    #     #         'logged_in': logged_in
-    #     #     })
-    # else:
-    #     messages.error(request, 'Incorrect Password and/or Username', extra_tags='error')
-    #     return redirect('login_user')
-    #     # TODO - redirect to login page with invalid login message
+        # username = request.POST.get('username')
+        # print('username: ' + str(username))
+        # password = request.POST.get('password')
+        # print('password: ' + str(password))
+        # user = authenticate(request, username=username, password=password)
+        #
+        # if user is not None:
+        #     login(request, user)
+        #     return redirect('view_user', {'member_pk': user.pk,})
+        #     # latest_post = user.most_recent()
+        #     # if latest_post is not False: # returns a Post object, or False if no posts have yet been made by the user
+        #     #     return render(request, 'news_mapper_web/view_user.html', {
+        #     #         'user': user,
+        #     #         'last_post': latest_post,
+        #     #         'logged_in': logged_in})
+        #     # else:
+        #     #     read_me = "You haven't made any posts yet!\n" \
+        #     #               "Once you have, this area will display your most recent post. To start, click the 'New Query' button at the top of your screen."
+        #     #     return render(request, 'news_mapper_web/view_user.html', {
+        #     #         'user': user,
+        #     #         'read_me': read_me,
+        #     #         'logged_in': logged_in
+        #     #     })
+        # else:
+        #     messages.error(request, 'Incorrect Password and/or Username', extra_tags='error')
+        #     return redirect('login_user')
+        #     # TODO - redirect to login page with invalid login message
 
 
 def logout_user(request):
@@ -169,8 +169,8 @@ def logout_user(request):
     return render('news_mapper_web/index.html', {'form': form})
 
 
+@login_required()
 def new_query(request):
-
     if request.method == 'GET':
         form = NewQueryForm()
         return render(request, 'news_mapper_web/new_query.html', {'search_form': form})
@@ -184,38 +184,39 @@ def new_query(request):
         meta_data_mgr.write_json_to_file()
         meta_data_mgr.build_query_results_dict()
 
-        try:
-            test_db_has_sources = Source.objects.get(pk=1)
-
-        except (UnicodeDecodeError, FileNotFoundError, Source.DoesNotExist, TypeError):
-
-            try:
-                with open('./news_mapper_web/static/js/sources.json') as sources:
-                    source_list = json.load(sources)
-                    for source in source_list['sources'][0]:
-                        try:
-                            api_id = source['id']
-                            name = source['name']
-                            description = source['description']
-                            url = source['url']
-                            category = source['category']
-                            language = source['language']
-                            country = source['country']
-                            # print('id = ' + str(id))
-                            # print('name = ' + str(name))
-                            # print('description = ' + str(description))
-                            # print('url = ' + str(url))
-                            # print('category = ' + str(category))
-                            # print('language = ' + str(language))
-                            # print('country = ' + str(country))
-                            new_source = Source(_api_id=api_id, _category=category, _country=country, _description=description, _language=language, _name=name, _url=url)
-                            new_source.save()
-                        except TypeError:
-                            print(TypeError, ' error building a source')
-                            pass
-            except (FileNotFoundError, Exception, UnicodeDecodeError):
-                source_list_txt = query_mgr.fetch_and_build_sources()
-                query_mgr.write_sources_json_to_file(source_list_txt)
+        # try:
+        #     test_db_has_sources = Source.objects.get(pk=1)
+        #
+        # except (UnicodeDecodeError, FileNotFoundError, Source.DoesNotExist, TypeError):
+        #
+        #     try:
+        #         with open('./news_mapper_web/static/js/sources.json') as sources:
+        #             source_list = json.load(sources)
+        #             for source in source_list['sources'][0]:
+        #                 try:
+        #                     api_id = source['id']
+        #                     name = source['name']
+        #                     description = source['description']
+        #                     url = source['url']
+        #                     category = source['category']
+        #                     language = source['language']
+        #                     country = source['country']
+        #                     # print('id = ' + str(id))
+        #                     # print('name = ' + str(name))
+        #                     # print('description = ' + str(description))
+        #                     # print('url = ' + str(url))
+        #                     # print('category = ' + str(category))
+        #                     # print('language = ' + str(language))
+        #                     # print('country = ' + str(country))
+        #                     new_source = Source(_api_id=api_id, _category=category, _country=country, _description=description, _language=language, _name=name,
+        #                                         _url=url)
+        #                     new_source.save()
+        #                 except TypeError:
+        #                     print(TypeError, ' error building a source')
+        #                     pass
+        #     except (FileNotFoundError, Exception, UnicodeDecodeError):
+        #         source_list_txt = query_mgr.fetch_and_build_sources()
+        #         query_mgr.write_sources_json_to_file(source_list_txt)
 
         # except Source.DoesNotExist:
         #     try:
@@ -236,6 +237,8 @@ def new_query(request):
         #     except (FileNotFoundError, Exception):
         #         source_list_txt = query_mgr.fetch_and_build_sources()
         #         query_mgr.write_sources_json_to_file(source_list_txt)
+
+        get_or_build_sources()
 
         q_argument = request.POST.get('_argument')
         q_type = request.POST.get('_query_type')
@@ -261,28 +264,27 @@ def new_query(request):
             query_in_progress.author = request.user
             query_in_progress.save()
 
-
         if articles_list:
             print('query_in_progress.author = ' + str(query_in_progress.author))
             print('query_inprogress date_created = ' + str(query_in_progress.date_created_readable))
-            #print('in if articles_list')
+            # print('in if articles_list')
             for article in articles_list:
-                #print('in for article in articles_list')
-                #print(article)
+                # print('in for article in articles_list')
+                # print(article)
                 # new_article = query_mgr.build_article_object(article, query_object)
                 # if new_article is not False:
                 #     new_article_pk = new_article.pk
                 #
                 new_article = query_mgr.build_article_object(article, query_in_progress)
-                #print('type for new_article = ' + str(type(new_article)))
+                # print('type for new_article = ' + str(type(new_article)))
                 if new_article is not False:
                     new_article.save()
-                    #print('article country = ' + str(new_article.source.country))
+                    # print('article country = ' + str(new_article.source.country))
                     country_a3_code = geo_map_mgr.get_country_alpha_3_code(new_article.source.country)
-                    #print('article alpha_3_code = ' + country_a3_code)
-                    #print('before adding to query_data_dic, total = ' + str(meta_data_mgr.query_data_dict[country_a3_code]))
+                    # print('article alpha_3_code = ' + country_a3_code)
+                    # print('before adding to query_data_dic, total = ' + str(meta_data_mgr.query_data_dict[country_a3_code]))
                     meta_data_mgr.query_data_dict[country_a3_code] += 1
-                    #print('after = ' + str(meta_data_mgr.query_data_dict[country_a3_code]))
+                    # print('after = ' + str(meta_data_mgr.query_data_dict[country_a3_code]))
 
                     # try:
                     #     print('article country = ' + article.source.country)
@@ -309,7 +311,7 @@ def new_query(request):
                     #             meta_data_mgr.query_data_dict[country_a3_code] += 1
                     #     except AttributeError:
                     #         pass
-            #print('After all articles: ' + str(meta_data_mgr.query_data_dict))
+            # print('After all articles: ' + str(meta_data_mgr.query_data_dict))
 
             choropleth_data_tuplet = geo_map_mgr.build_choropleth(q_argument, q_type, meta_data_mgr)
             choropleth = choropleth_data_tuplet[0]
@@ -319,7 +321,7 @@ def new_query(request):
             # choro_html_updated = '<html lang="en">' + choro_html_splice
             query_pk = query_in_progress.pk
             print('str query_pk = ' + str(query_pk))
-            #print('choro_html = ' + choro_html[0:1000])
+            # print('choro_html = ' + choro_html[0:1000])
 
 
             Query.objects.filter(pk=query_pk).update(_choropleth=choropleth, _choro_html=choro_html, _filename=choro_filename, _author=request.user.pk)
@@ -341,9 +343,9 @@ def new_query(request):
 
             # return redirect('query_result_detail', news_query_pk=query_object.pk)
             # choro_file_path = CHORO_MAP_ROOT + query_in_progress.filename
-            #print('choro file path = ' + choro_file_path)
+            # print('choro file path = ' + choro_file_path)
             # query_in_progress.filepath = choro_file_path
-            Query.objects.filter(pk=query_pk).update(_filepath=(CHORO_MAP_ROOT+choro_filename))
+            Query.objects.filter(pk=query_pk).update(_filepath=(CHORO_MAP_ROOT + choro_filename))
             # query_in_progress.filepath = CHORO_MAP_ROOT + query_in_progress.filename
             # query_in_progress.save()
 
@@ -351,10 +353,8 @@ def new_query(request):
 
             print(test_data_saved)
 
-
             author = test_data_saved._meta.get_fields(include_hidden=True)
             print('Author = ' + str(author))
-
 
             # q1 = Query.objects.get(pk=query_pk)
             # a1 = 'queries' #'_author' # 'queries' ?
@@ -371,8 +371,8 @@ def new_query(request):
             # articles = [x for x in Article.objects.all().select_related(query_object)]
 
             # articles = Article.objects.filter(_query=query_in_progress)
-            #print('articles as str: ')
-            #print(str(articles))
+            # print('articles as str: ')
+            # print(str(articles))
 
             # print('query.author = ' + str(query_in_progress.author))
             #
@@ -396,9 +396,8 @@ def new_query(request):
             #                  'query_author': query_in_progress.author})
 
 
+@login_required()
 def view_query(request, query_pk):
-
-
     query = Query.objects.get(pk=query_pk)
     query_author = query.author
     print('Author = ' + str(query_author))
@@ -416,29 +415,29 @@ def view_query(request, query_pk):
         })
 
 
-    # if query:
-    #     html_pre = query.choro_html
-    #     print('Meta Type: ' + str(type(query)))
-    #     print('html = ' + (html_pre[0:300]))
-    #     print('type = ' + query.query_type)
-    #     # print('filename = ' + str(query.filename))
-    #     print('type(choropleth = ' + str(type(query.choropleth)))
-    #     print('argument = ' + query.argument)
-    #     print('before render view_quiery in views.view_query')
-    #     return render(request, 'news_mapper_web/view_query.html', {
-    #         'query': query,
-    #         'query_author': query_author
-    #     })
+        # if query:
+        #     html_pre = query.choro_html
+        #     print('Meta Type: ' + str(type(query)))
+        #     print('html = ' + (html_pre[0:300]))
+        #     print('type = ' + query.query_type)
+        #     # print('filename = ' + str(query.filename))
+        #     print('type(choropleth = ' + str(type(query.choropleth)))
+        #     print('argument = ' + query.argument)
+        #     print('before render view_quiery in views.view_query')
+        #     return render(request, 'news_mapper_web/view_query.html', {
+        #         'query': query,
+        #         'query_author': query_author
+        #     })
 
-# @login_required()
+
+@login_required()
 def delete_query(request, query_pk):
     if query_pk:
         return None
 
 
-# @login_required()
+@login_required()
 def view_user(request, member_pk):
-
     print('member_pk = ' + str(member_pk))
 
     # user = request.user
@@ -459,7 +458,6 @@ def view_user(request, member_pk):
 
         print('last post = ' + str(last_post))
 
-
         recent_comments = member.comments.order_by('-id')[0:4]
 
         comments = [comment for comment in recent_comments if comment is not (None or False)]
@@ -479,8 +477,8 @@ def view_user(request, member_pk):
         raise Http404
 
 
+@login_required
 def new_post(request):
-
     if request.method == 'GET':
         print('in request == get')
         form = NewPostForm()
@@ -517,7 +515,6 @@ def new_post(request):
                     query_pk = request.POST['query_pk']
                     query = Query.objects.get(pk=query_pk)
 
-
                     post = Post(title=title, public=public, body=body, query=query, author=author)
                     post.save()
                     # return redirect('view_post', {'post_pk': post.pk})
@@ -533,10 +530,12 @@ def new_post(request):
         raise Http404
 
 
+@login_required()
 def update_post(request, post_pk):
     return render(request, 'news_mapper_web/update_post.html')
 
-# @login_required()
+
+@login_required()
 def view_post(request, post_pk):
     post = get_object_or_404(Post, pk=post_pk)
     if request.method == 'POST':
@@ -548,14 +547,51 @@ def view_post(request, post_pk):
             messages.error(request, form.errors)
         return redirect('post_details', post_pk=post_pk)
 
-    else: # GET request
+    else:  # GET request
         if post.author.id == request.user.id:
-            edit_post_form = EditPostForm(instance=post) # Pre-populate form with the post's current field values
-            return render(request, 'news_mapper_web/view_post.html', { 'post': post, 'edit_post_form': edit_post_form})
-        else: # user is not OP
-            return render(request, 'news_mapper_web/view_post.html', { 'post': post })
+            edit_post_form = EditPostForm(instance=post)  # Pre-populate form with the post's current field values
+            return render(request, 'news_mapper_web/view_post.html', {'post': post, 'edit_post_form': edit_post_form})
+        else:  # user is not OP
+            return render(request, 'news_mapper_web/view_post.html', {'post': post})
 
-#@login_required()
+def view_sources(request):
+    get_or_build_sources()
+
+    source_dict_list = [{'''country''': country_a2_to_name(source),
+                         '''country_a2''': source.country,
+                         '''name''': source.name,
+                         '''language''': str(source.language),
+                         '''full_lang''': lang_a2_to_name(source),
+                         '''category''': str(source.category),
+                         '''url''': str(source.url)}
+                        for source in Source.objects.all()]
+
+    print('sources_dict_list => ')
+    print(source_dict_list)
+    for source in source_dict_list:
+        print(source)
+        print('\n')
+
+    return render(request, 'news_mapper_web/view_sources.html', {
+        'sources': source_dict_list
+    })
+
+def lang_a2_to_name(source):
+    try:
+        name = pycountry.languages.lookup(source.language).name
+        return name
+    except LookupError:
+        return source.language
+
+def country_a2_to_name(source):
+    try:
+        name = pycountry.countries.lookup(source.country).name
+        return name
+    except LookupError:
+        return source.country
+
+
+@login_required()
 def delete_post(request):
     pk = request.POST['post_pk']
     post = get_object_or_404(Post, pk=pk)
@@ -567,35 +603,91 @@ def delete_post(request):
         messages.error(request, 'Action Not Authorized')
 
 
+@login_required()
 def new_comment(request, post_pk):
     if request.method == 'GET':
-        pass
+        form = NewCommentForm()
+        post = Post.objects.get(pk=post_pk)
+        return render(request, 'news_mapper_web/new_comment.html', {
+            'post': post,
+            'form': form
+        })
+
     elif request.method == 'POST':
-        pass
+        c_post = Post.objects.get(pk=post_pk)
+        c_body = request.POST.get('_body')
+        c_author = User.objects.get(pk=request.user.pk)
+        c = Comment.objects.create(_post=c_post, _body=c_body, _author=c_author)
+        return redirect('view_comment', c.pk)
 
 
+@login_required()
 def view_comment(request, comment_pk):
     try:
         comment = Comment.objects.get(pk=comment_pk)
-        return render(request, 'news_mapper_web/view_comment.html', {'comment_pk': comment.pk})
+        return render(request, 'news_mapper_web/view_comment.html', {'comment': comment})
     except Comment.DoesNotExist:
         raise Http404
 
-#@login_required()
+
+@login_required()
 def delete_comment(request, comment_pk):
-        comment = get_object_or_404(Comment, pk=comment_pk)
-        comment.delete()
-        last_url = request.POST['redirect_url']
-        messages.info(request, 'Failed to Delete Comment')
-        return redirect(request, last_url)
+    comment = get_object_or_404(Comment, pk=comment_pk)
+    comment.delete()
+    last_url = request.POST['redirect_url']
+    messages.info(request, 'Failed to Delete Comment')
+    return redirect(request, last_url)
 
 
 def password_reset(request):
     pass
 
-        # def choro_map(request, choro_file_name):
-        #
-        #     print('TYPE choro_file_name = ' + str(type(choro_file_name)))
-        #     choro_path = CHORO_MAP_ROOT + choro_file_name
-        #     return render(request, choro_path)
-        # @login_required(login_url='/accounts/login/')
+    # def choro_map(request, choro_file_name):
+    #
+    #     print('TYPE choro_file_name = ' + str(type(choro_file_name)))
+    #     choro_path = CHORO_MAP_ROOT + choro_file_name
+    #     return render(request, choro_path)
+    # @login_required(login_url='/accounts/login/')
+
+@login_required()
+def view_test_page(request):
+    return render(request, 'news_mapper_web/test_choro.html')
+
+
+def get_or_build_sources():
+
+    try:
+        test_db_has_sources = Source.objects.get(pk=1)
+
+    except (UnicodeDecodeError, FileNotFoundError, Source.DoesNotExist, TypeError):
+
+        try:
+            with open('./news_mapper_web/static/js/sources.json') as sources:
+                source_list = json.load(sources)
+                for source in source_list['sources'][0]:
+                    try:
+                        api_id = source['id']
+                        name = source['name']
+                        description = source['description']
+                        url = source['url']
+                        category = source['category']
+                        language = source['language']
+                        country = source['country']
+                        # print('id = ' + str(id))
+                        # print('name = ' + str(name))
+                        # print('description = ' + str(description))
+                        # print('url = ' + str(url))
+                        # print('category = ' + str(category))
+                        # print('language = ' + str(language))
+                        # print('country = ' + str(country))
+                        new_source = Source(_api_id=api_id, _category=category, _country=country, _description=description, _language=language, _name=name,
+                                            _url=url)
+                        new_source.save()
+                    except TypeError:
+                        print(TypeError, ' error building a source')
+                        pass
+                return True
+        except (FileNotFoundError, Exception, UnicodeDecodeError):
+            source_list_txt = query_mgr.fetch_and_build_sources()
+            query_mgr.write_sources_json_to_file(source_list_txt)
+            return True

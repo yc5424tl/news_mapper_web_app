@@ -438,7 +438,6 @@ class Query(models.Model):
         self._filepath = path
 
 
-
 class Article(models.Model):
 
     _article_url = models.URLField()
@@ -605,11 +604,11 @@ class Comment(models.Model):
     _post = models.ForeignKey(Post, on_delete=models.PROTECT, related_name='comments')
     _body = models.CharField(max_length=2500)
     _date_published = models.DateTimeField(auto_now_add=True)
-    _date_last_edit = models.DateTimeField(default=None)
+    _date_last_edit = models.DateTimeField(auto_now_add=True)
     _author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, related_name='comments')
 
     def __str__(self):
-        return "comment from " + self.author.full_name + ' on the post ' + "'" + self.post.title + "', made " + self.date_published
+        return "comment from " + self.author.first_name + ' ' +  self.author.last_name + ' on the post ' + "'" + self.post.title + "', made " + str(self.date_published)
 
     @property
     def post(self):

@@ -10,7 +10,7 @@
         Comment by
         <a href="{% url 'view_user' comment.author.pk %}">{{ comment.author.first_name }}</a>
         to post
-        <a href="{% url 'view_post' comment.post.pk %}">comment.post.title</a>
+        <a href="{% url 'view_post' comment.post.pk %}">{{ comment.post.title }}</a>
         by
         <a href="{% url 'view_user' comment.post.author.pk %}">{{ comment.post.author.first_name }}</a>
         <small>Published {{ comment.date_published }}</small>

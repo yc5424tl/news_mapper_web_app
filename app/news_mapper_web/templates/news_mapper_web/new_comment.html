@@ -1,0 +1,23 @@
+{% extends 'news_mapper_web/base.html' %}
+
+{% block title %}
+    New Comment - {{ block.super }}
+{% endblock %}
+
+{% block scripts %}
+    {{ block.super }}
+{% endblock %}
+
+{% block content %}
+    <h3>Post: <a href="{% url 'view_post' post.pk %}">{{ post.title|capfirst }}</a></h3>
+    <h3>Author: <a href="{% url 'view_user' post.author.pk %}">{{ post.author.username }}</a></h3>
+    <br>
+    <h3>Comment:</h3>
+    <form method="post" action="{% url 'new_comment' post.pk %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-success">Submit Comment</button>
+    </form>
+
+
+{% endblock %}

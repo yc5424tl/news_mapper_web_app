@@ -37,7 +37,7 @@ class GeoMapManager:
     def build_choropleth(argument, query_type, meta_data_mgr):
 
         world_df = gpd.read_file(meta_data_mgr.json_filename)
-        choro_map = folium.Map(location=[0, 0], tiles='Mapbox Bright', zoom_start=4)
+        choro_map = folium.Map(location=[0, 0], tiles='Mapbox Bright', zoom_start=5)
         articles_per_country = pd.Series(meta_data_mgr.query_data_dict)
         world_df['article_count'] = world_df['id'].map(articles_per_country)
         world_df.head()

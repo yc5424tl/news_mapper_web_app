@@ -9,7 +9,7 @@
     <h2>
         {{ post.title }} by
         <a href="{% url 'view_user' post.author.pk %}">{{ post.author.first_name }}</a>
-        <small>Published {{ comment.date_published }}</small>
+        <small>Published {{ post.date_published }}</small>
     </h2>
 
     <blockquote>{{ post.body }}</blockquote>

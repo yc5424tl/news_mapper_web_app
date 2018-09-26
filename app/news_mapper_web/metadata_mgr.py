@@ -40,3 +40,5 @@ class MetadataManager(object):
     def write_json_to_file(self):
         with open(self.json_filename, 'w') as outfile:
             json.dump(self.json_geo_data, outfile)
+
+

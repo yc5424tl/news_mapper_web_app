@@ -32,6 +32,10 @@ urlpatterns = [
     # url(r'^accounts/logout/$', views.logout_user, name='logout_user'),
     url(r'^accounts/view/(?P<member_pk>\d+)$', views.view_user, name='view_user'),
 
+    url(r'^sources/$', views.view_sources, name='view_sources'),
+
+    url(r'^test_page/$', views.view_test_page, name='view_test_page'),
+
     # url(r'^login_user/$', views.login_user, name='login_user'),
     # url(r'^logout_user/$', views.logout_user, name='logout_user'),
 ]
