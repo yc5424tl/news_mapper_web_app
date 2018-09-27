@@ -64,7 +64,7 @@ class GeoMapManager:
                              data=world_df,
                              columns=['id', 'article_count'],
                              key_on='feature.id',
-                             fill_color='PuBuGn',
+                             fill_color='YlOrRd',
                              # YlGrBu - RdYlGn - YlOrBr - RdYlBu - PuBuGn - YlOrRd
                              # Oranges - Greens -Purples - Reds - Greys - Blues
                              # Pastel1 - Pastel2 - Spectral - Set1 - Set2 - Set3 - Dark2

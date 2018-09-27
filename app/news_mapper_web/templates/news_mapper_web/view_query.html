@@ -53,7 +53,14 @@
 {#        //https://stackoverflow.com/questions/494143/creating-a-new-dom-element-from-an-html-string-using-built-in-dom-methods-or-pro#}
 {#        //https://stackoverflow.com/questions/2781003/how-to-insert-html-in-iframe#}
 {#        import * as parent from "../../../../venv/Lib/site-packages/notebook/static/components/backbone/backbone-min";#}
-{##}
+
+    <script>
+        function resizeIframe(obj) {
+            obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
+            obj.style.width = obj.contentWindow.document.body.scrollWidth + 'px';
+        }
+    </script>
+
     <script>
         function htmlToTemplate(html) {
             let template = document.createElement('template');
@@ -103,7 +110,7 @@
 
         <div class="row">
 
-            <div class="col-6">
+            <div class="col-5">
 
 {#                <div class="col-12">#}
 {#                    {{ query.choro_html }}#}
@@ -111,18 +118,39 @@
 
 
 
-                <h1>Query Details</h1>
+                <h1 class="title-center">Query Details</h1>
 
                 <div id="adjacent-target">
-                    <p>ARGUMENT: {{ query.argument }}</p>
-                    <p>TYPE: {{ query.query_type }}</p>
-                    <p>DATE: {{ query.date_created_readable }}</p>
-                    <p>ARCHIVED: {{ query.archived }}</p>
+                    <table>
+                        <tr>
+                            <th></th><th></th>
+                        </tr>
+                        <tr>
+                            <td>Query: </td>
+                            <td>{{ query.argument }}</td>
+                        </tr>
+                        <tr>
+                            <td>Type: </td>
+                            <td>{{ query.query_type|capfirst }}</td>
+                        </tr>
+                        <tr>
+                            <td>Date: </td>
+                            <td>{{ query.date_created_readable }}</td>
+                        </tr>
+                        <tr>
+                            <td>Archived: </td>
+                            <td>{{ query.archived }}</td>
+                        </tr>
+                    </table>
+{#                    <p>ARGUMENT: {{ query.argument }}</p>#}
+{#                    <p>TYPE: {{ query.query_type }}</p>#}
+{#                    <p>DATE: {{ query.date_created_readable }}</p>#}
+{#                    <p>ARCHIVED: {{ query.archived }}</p>#}
 {#                    <p>FILEPATH: {{ query.filepath }}</p>#}
 {#                    <p>USER.PK = {{ user.pk }}</p>#}
 {#                    <p>USER.ID = {{ user.id }}</p>#}
 {#                    <p>QUERY.AUTHOR.PK = {{ query.author }}</p>#}
-                    <p>QUERY.AUTHOR = {{ query_author }}</p>
+{#                    <p>QUERY.AUTHOR = {{ query_author }}</p>#}
                 </div>
 
 
@@ -132,24 +160,27 @@
 
                     {% if query.archived is False %}
 
-                        IN QUERY.SAVED is FALSE
-                        <div>
+
+                        <div class="post-query-container">
 
                             <form method="post" action="{% url 'new_post' %}">
                                 {% csrf_token %}
 
                                 <div class="input-group">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text">Post Title</span>
+                                        <span class="input-group-text" id="new-post-span">Post Your Query to Save Thoughts and Comments Too</span>
                                     </div>
                                     <input type="text" class="form-control" placeholder="Enter Title Here" aria-label="Post Title" name="_title">
                                 </div>
 
                                 <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text">Post Body</span>
-                                    </div>
-                                    <textarea class="form-control" id="new-post-textarea" aria-label="Post Body" name="_body" rows="11"></textarea>
+{#                                    <div class="input-group-prepend">#}
+{#                                        <span class="input-group-text">Post Body</span>#}
+{#                                    </div>#}
+                                    <label class="input-group-prepend">
+                                        <textarea class="form-control" id="new-post-textarea" aria-label="Post Body" name="_body" rows="11"></textarea>
+                                    </label>
+
                                 </div>
 
                                 <div class="input-group">
@@ -181,7 +212,6 @@
 
                     {% if query.archived is True %}
 
-                        IN ELSE
                         <form method="post" action="{% url 'update_post' post.pk %}">
                             {% csrf_token %}
                             <div class="input-group">
@@ -201,44 +231,36 @@
                             <input type="hidden" name="query_pk" value="{{ query.pk }}">
                         </form>
 
-
                         <form method="post" action="{% url 'delete_post' post.pk %}">
                             {% csrf_token %}
                             <button type="submit" class="btn btn-danger">Delete Post</button>
                             <sub>* Query will also be deleted</sub>
                         </form>
 
-
                     {% endif %}
                 {% endif %}
             </div>
 
-            <!--
-            <div class="col-5">
-            <div class="panel panel-info" id="query-articles-panel">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Articles Returned by Query</h3>
-                </div>
-                <div class="panel-body">
-                    <ul class="list-group">
-            -->
-
-{#            <div class="col-5 flex-column d-flex">#}
-            <div class="col-6">
+            <div class="col-7 view-query-articles">
                 <div class="card">
-                    <div class="card-header"><h1>Articles from Query</h1></div>
-                    <ul class="list-group">                        {% comment %}{% for article in query.articles|slice:20 %}
+                    <div class="card-header"><h1 class="title-center">Articles from Query</h1></div>
+                    <ul class="list-group lgi">                        {% comment %}{% for article in query.articles|slice:20 %}
                         {% for article in query.articles|slice:'20' %}{% endcomment %}
                         {% for article in articles %}
                             {% if article %}
-                                <li class="list-group-item">
-                                    <p class="lgi-t">Title: {{ article.title }}</p>
-                                    <sub class="lgi-t">
-                                        Author: {{ article.author }} --
-                                        Published: {{ article.get_date_published }}
-                                    </sub>
-                                    <blockquote class="article-desc lgi-t">{{ article.description }}</blockquote>
-                                    <sub class="lgi-t"><a href="{{ article.article_url }}">Link to Original</a></sub>
+                                <li class="list-group-item lgi">
+                                    <div class="row view-query-article lgi">
+                                        <div class="col-8 lgi">
+                                            <h4 class="lgi">{{ article.title }}</h4>
+                                             <sub class="lgi">{{ article.author }} {{ article.date_published|date }} <a class="lgi" href="{{ article.article_url }}">Link</a></sub>
+
+                                            <blockquote>{{ article.description }}</blockquote>
+                                            <sub class="lgi"></sub>
+                                        </div>
+                                        <div class="col-4 lgi">
+                                            <img class="article-img lgi" src="{{ article.image_url }}">
+                                        </div>
+                                    </div>
                                 </li>
                             {% endif %}
                         {% empty %}

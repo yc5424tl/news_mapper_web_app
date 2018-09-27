@@ -408,7 +408,7 @@ class Query(models.Model):
 
     @property
     def date_created_readable(self):
-        return '%s %s, %s' % (self._date_created.month, self._date_created.day, self._date_created.year)
+        return '%s/%s/%s' % (self._date_created.month, self._date_created.day, self._date_created.year)
 
     @property
     def author(self):

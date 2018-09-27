@@ -9,7 +9,7 @@
 
     <div class="container">
         <div class="row">
-            <div class="col-10 center-block">
+            <div class="col-12 center-block">
                 <div class="jumbotron">
                     {% if request.user.pk == member.pk %}
                         <h2>
@@ -51,14 +51,16 @@
                 </div>
 
                 <div class="col-12">
-                    {% for comment in post.comments|slice:':4' %}
-                        {% if comment %}
-                            <h3>Comment by {{ comment.author }} - {{ comment.date_published }}</h3>
-                            <blockquote>{{ comment.body }}</blockquote>
-                        {% endif %}
-                    {% empty %}
-                        <p>No Comments Yet</p>
-                    {% endfor %}
+                    {% if last_post %}
+                        {% for comment in post.comments|slice:':4' %}
+                            {% if comment %}
+                                <h3>Comment by {{ comment.author }} - {{ comment.date_published }}</h3>
+                                <blockquote>{{ comment.body }}</blockquote>
+                            {% endif %}
+                        {% empty %}
+                            <p>No Comments Yet</p>
+                        {% endfor %}
+                    {% endif %}
                 </div>
 
             </div>
@@ -89,7 +91,7 @@
                     <ul>
                         {% for comment in comments %}
                             {% if comment %}
-                                <li><a href="{% url 'view_comment' comment.pk %}">{{ comment.body|truncatewords:':5' }}</a></li>
+                                <li class="view-user-comment-li"><a  class="view-user-comment-a" href="{% url 'view_comment' comment.pk %}">{{ comment.body|truncatechars:175 }}</a></li>
                             {% endif %}
                         {% empty %}
                             <li>No Comments Yet</li>
@@ -109,6 +111,8 @@
                                         <a href="{% url 'view_query' query.pk %}">Details</a>
                                     </li>
                                 {% endif %}
+                            {% empty %}
+                                <li>No Queries Yet</li>
                             {% endfor %}
                         </ul>
                     </div>
