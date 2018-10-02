@@ -9,7 +9,7 @@
     <div class="container">
         <div class="row" id="view-src-row">
             <div class="col-4 sources" id="sources-left">
-                <h2>Sources by Country</h2>
+                <h2 class="view-sources-cat-head">Sources by Country</h2>
                 {% regroup sources|dictsort:'country' by country as sources_by_country %}
                 <ul>
                     {% for country in sources_by_country %}
@@ -27,7 +27,7 @@
                 </ul>
             </div>
             <div class="col-4 sources">
-                <h2>Sources by Category</h2>
+                <h2 class="view-sources-cat-head">Sources by Category</h2>
                 {% regroup sources|dictsort:'category' by category as sources_by_category %}
                 <ul>
                     {% for category in sources_by_category %}
@@ -45,7 +45,7 @@
                 </ul>
             </div>
             <div class="col-4 sources">
-                <h2>Sources by Language</h2>
+                <h2 class="view-sources-cat-head">Sources by Language</h2>
                 {% regroup sources|dictsort:'full_lang' by full_lang as sources_by_language %}
                 <ul>
                     {% for full_lang in sources_by_language %}
