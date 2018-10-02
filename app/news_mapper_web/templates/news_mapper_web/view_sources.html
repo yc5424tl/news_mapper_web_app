@@ -1,12 +1,14 @@
 
 {% extends 'news_mapper_web/base.html' %}
 
-{% block title %}News Sources - {{ block.super }}{% endblock %}
+{% block title %}
+    News Sources - {{ block.super }}
+{% endblock %}
 
 {% block content %}
     <div class="container">
-        <div class="row">
-            <div class="col-4 sources">
+        <div class="row" id="view-src-row">
+            <div class="col-4 sources" id="sources-left">
                 <h2>Sources by Country</h2>
                 {% regroup sources|dictsort:'country' by country as sources_by_country %}
                 <ul>

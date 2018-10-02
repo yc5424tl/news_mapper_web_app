@@ -8,30 +8,26 @@
 {% block content %}
 
     <div class="container">
-        <div class="row">
-            <div class="col-12 center-block">
+
+        <div class="row" id="view-user-upper" >
+            <div class="col-12 center-block" id="view-user-banner">
                 <div class="jumbotron">
+
                     {% if request.user.pk == member.pk %}
-                        <h2>
-                            Welcome, {{ member.username }}! </h2>
+                        <h2>Welcome, {{ member.username }}! </h2>
                     {% else %}
                         <h2>Viewing {{ member.username }}'s Profile</h2>
                     {% endif %}
+
                      <small>Member Since {{ member.date_joined }}</small>
+
                 </div>
             </div>
-{#            <div class="col-4">#}
-{#                {% if request.user.pk == member.pk %}#}
-{#                    <a href="{% url 'password_change' %}">Change Password</a>#}
-{#                {% else %}#}
-{#                    <a href="{% url 'password_reset' %}">Forgot Password</a>#}
-{#                {% endif %}#}
-{#            </div>#}
         </div>
 
-        <div class="row">
+        <div class="row" id="view-user-lower">
 
-            <div class="col-8">
+            <div class="col-8" id="view-user-latest-post">
 
                 <div class="col-12">
                     {% if last_post %}
@@ -66,13 +62,16 @@
             </div>
 
 
-            <div class="col-4">
+            <div class="col-4" id="view-user-history">
 
                 <div class="col-12" id="user-recent-posts">
 
-                    {% if request.user.pk == member.pk %}<h3>YOUR RECENT POSTS</h3>
-                    {% else %}<h3>{{ member.first_name|upper }}'s RECENT POSTS</h3>
+                    {% if request.user.pk == member.pk %}
+                        <h3 class="view-user-section-head">YOUR RECENT POSTS</h3>
+                    {% else %}
+                        <h3 class="view-user-section-head">{{ member.first_name|upper }}'s RECENT POSTS</h3>
                     {% endif %}
+
                     <ul>
                         {% for post in posts %}
                             {% if post %}
@@ -82,12 +81,17 @@
                             <li>No Posts Yet</li>
                         {% endfor %}
                     </ul>
+
                 </div>
 
                 <div class="col-12" id="user-recent-comments">
-                    {% if request.user.pk == member.pk %}<h3>YOUR RECENT COMMENTS</h3>
-                    {% else %}<h3>{{ member.first_name|upper }}'s RECENT COMMENTS</h3>
+
+                    {% if request.user.pk == member.pk %}
+                        <h3 class="view-user-section-head">YOUR RECENT COMMENTS</h3>
+                    {% else %}
+                        <h3 class="view-user-section-head">{{ member.first_name|upper }}'s RECENT COMMENTS</h3>
                     {% endif %}
+
                     <ul>
                         {% for comment in comments %}
                             {% if comment %}
@@ -97,10 +101,12 @@
                             <li>No Comments Yet</li>
                         {% endfor %}
                     </ul>
+
                 </div>
+
                 {% if request.user.pk == member.pk %}
                     <div class="col-12" id="user-recent-queries">
-                        <h3>YOUR RECENT QUERIES</h3>
+                        <h3 class="view-user-section-head">YOUR RECENT QUERIES</h3>
                         <ul>
                             {% for query in queries %}
                                 {% if query %}
@@ -117,24 +123,12 @@
                         </ul>
                     </div>
                 {% endif %}
+
             </div>  {% comment %} END COL-*-5 {% endcomment %}
-
         </div>  {% comment %} END ROW {% endcomment %}
-
     </div>  {% comment %} END CONTAINER {% endcomment %}
 
  {% endblock %}
 
 
 
-{% comment %}
-
-    top = Welcome, {{ usermame }}! Member since {{  }}
-
-    (right)List of Posts
-    (right)List of Comments
-
-     left -> Either the users last post/comment. Or an example output choropleth and instructions/explanation
-
-
-{% endcomment %}

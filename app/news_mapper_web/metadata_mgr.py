@@ -1,5 +1,6 @@
-import requests
+
 import json
+import requests
 
 
 class MetadataManager(object):
@@ -22,15 +23,11 @@ class MetadataManager(object):
             self.fix_cyprus_country_code()
 
     def get_geo_data(self):
-
         self.request_geo_data = requests.get('https://raw.githubusercontent.com/johan/world.geo.json/master/countries.geo.json')
-
         self.json_geo_data = self.request_geo_data.json()
-        # log.log_info_message('json_geo_data: ' + str(self.json_geo_data))
 
     def build_query_results_dict(self):
         self.query_data_dict = dict.fromkeys([k['id'] for k in json.load(open(self.json_filename))['features']], 0)
-        # log.log_info_message('Query_results_dict: ' + str(self.query_data_dict))
 
     def fix_cyprus_country_code(self):
         for key in self.json_geo_data:

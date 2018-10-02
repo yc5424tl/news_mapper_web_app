@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm, AuthenticationForm
 from django.contrib.auth.models import User
+from django.forms import Textarea
 
 from .models import Post, Comment, Query
 
@@ -45,10 +46,15 @@ class NewCommentForm(forms.ModelForm):
         model = Comment
         fields = ('_body',)
 
-    _body = forms.CharField(widget=forms.Textarea)
-    # class Meta:
-    #     model = Comment
-    #     fields = ('_body',)
+    _body = forms.CharField(widget=forms.Textarea(
+        attrs={''
+               'cols':75,
+               'rows':12,
+               'class': 'resizable',
+               'required': True}),
+        label=''
+    )
+
 
 
 class NewQueryForm(forms.ModelForm):

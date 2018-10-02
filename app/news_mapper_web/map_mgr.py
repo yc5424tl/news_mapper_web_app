@@ -1,7 +1,3 @@
-import logging
-
-import matplotlib
-matplotlib.use('Agg')
 
 import folium
 import geopandas as gpd
@@ -19,23 +15,22 @@ CHORO_MAP_ROOT = os.path.join(PROJECT_ROOT, 'news_mapper_web/media/news_mapper_w
 
 class GeoMapManager:
 
-
     @staticmethod
     def get_country_alpha_3_code(source_country):
-        country = pycountry.countries.get(alpha_2=str(source_country).upper())
+        country = pycountry.countries.get( alpha_2=str(source_country).upper() )
         return country.alpha_3
+
 
     def map_source(self, source_name):
         if type(source_name) is None:
-            # TODO log
             return None
         else:
             country_alpha3 = self.get_country_alpha_3_code(source_name)
             return country_alpha3
 
+
     @staticmethod
     def build_choropleth(argument, query_type, meta_data_mgr):
-
         world_df = gpd.read_file(meta_data_mgr.json_filename)
         choro_map = folium.Map(location=[0, 0], tiles='Mapbox Bright', zoom_start=3)
         articles_per_country = pd.Series(meta_data_mgr.query_data_dict)
@@ -64,14 +59,13 @@ class GeoMapManager:
                              data=world_df,
                              columns=['id', 'article_count'],
                              key_on='feature.id',
-                             fill_color='YlOrRd',
+                             fill_color='PuBuGn',
                              # YlGrBu - RdYlGn - YlOrBr - RdYlBu - PuBuGn - YlOrRd
                              # Oranges - Greens -Purples - Reds - Greys - Blues
                              # Pastel1 - Pastel2 - Spectral - Set1 - Set2 - Set3 - Dark2
                              fill_opacity=0.7,
                              line_opacity=0.2,
-                             threshold_scale=threshold_scale
-                             )
+                             threshold_scale=threshold_scale)
 
         folium.TileLayer("MapQuest Open Aerial", attr="Data Attr").add_to(choro_map)
         folium.TileLayer("stamenwatercolor", attr='attr').add_to(choro_map)
@@ -83,20 +77,15 @@ class GeoMapManager:
         now = datetime.ctime(date)
         map_prefix = str(now).replace(' ', '_')
         map_prefix = map_prefix.replace(':', '-')
+        # choro_map.save(str(datetime.ctime(datetime.now())).replace(' ', '_').replace(':', '-') + '_' + query_type + '_query_' + argument + '_choropleth_map.html')
         filename = map_prefix + '_' + query_type + '_query_' + argument + '_choropleth_map.html'
         choro_map.save(CHORO_MAP_ROOT + filename)
         choro_html = choro_map.get_root().render()
 
-        # print('type(choro_map.render()) = ' + str(type(choro_map.render())))
-        # print('type(choro_map.render) = ' + str(type(choro_map.render)))
-        # print('type(choro_map) = ' + str(type(choro_map)))
-
         if save_choro_to_file(choro_html, filename):
-            print('saved choro to file in map_mgr')
             return choro_map, choro_html, filename
 
         else:
-            print('save choro to file failed')
             return None
 
 
@@ -105,5 +94,6 @@ def save_choro_to_file(choro_html, filename):
         with open(CHORO_MAP_ROOT + filename, "w") as file:
             file.write(choro_html)
         return True
+
     except FileNotFoundError:
         return False
