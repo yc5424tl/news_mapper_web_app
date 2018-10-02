@@ -1,0 +1,419 @@
+
+{% extends 'news_mapper_web/base.html' %}
+
+{% block title %}
+    Query Results - {{ block.super }}
+{% endblock %}
+
+{% block styles %}
+    {{ block.super }}
+{% endblock %}
+
+
+
+{% block content %}
+    <div class="container">
+
+        <div class="row">
+
+            <div class="col-4">
+
+                <h1 class="title-center">Query Details</h1>
+
+                <div id="adjacent-target">
+                    <table>
+                        <tr>
+                            <th></th><th></th>
+                        </tr>
+                        <tr>
+                            <td>Query: </td>
+                            <td>{{ query.argument }}</td>
+                        </tr>
+                        <tr>
+                            <td>Type: </td>
+                            <td>{{ query.query_type|capfirst }}</td>
+                        </tr>
+                        <tr>
+                            <td>Date: </td>
+                            <td>{{ query.date_created_readable }}</td>
+                        </tr>
+                        <tr>
+                            <td>Archived: </td>
+                            <td>{{ query.archived }}</td>
+                        </tr>
+                    </table>
+
+                </div>
+
+                {% if user.pk == query_author.id %}
+
+                    {% if query.archived is False %}
+
+                        <div class="post-query-container">
+
+                            <form method="post" action="{% url 'new_post' %}">
+                                {% csrf_token %}
+
+                                <div class="input-group">
+                                    <div class="input-group-prepend" id="new-post-span-container">
+                                        <p class="input-group-text title-center" id="new-post-span">Post Your Query</p>
+                                    </div>
+                                    <input type="text" class="form-control" placeholder="Enter Title Here" aria-label="Post Title" name="_title">
+                                </div>
+
+                                <div class="input-group">
+                                    <label class="input-group-prepend">
+                                        <textarea class="form-control" id="new-post-textarea" aria-label="Post Body" name="_body" rows="11"></textarea>
+                                    </label>
+                                </div>
+
+                                <div class="input-group">
+                                    <div class="form-check form-check-inline">
+                                        <label class="form-check-label"> Private
+                                            <input type="radio" class="form-check-input" id="private-save-false" name="save_radio" checked>
+                                        </label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <label class="form-check-label"> Public
+                                            <input type="radio" class="form-check-input" id="public-save-false" name="save_radio">
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="btn btn-default">Post Query</button>
+                                <input type="hidden" name="user_pk" value="{{ user.pk }}">
+                                <input type="hidden" name="query_pk" value="{{ query.pk }}">
+                            </form>
+
+
+                            <form method="post" action="{% url 'delete_query' query.pk %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger">Delete Query</button>
+                            </form>
+
+                        </div>
+                    {% endif %}
+
+
+                    {% if query.archived is True %}
+
+                        <form method="post" action="{% url 'update_post' post.pk %}">
+                            {% csrf_token %}
+                            <div class="input-group">
+                                <div class="form-check form-check-inline">
+                                    <label class="form-check-label"> Private
+                                        <input type="radio" class="form-check-input" id="private-save-true" name="save_radio" checked>
+                                    </label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <label class="form-check-label"> Public
+                                        <input type="radio" class="form-check-input" id="public-save-true" name="save_radio">
+                                    </label>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-default">Update Post</button>
+                            <input type="hidden" name="user_pk" value="{{ user.pk }}">
+                            <input type="hidden" name="query_pk" value="{{ query.pk }}">
+                        </form>
+
+                        <form method="post" action="{% url 'delete_post' post.pk %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger">Delete Post</button>
+                            <sub>* Query will also be deleted</sub>
+                        </form>
+
+                    {% endif %}
+                {% endif %}
+            </div>
+
+            <div class="col-8 view-query-articles-container">
+
+                <div class="card" id="view-query-card">
+                    <div class="card-header view-query-card-header-container">
+                        <h1 class="title-center view-query-card-header">Articles from Query</h1></div>
+
+                    <ul class="list-group" id="view-query-articles-list">
+                        {% for article in articles %}
+
+                            {% if article %}
+                                <li class="view-query-li">
+                                    <div class="row view-query-article">
+
+                                        <div class="col-8 view-query-article-txt-container">
+                                             <h4 class="view-query-article-title title-center">{{ article.title }}</h4>
+                                             <h6 class="title-center view-query-article-subtitle-container">
+                                                 <sub class="view-query-article-subtitle title-center">{{ article.author }} {{ article.date_published|date }}
+                                                    <a  class="view-query-article-link title-center" href="{{ article.article_url }}">Link</a>
+                                                </sub>
+                                             </h6>
+                                            <p class="view-query-article-body">{{ article.description }}</p>
+                                        </div>
+
+                                        <div class="col-4 view-query-article-img-container">
+                                            <img class="view-query-article-img " src="{{ article.image_url }}">
+                                        </div>
+
+{#                                        <div class="col-1 view-query-article-img-right-margin">#}
+
+{#                                        </div>#}
+                                    </div>
+                                </li>
+                            {% endif %}
+
+                        {% empty %}
+                            <p class="list-group-item">No Articles Found for Query</p>
+                        {% endfor %}
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+{% block scripts %}
+
+    {{ block.super }}
+
+{#    <script>#}
+{#        function resizeIframe(obj) {#}
+{#            obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';#}
+{#            obj.style.width = obj.contentWindow.document.body.scrollWidth + 'px';#}
+{#        }#}
+{#    </script>#}
+
+    <script>
+        function htmlToTemplate(html) {
+            let template = document.createElement('template');
+            template.setAttribute('width', '100%');
+            template.setAttribute('padding', '0');
+            template.setAttribute('margin', '0');
+            template.setAttribute('max-width', '80%');
+            html = html.trim();
+            template.innerHTML = html;
+            return (template.content.childNodes);
+        }
+        $(document).ready(function() {
+            htmlToTemplate({{ query.choro_html|safe }});
+        });
+    </script>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{##}
+{#{% extends 'news_mapper_web/base.html' %}#}
+{##}
+{#{% block title %}#}
+{#    Query Results - {{ block.super }}#}
+{#{% endblock %}#}
+{##}
+{#{% block styles %}#}
+{#    {{ block.super }}#}
+{#{% endblock %}#}
+{##}
+{#{% block scripts %}#}
+{##}
+{#    {{ block.super }}#}
+{##}
+{#    <script>#}
+{#        function resizeIframe(obj) {#}
+{#            obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';#}
+{#            obj.style.width = obj.contentWindow.document.body.scrollWidth + 'px';#}
+{#        }#}
+{#    </script>#}
+{##}
+{#    <script>#}
+{#        function htmlToTemplate(html) {#}
+{#            let template = document.createElement('template');#}
+{#            html = html.trim();#}
+{#            template.innerHTML = html;#}
+{#            return (template.content.childNodes);#}
+{#        }#}
+{#        $(document).ready(function() {#}
+{#            htmlToTemplate({{ query.choro_html|safe }});#}
+{#        });#}
+{#    </script>#}
+{#{% endblock %}#}
+{##}
+{#{% block content %}#}
+{#    <div class="container">#}
+{##}
+{#        <div class="row">#}
+{##}
+{#            <div class="col-5">#}
+{##}
+{#                <h1 class="title-center">Query Details</h1>#}
+{##}
+{#                <div id="adjacent-target">#}
+{#                    <table>#}
+{#                        <tr>#}
+{#                            <th></th><th></th>#}
+{#                        </tr>#}
+{#                        <tr>#}
+{#                            <td>Query: </td>#}
+{#                            <td>{{ query.argument }}</td>#}
+{#                        </tr>#}
+{#                        <tr>#}
+{#                            <td>Type: </td>#}
+{#                            <td>{{ query.query_type|capfirst }}</td>#}
+{#                        </tr>#}
+{#                        <tr>#}
+{#                            <td>Date: </td>#}
+{#                            <td>{{ query.date_created_readable }}</td>#}
+{#                        </tr>#}
+{#                        <tr>#}
+{#                            <td>Archived: </td>#}
+{#                            <td>{{ query.archived }}</td>#}
+{#                        </tr>#}
+{#                    </table>#}
+{##}
+{#                </div>#}
+{##}
+{#                {% if user.pk == query_author.id %}#}
+{##}
+{#                    {% if query.archived is False %}#}
+{##}
+{#                        <div class="post-query-container">#}
+{##}
+{#                            <form method="post" action="{% url 'new_post' %}">#}
+{#                                {% csrf_token %}#}
+{##}
+{#                                <div class="input-group">#}
+{#                                    <div class="input-group-prepend">#}
+{#                                        <span class="input-group-text" id="new-post-span">Post Your Query to Save Thoughts and Comments Too</span>#}
+{#                                    </div>#}
+{#                                    <input type="text" class="form-control" placeholder="Enter Title Here" aria-label="Post Title" name="_title">#}
+{#                                </div>#}
+{##}
+{#                                <div class="input-group">#}
+{#                                    <label class="input-group-prepend">#}
+{#                                        <textarea class="form-control" id="new-post-textarea" aria-label="Post Body" name="_body" rows="11"></textarea>#}
+{#                                    </label>#}
+{#                                </div>#}
+{##}
+{#                                <div class="input-group">#}
+{#                                    <div class="form-check form-check-inline">#}
+{#                                        <label class="form-check-label"> Private#}
+{#                                            <input type="radio" class="form-check-input" id="private-save-false" name="save_radio" checked>#}
+{#                                        </label>#}
+{#                                    </div>#}
+{#                                    <div class="form-check form-check-inline">#}
+{#                                        <label class="form-check-label"> Public#}
+{#                                            <input type="radio" class="form-check-input" id="public-save-false" name="save_radio">#}
+{#                                        </label>#}
+{#                                    </div>#}
+{#                                </div>#}
+{##}
+{#                                <button type="submit" class="btn btn-default">Post Query</button>#}
+{#                                <input type="hidden" name="user_pk" value="{{ user.pk }}">#}
+{#                                <input type="hidden" name="query_pk" value="{{ query.pk }}">#}
+{#                            </form>#}
+{##}
+{##}
+{#                            <form method="post" action="{% url 'delete_query' query.pk %}">#}
+{#                                {% csrf_token %}#}
+{#                                <button type="submit" class="btn btn-danger">Delete Query</button>#}
+{#                            </form>#}
+{##}
+{#                        </div>#}
+{#                    {% endif %}#}
+{##}
+{##}
+{#                    {% if query.archived is True %}#}
+{##}
+{#                        <form method="post" action="{% url 'update_post' post.pk %}">#}
+{#                            {% csrf_token %}#}
+{#                            <div class="input-group">#}
+{#                                <div class="form-check form-check-inline">#}
+{#                                    <label class="form-check-label"> Private#}
+{#                                        <input type="radio" class="form-check-input" id="private-save-true" name="save_radio" checked>#}
+{#                                    </label>#}
+{#                                </div>#}
+{#                                <div class="form-check form-check-inline">#}
+{#                                    <label class="form-check-label"> Public#}
+{#                                        <input type="radio" class="form-check-input" id="public-save-true" name="save_radio">#}
+{#                                    </label>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                            <button type="submit" class="btn btn-default">Update Post</button>#}
+{#                            <input type="hidden" name="user_pk" value="{{ user.pk }}">#}
+{#                            <input type="hidden" name="query_pk" value="{{ query.pk }}">#}
+{#                        </form>#}
+{##}
+{#                        <form method="post" action="{% url 'delete_post' post.pk %}">#}
+{#                            {% csrf_token %}#}
+{#                            <button type="submit" class="btn btn-danger">Delete Post</button>#}
+{#                            <sub>* Query will also be deleted</sub>#}
+{#                        </form>#}
+{##}
+{#                    {% endif %}#}
+{#                {% endif %}#}
+{#            </div>#}
+{##}
+{#            <div class="col-7 view-query-articles">#}
+{##}
+{#                <div class="card" id="view-query-card">#}
+{#                    <div class="card-header"><h1 class="title-center">Articles from Query</h1></div>#}
+{##}
+{#                    <ul class="list-group lgi" id="view-query-card-list-group">#}
+{#                        {% for article in articles %}#}
+{#                            {% if article %}#}
+{##}
+{#                                <li class="list-group-item lgi">#}
+{#                                    <div class="row view-query-article lgi">#}
+{##}
+{#                                        <div class="col-8 lgi">#}
+{#                                            <h4 class="lgi">{{ article.title }}</h4>#}
+{#                                             <sub class="lgi">{{ article.author }} {{ article.date_published|date }} <a class="lgi" href="{{ article.article_url }}">Link</a></sub>#}
+{#                                            <blockquote>{{ article.description }}</blockquote>#}
+{#                                            <sub class="lgi"></sub>#}
+{#                                        </div>#}
+{##}
+{#                                        <div class="col-4 lgi">#}
+{#                                            <img class="article-img lgi" src="{{ article.image_url }}">#}
+{#                                        </div>#}
+{##}
+{#                                    </div>#}
+{#                                </li>#}
+{#                            {% endif %}#}
+{#                        {% empty %}#}
+{#                            <p class="list-group-item">No Articles Found for Query</p>#}
+{#                        {% endfor %}#}
+{##}
+{#                    </ul>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
+{##}
+{##}
+{#{% endblock %}#}
