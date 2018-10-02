@@ -26,14 +26,14 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'dlt$aysys8tmw^kor38a429m_-=6$f%#y3@lkqy@m1e))p84*s'
+SECRET_KEY = os.environ.get('NEWS_MAPPER_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
 DEBUG = True
 # DEBUG = False
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '*']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'news-mapper-app.herokuapp.com']
 
 INTERNAL_IPS = ['127.0.0.1']
 
@@ -160,9 +160,9 @@ USE_TZ = True
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'static'),
-)
+# STATICFILES_DIRS = (
+#     os.path.join(BASE_DIR, 'static'),
+# )
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'news_mapper_web/media')
