@@ -11,16 +11,16 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
-from distutils.command.config import config
+# from distutils.command.config import config
 
-import debug_toolbar
+# import debug_toolbar
 import dj_database_url
 import django_heroku
 
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 # from django.conf.global_settings import AUTHENTICATION_BACKENDS
-from django.conf.global_settings import STATICFILES_DIRS
+# from django.conf.global_settings import STATICFILES_DIRS
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
@@ -162,9 +162,9 @@ USE_L10N = True
 
 USE_TZ = True
 
-DATABASE_URL = os.environ.get('MONGODB_URI')
+# DATABASE_URL = os.environ.get('MONGODB_URI')
 
-DATABASES['default'].update(dj_database_url.config(default=os.getenv('DATABASE_URL')))
+DATABASES['default'].update(dj_database_url.config())
 DATABASES['default']['ENGINE'] = 'django.contrib.gis.db.backends.postgis'
 
 GDAL_LIBRARY_PATH = os.getenv('GDAL_LIBRARY_PATH')
