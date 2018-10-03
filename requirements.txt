@@ -62,6 +62,7 @@ pipenv==2018.7.1
 prometheus-client==0.3.1
 prompt-toolkit==1.0.15
 psycopg2==2.7.5
+psycopg2-binary
 pycountry==18.2.23
 Pygments==2.2.0
 pymongo==3.7.1
