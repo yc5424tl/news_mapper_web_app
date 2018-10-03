@@ -211,3 +211,4 @@ out
 gen
 /api_keys
 /wheels/
+/news_mapper_web/migrations/
