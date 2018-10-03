@@ -25,7 +25,7 @@ entrypoints==0.2.3
 ExifRead==2.1.2
 Fiona==1.7.13
 folium==0.5.0
-GDAL==2.2.4
+
 geopandas==0.3.0
 gunicorn==19.9.0
 html5lib==1.0.1
