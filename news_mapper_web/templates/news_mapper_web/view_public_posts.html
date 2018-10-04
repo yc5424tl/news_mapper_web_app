@@ -32,18 +32,19 @@
                             <ul class="list-group list-group-flush" id="view-posts-post-list">
                             {% for comment in post.comments.all %}
                                 {% if forloop.counter0 < 3 %}
-                                    <li class="list-group-item view-posts-list-item">
-                                        <p class="view-posts-comment-body">"{{ comment.body|truncatechars:500 }}"
-                                        <br>
-                                        <sub class="view-posts-comment-detail">Comment from
-                                            <a class="card-link view-posts-comment-link"  href="{% url 'view_user' comment.author.pk %}">{{ comment.author.username }}</a>
-                                            {{ comment.date_published }}</sub>
-                                        </p>
-                                        <p>
-                                        </p>
-                                    </li>
-                                    {% endif %}
-                                {% endfor %}
+{#                                    {% if post.comments.all|length:1  %}#}
+                                        <li class="list-group-item view-posts-list-item">
+                                            <p class="view-posts-comment-body">"{{ comment.body|truncatechars:500 }}"
+                                            <br>
+                                            <sub class="view-posts-comment-detail">Comment from
+                                                <a class="card-link view-posts-comment-link"  href="{% url 'view_user' comment.author.pk %}">{{ comment.author.username }}</a>
+                                                {{ comment.date_published }}</sub>
+                                            </p>
+                                        </li>
+{#                                    {% elif| %}#}
+{#                                    {% endif %}#}
+                                {% endif %}
+                            {% endfor %}
                             </ul>
                         </div>
                     {% endif %}

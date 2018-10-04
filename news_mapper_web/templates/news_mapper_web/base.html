@@ -49,22 +49,36 @@
 
         <nav class="navbar navbar-expand-md ">
             <div class="row nav-row" style="position:relative">
-                <img id="nav-img" src="{% static 'img/mtn_a_transp.png' %}">
+                <img id="nav-img" src="{% static 'img/mtn_3.png' %}">
+                <div id="nav-img-div"></div>
                 <div class="collapse navbar-collapse col-12" id="navbar-content">
-                    <ul class="nav justify-content-center">
-                        <li class="nav-item"><a class="nav-link" href="{% url 'index' %}">Home</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{% url 'new_query' %}">Map the News</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{% url 'view_public_posts' %}">View Posts</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{% url 'view_sources' %}">News Sources</a></li>
-                        {% if user.is_authenticated %}
-                            <li class="nav-item"><a class="nav-link" href="{% url 'view_user' user.pk %}">Profile</a></li>
-                            <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Logout</a></li>
-                        {% else %}
-                            <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
-                            <li class="nav-item"><a class="nav-link" href="{% url 'register_user' %}">Register</a></li>
-                            <li class="nav-item"><a class="nav-link" href="{% url 'password_reset' %}">Forgot Password</a></li>
-                        {% endif %}
-                    </ul>
+{#                    <ul class="nav justify-content-center">#}
+                        <div class="row nav-link-row">
+                            <div class="col-4 base-nav-link-container">
+                                <ul class="nav justify-content-center">
+                                    <li class="nav-item"><a class="nav-link" href="{% url 'index' %}">Home</a></li>
+                                    <li class="nav-item"><a class="nav-link" href="{% url 'new_query' %}">Map the News</a></li>
+                                    <li class="nav-item"><a class="nav-link" href="{% url 'view_public_posts' %}">View Posts</a></li>
+                                </ul>
+                            </div>
+                            <div class="col-4 base-nav-link-container"></div>
+                            <div class="col-4 base-nav-link-container">
+                                <ul class="nav justify-content-center">
+                                    <li class="nav-item"><a class="nav-link" href="{% url 'view_sources' %}">News Sources</a></li>
+                                    {% if user.is_authenticated %}
+                                        <li class="nav-item"><a class="nav-link" href="{% url 'view_user' user.pk %}">Profile</a></li>
+                                        <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Logout</a></li>
+                                    {% else %}
+                                        <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
+                                        <li class="nav-item"><a class="nav-link" href="{% url 'register_user' %}">Register</a></li>
+            {#                            <li class="nav-item"><a class="nav-link" href="{% url 'password_reset' %}">Forgot Password</a></li>#}
+                                    {% endif %}
+                                </ul>
+                            </div>
+                        </div>
+
+
+{#                    </ul>#}
                 </div>
             </div>
 

@@ -13,9 +13,10 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 import os
 # from distutils.command.config import config
 
+import django_heroku
 # import debug_toolbar
 import dj_database_url
-import django_heroku
+
 
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -164,11 +165,11 @@ USE_TZ = True
 
 # DATABASE_URL = os.environ.get('MONGODB_URI')
 
-DATABASES['default'].update(dj_database_url.config())
-DATABASES['default']['ENGINE'] = 'django.contrib.gis.db.backends.postgis'
+# DATABASES['default'].update(dj_database_url.config())
+# DATABASES['default']['ENGINE'] = 'django.contrib.gis.db.backends.postgis'
 
-GDAL_LIBRARY_PATH = '../gdal202.dll'
-GEOS_LIBRARY_PATH = os.getenv('GEOS_LIBRARY_PATH')
+# GDAL_LIBRARY_PATH = '../gdal202.dll'
+# GEOS_LIBRARY_PATH = os.getenv('GEOS_LIBRARY_PATH')
 
 # SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
@@ -200,5 +201,6 @@ LOGIN_URL = 'login'
 
 # LOGIN_REDIRECT_URL = ''
 LOGOUT_REDIRECT_URL = 'index'
+
 
 django_heroku.settings(locals())

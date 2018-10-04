@@ -41,7 +41,7 @@ class QueryManager:
                     # if top_range > 100:
                     #     top_range = 100  #  query max articles=10000, err if page past end
 
-                    top_range = 10 # for development, uncomment above for production -- allow users to choose from a range? aka sliding-scale
+                    top_range = 50 # for development, uncomment above for production -- allow users to choose from a range? aka sliding-scale
 
                     for i in range(1, top_range):
                         results_page = requests.get(endpoint + '&page=' + str(i))
