@@ -110,13 +110,24 @@ WSGI_APPLICATION = 'news_mapper.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
+# DATABASES = {
+#     # 'default': {
+#     #    'ENGINE': 'django.db.backends.sqlite3',
+#     #    'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     # }
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'news_mapper_db',
+#         'USER': 'news_mapper_user',
+#         'PASSWORD': 'sqlAdmin1234!',
+#         'HOST': 'localhost',
+#         'PORT': 5432,
+#     }
+# }
 
+DATABASES = {}
+# DATABASES['default'] = dj_database_url.config(default="postgres://cxvqfbfscxwues:20ddf628049810e9cffb82576e940a216b62ecc52eeae943f707cc73000e2d53@ec2-54-83-50-145.compute-1.amazonaws.com:5432/d79uk8s0d0qu1g")
+DATABASES['default'] = dj_database_url.config(default='HEROKU_POSTGRESQL_IVORY_URL')
 # SESSION_ENGINE = 'mongoengine.django.sessions'
 
 
@@ -174,8 +185,9 @@ USE_TZ = True
 # SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'news-mapper-app.herokuapp.com']
+# ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'news-mapper-app.herokuapp.com']
 # ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
+ALLOWED_HOSTS = ['*']
 
 
 # Static files (CSS, JavaScript, Images)

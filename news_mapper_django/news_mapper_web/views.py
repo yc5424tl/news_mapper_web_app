@@ -1,7 +1,7 @@
 import json
 import os
-
 import pycountry
+
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
@@ -10,8 +10,7 @@ from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.shortcuts import render, redirect, get_object_or_404, Http404
 
 from .api_mgr import QueryManager
-from .forms import AuthenticationForm
-from .forms import EditPostForm, NewQueryForm, NewPostForm, CustomUserCreationForm, NewCommentForm
+from .forms import AuthenticationForm, EditPostForm, NewQueryForm, NewPostForm, CustomUserCreationForm, NewCommentForm
 from .map_mgr import GeoMapManager
 from .metadata_mgr import MetadataManager
 from .models import Post, Comment, Query, Source, Article

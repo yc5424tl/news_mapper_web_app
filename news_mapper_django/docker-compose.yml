@@ -1,0 +1,22 @@
+version: '2'
+
+services:
+  db:
+    image: postgres
+  web:
+      build: .
+      command: python3 manage.py runserver 0.0.0.0:8000
+      volumes:
+        - .:/code
+      ports:
+        - "8000:8000"
+      environment:
+        - SECRET_KEY=seupersecret
+        - NEWS_MAPPER_KEY=supersecret
+        - NEWS_CLIENT_API_KEY=5df648f726dd42d69fe046b765e22667
+        - api_key_news=daaba2aab3d54874a0a154c18715e82c
+      depends_on:
+        - db
+
+volumes:
+  postgres_data:
