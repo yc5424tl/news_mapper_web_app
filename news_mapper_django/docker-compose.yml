@@ -2,19 +2,26 @@ version: '2'
 
 services:
   db:
-    image: postgres
+    image: postgres:latest
+    ports:
+      - "5432:5432"
   web:
       build: .
-      command: python3 manage.py runserver 0.0.0.0:8000
+      command: manage.py runserver 0.0.0.0:8000
+      command: manage.py makemigrations
+      command: manage.py migrate
+      command: manage.py collectstatic
       volumes:
         - .:/code
       ports:
         - "8000:8000"
+      env_file: .env
       environment:
-        - SECRET_KEY=seupersecret
-        - NEWS_MAPPER_KEY=supersecret
+        - SECRET_KEY=dlt$aysys8tmwkasdfg429m_-=6$f%#y3@lkqy@m1e
+        - NEWS_MAPPER_KEY=dlt$aysys8tmwkasdfg429m_-=6$f%#y3@lkqy@m1e
         - NEWS_CLIENT_API_KEY=5df648f726dd42d69fe046b765e22667
         - api_key_news=daaba2aab3d54874a0a154c18715e82c
+
       depends_on:
         - db
 

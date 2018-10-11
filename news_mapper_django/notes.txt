@@ -16,3 +16,8 @@ WORKDIR /code
 ADD requirements.txt /code/
 RUN pip install -r requirements.txt
 ADD . /code/
+
+
+heroku container:login
+heroku container:push web (pushes current image)
+heroku container:release web 
