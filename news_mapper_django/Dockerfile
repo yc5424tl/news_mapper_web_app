@@ -29,7 +29,7 @@ RUN apt-get update && apt-get install -y && apt-get install build-essential libs
 
 # RUN ["conda", "env", "create"]
 
-RUN conda create --name news_mapper_conda_env python=3 && source activate news_mapper_conda_env && conda install GDAL Fiona pyproj rtree shapely && pip install --trusted-hose pypi.python.org -r requirements.txr
+RUN conda create --name news_mapper_conda_env python=3 && source activate news_mapper_conda_env && conda install GDAL Fiona pyproj rtree shapely && pip install --trusted-host pypi.python.org -r requirements.txt
 
 
 
@@ -41,4 +41,4 @@ RUN conda create --name news_mapper_conda_env python=3 && source activate news_m
 # CMD ["python manage.py makemigrations && python manage.py migrate"]
 # CMD ["python manage.py runserver 0.0.0.0:$PORT"]
 
-CMD["exec python manage.py runserver 0.0.0.0:$PORT"]
+CMD python manage.py runserver 0.0.0.0:$PORT
