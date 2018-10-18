@@ -58,11 +58,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
+    'django.contrib.gis',
     'news_mapper_web',
     'debug_toolbar',
-
-
-
 ]
 
 MIDDLEWARE = [
@@ -110,11 +108,22 @@ WSGI_APPLICATION = 'news_mapper.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        'NAME': 'geodjango_db',
+        'USER': 'geo_db_user',
+    }
+}
+
 # DATABASES = {
-#     # 'default': {
-#     #    'ENGINE': 'django.db.backends.sqlite3',
-#     #    'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#     # }
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#      }
+# }
+
 #     'default': {
 #         'ENGINE': 'django.db.backends.postgresql',
 #         'NAME': 'news_mapper_db',
@@ -125,9 +134,10 @@ WSGI_APPLICATION = 'news_mapper.wsgi.application'
 #     }
 # }
 
-DATABASES = {}
+# DATABASES = {}
+
 # DATABASES['default'] = dj_database_url.config(default="postgres://cxvqfbfscxwues:20ddf628049810e9cffb82576e940a216b62ecc52eeae943f707cc73000e2d53@ec2-54-83-50-145.compute-1.amazonaws.com:5432/d79uk8s0d0qu1g")
-DATABASES['default'] = dj_database_url.config(default='HEROKU_POSTGRESQL_IVORY_URL')
+# DATABASES['default'] = dj_database_url.config(default='HEROKU_POSTGRESQL_IVORY_URL')
 # SESSION_ENGINE = 'mongoengine.django.sessions'
 
 
@@ -213,6 +223,9 @@ LOGIN_URL = 'login'
 
 # LOGIN_REDIRECT_URL = ''
 LOGOUT_REDIRECT_URL = 'index'
+
+GDAL_LIBRARY_PATH = os.getenv('GDAL_LIBRARY_PATH')
+GEOS_LIBRARY_PATH = os.getenv('GEOS_LIBRARY_PATH')
 
 
 django_heroku.settings(locals())

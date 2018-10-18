@@ -131,6 +131,8 @@ class QueryManager:
 
         try:
             description = self.is_str(raw_article_data['description'])
+            if description is None:
+                description = "Unavailable"
         except UnicodeDecodeError:
             description = 'Unavailable'
 
