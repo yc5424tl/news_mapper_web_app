@@ -220,7 +220,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'news_mapper_web/media')
 TEMPLATE_DIRS = (os.path.join(BASE_DIR, 'news_mapper_web/templates'),)
 
 LOGIN_URL = 'login'
-
+#comment
 # LOGIN_REDIRECT_URL = ''
 LOGOUT_REDIRECT_URL = 'index'
 
