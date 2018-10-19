@@ -229,8 +229,8 @@ LOGOUT_REDIRECT_URL = 'index'
 # GEOS_LIBRARY_PATH = os.getenv('GEOS_LIBRARY_PATH')
 
 
-GDAL_LIBRARY_PATH=/app/.heroku/vendor/lib/libgdal.so
-GEOS_LIBRARY_PATH=/app/.heroku/vendor/lib/libgeos_c.so
+# GDAL_LIBRARY_PATH=/app/.heroku/vendor/lib/libgdal.so
+# GEOS_LIBRARY_PATH=/app/.heroku/vendor/lib/libgeos_c.so
 
 
 django_heroku.settings(locals())
