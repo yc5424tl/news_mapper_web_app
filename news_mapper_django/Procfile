@@ -1,1 +1,2 @@
-web: python manage.py makemigrations; python manage.py migrate; python manage.py collectstaticl; python manage.py runserver "0.0.0.0:$PORT"
+release: conda install gdal fiona rtree shapely pyproj; python -m pip install --user -r requirements.txt; python manage.py migrate
+web: python manage.py runserver "0.0.0.0:$PORT"
