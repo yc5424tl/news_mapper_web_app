@@ -1,2 +1,2 @@
-release: pip install conda; conda install gdal fiona rtree shapely pyproj; python -m pip install --user -r requirements.txt; python manage.py migrate
+release: ./release.sh
 web: python manage.py runserver "0.0.0.0:$PORT"
