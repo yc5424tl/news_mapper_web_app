@@ -1,0 +1,954 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AnalysisUIOptions">
+    <option name="SCOPE_TYPE" value="8" />
+    <option name="CUSTOM_SCOPE_NAME" value="1" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="28f412dd-7212-4fcd-b783-c235dbd93712" name="Default" comment="">
+      <change type="MOVED" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/news_mapper_django/.gitignore" />
+    </list>
+    <ignored path="venv/" />
+    <ignored path="requirements.txt" />
+    <ignored path=".idea/" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="TRACKING_ENABLED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="DjangoConsoleOptions" custom-start-script="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)">
+    <option name="myCustomStartScript" value="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)" />
+  </component>
+  <component name="FileColors">
+    <fileColor scope="Non-Project Files (Material Default)" color="2E3C43" />
+    <fileColor scope="Non-Project Files (Material Darker)" color="323232" />
+    <fileColor scope="Non-Project Files (Material Lighter)" color="eae8e8" />
+    <fileColor scope="Non-Project Files (Material Palenight)" color="2f2e43" />
+  </component>
+  <component name="FileEditorManager">
+    <splitter split-orientation="horizontal" split-proportion="0.4535433">
+      <split-first>
+        <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
+          <file leaf-file-name="Dockerfile" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/news_mapper_django/Dockerfile">
+              <provider selected="true" editor-type-id="images">
+                <state />
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="settings.py" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/news_mapper_django/news_mapper/settings.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="336">
+                  <caret line="228" column="60" lean-forward="false" selection-start-line="228" selection-start-column="60" selection-end-line="228" selection-end-column="60" />
+                  <folding>
+                    <element signature="e#0#318#1" expanded="true" />
+                    <element signature="e#320#329#0" expanded="true" />
+                    <element signature="e#330#375#0" expanded="true" />
+                    <element signature="e#2336#3022#0" expanded="true" />
+                    <element signature="e#2666#3012#0" expanded="true" />
+                    <element signature="e#2702#2973#0" expanded="true" />
+                    <element signature="e#3165#3314#0" expanded="true" />
+                    <element signature="e#3182#3312#0" expanded="true" />
+                    <element signature="e#4359#4458#0" expanded="true" />
+                    <element signature="e#4464#4553#0" expanded="true" />
+                    <element signature="e#4559#4649#0" expanded="true" />
+                    <element signature="e#4655#4746#0" expanded="true" />
+                    <element signature="e#4755#4777#0" expanded="true" />
+                    <element signature="e#6195#6249#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="requirements.txt" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/news_mapper_django/requirements.txt">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="126">
+                  <caret line="6" column="13" lean-forward="false" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/news_mapper_django/news_mapper_web/views.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="42">
+                  <caret line="17" column="46" lean-forward="false" selection-start-line="17" selection-start-column="46" selection-end-line="17" selection-end-column="46" />
+                  <folding>
+                    <element signature="e#0#11#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="wsgi.py" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/news_mapper_django/news_mapper/wsgi.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="189">
+                  <caret line="20" column="0" lean-forward="false" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="urls.py" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/news_mapper_django/news_mapper/urls.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="168">
+                  <caret line="25" column="0" lean-forward="false" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-first>
+      <split-second>
+        <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
+          <file leaf-file-name="Procfile" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/news_mapper_django/Procfile">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="0">
+                  <caret line="0" column="21" lean-forward="false" selection-start-line="0" selection-start-column="21" selection-end-line="0" selection-end-column="21" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name=".env" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/news_mapper_django/.env">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="42">
+                  <caret line="1" column="27" lean-forward="true" selection-start-line="1" selection-start-column="27" selection-end-line="1" selection-end-column="27" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="start.sh" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/news_mapper_django/start.sh">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="63">
+                  <caret line="3" column="16" lean-forward="false" selection-start-line="3" selection-start-column="16" selection-end-line="3" selection-end-column="16" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="Procfile.windows" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/news_mapper_django/Procfile.windows">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="0">
+                  <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="runtime.txt" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/news_mapper_django/runtime.txt">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="0">
+                  <caret line="0" column="12" lean-forward="false" selection-start-line="0" selection-start-column="12" selection-end-line="0" selection-end-column="12" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-second>
+    </splitter>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="HTML File" />
+        <option value="CSS File" />
+        <option value="Python Script" />
+        <option value="JavaScript File" />
+      </list>
+    </option>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>AUTHENTICATIOn</find>
+      <find>cnn</find>
+      <find>==</find>
+      <find>&gt;=</find>
+      <find>&gt;=[0-2018].[0-20].[0-20]</find>
+      <find>new_post</find>
+      <find>{#</find>
+      <find>sources</find>
+      <find>center</find>
+      <find>view-user</find>
+      <find>posts</find>
+      <find>comment</find>
+      <find>col-8</find>
+      <find>view-user-banner</find>
+      <find>view-post-comment</find>
+      <find>comment-fo</find>
+      <find>pagination</find>
+    </findStrings>
+    <replaceStrings>
+      <replace>=</replace>
+      <replace>&gt;=</replace>
+    </replaceStrings>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="geodjango" />
+      </map>
+    </option>
+    <push-targets>
+      <push-target-info target-remote="origin" target-branch="master" repo="$PROJECT_DIR$" source="master" />
+    </push-targets>
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/app/news_mapper_web/urls.py" />
+        <option value="$PROJECT_DIR$/app/news_mapper_web/templates/news_mapper_web/login_user.html" />
+        <option value="$PROJECT_DIR$/app/news_mapper_web/templates/news_mapper_web/view_choro.html" />
+        <option value="$PROJECT_DIR$/app/news_mapper_web/api_mgr.py" />
+        <option value="$PROJECT_DIR$/app/news_mapper_web/templates/registration/login.html" />
+        <option value="$PROJECT_DIR$/app/news_mapper_web/templates/news_mapper_web/index.html" />
+        <option value="$PROJECT_DIR$/app/news_mapper_web/templates/news_mapper_web/view_sources.html" />
+        <option value="$PROJECT_DIR$/app/news_mapper_web/static/js/clock.js" />
+        <option value="$PROJECT_DIR$/app/news_mapper_web/templates/news_mapper_web/view_user.html" />
+        <option value="$PROJECT_DIR$/app/news_mapper_web/forms.py" />
+        <option value="$PROJECT_DIR$/app/news_mapper_web/templates/news_mapper_web/new_comment.html" />
+        <option value="$PROJECT_DIR$/app/news_mapper_web/templates/news_mapper_web/view_comment.html" />
+        <option value="$PROJECT_DIR$/app/news_mapper_web/templates/news_mapper_web/view_query.html" />
+        <option value="$PROJECT_DIR$/app/news_mapper_web/templates/news_mapper_web/view_post.html" />
+        <option value="$PROJECT_DIR$/app/news_mapper_web/templates/news_mapper_web/base.html" />
+        <option value="$PROJECT_DIR$/app/news_mapper_web/templates/news_mapper_web/view_public_posts.html" />
+        <option value="$PROJECT_DIR$/app/news_mapper_web/static/css/style.css" />
+        <option value="$PROJECT_DIR$/Procfile.windows" />
+        <option value="$PROJECT_DIR$/app/requirements.txt" />
+        <option value="$PROJECT_DIR$/app/runtime.txt" />
+        <option value="$PROJECT_DIR$/app/news_mapper/wsgi.py" />
+        <option value="$PROJECT_DIR$/app/Procfile" />
+        <option value="$PROJECT_DIR$/app/news_mapper/settings.py" />
+        <option value="$PROJECT_DIR$/Procfile" />
+        <option value="$PROJECT_DIR$/news_mapper/wsgi.py" />
+        <option value="$PROJECT_DIR$/news_mapper_web/templates/news_mapper_web/view_sources.html" />
+        <option value="$PROJECT_DIR$/runtime.txt" />
+        <option value="$PROJECT_DIR$/.env" />
+        <option value="$PROJECT_DIR$/requirements.txt" />
+        <option value="$PROJECT_DIR$/news_mapper_web/views.py" />
+        <option value="$PROJECT_DIR$/news_mapper/settings.py" />
+        <option value="$PROJECT_DIR$/news_mapper_web/templates/news_mapper_web/view_public_posts.html" />
+        <option value="$PROJECT_DIR$/news_mapper_web/api_mgr.py" />
+        <option value="$PROJECT_DIR$/news_mapper_web/templates/news_mapper_web/base.html" />
+        <option value="$PROJECT_DIR$/news_mapper_web/templates/news_mapper_web/new_query.html" />
+        <option value="$PROJECT_DIR$/news_mapper_web/static/css/style.css" />
+        <option value="$PROJECT_DIR$/news_mapper_django/start.sh" />
+        <option value="$PROJECT_DIR$/news_mapper_django/news_mapper_web/managers/article_manager.py" />
+        <option value="$PROJECT_DIR$/news_mapper_django/manage.py" />
+        <option value="$PROJECT_DIR$/news_mapper_django/news_mapper/urls.py" />
+        <option value="$PROJECT_DIR$/news_mapper_django/news_mapper_web/views.py" />
+        <option value="$PROJECT_DIR$/news_mapper_django/news_mapper_web/api_mgr.py" />
+        <option value="$PROJECT_DIR$/.gitignore" />
+        <option value="$PROJECT_DIR$/release.sh" />
+        <option value="$PROJECT_DIR$/news_mapper_django/news_mapper/settings.py" />
+        <option value="$PROJECT_DIR$/news_mapper_django/Aptfile" />
+        <option value="$PROJECT_DIR$/news_mapper_django/Procfile.windows" />
+        <option value="$PROJECT_DIR$/news_mapper_django/Procfile" />
+        <option value="$PROJECT_DIR$/pip_check.txt" />
+        <option value="$PROJECT_DIR$/news_mapper_django/requirements.txt" />
+        <option value="$PROJECT_DIR$/news_mapper_django/runtime.txt" />
+      </list>
+    </option>
+  </component>
+  <component name="JsBowerSettings">
+    <node-interpreter value="project" />
+    <exe-path>$USER_HOME$/AppData/Roaming/npm/bower.cmd</exe-path>
+    <config-path />
+  </component>
+  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsFlowSettings">
+    <service-enabled>true</service-enabled>
+    <exe-path />
+    <annotation-enable>false</annotation-enable>
+    <other-services-enabled>true</other-services-enabled>
+    <auto-save>true</auto-save>
+  </component>
+  <component name="JsGulpfileManager">
+    <detection-done>true</detection-done>
+    <sorting>DEFINITION_ORDER</sorting>
+  </component>
+  <component name="JsbtTreeLayoutManager">
+    <layout place="tools.popupGrunt">
+      <scroll-view-position x="0" y="0" />
+    </layout>
+  </component>
+  <component name="NamedScopeManager">
+    <scope name="1" pattern="file:app/news_mapper_web/static/css/style.css||file:app/news_mapper_web/static/js/old_sources.json||file:app/news_mapper/urls.py||file:app/news_mapper_web/static/txt/geo_data_for_news_choropleth.txt" />
+  </component>
+  <component name="ProjectFrameBounds">
+    <option name="width" value="960" />
+    <option name="height" value="1080" />
+  </component>
+  <component name="ProjectInspectionProfilesVisibleTreeState">
+    <entry key="Project Default">
+      <profile-state>
+        <expanded-state>
+          <State>
+            <id />
+          </State>
+          <State>
+            <id>General</id>
+          </State>
+          <State>
+            <id>Python</id>
+          </State>
+        </expanded-state>
+        <selected-state>
+          <State>
+            <id>PyPep8Inspection</id>
+          </State>
+        </selected-state>
+      </profile-state>
+    </entry>
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectView">
+    <navigator currentView="ProjectPane" proportions="" version="1">
+      <flattenPackages />
+      <showMembers />
+      <showModules />
+      <showLibraryContents />
+      <hideEmptyPackages />
+      <abbreviatePackageNames />
+      <autoscrollToSource />
+      <autoscrollFromSource />
+      <sortByType />
+      <manualOrder />
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="Scratches" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="news_mapper_django" type="b2602c69:ProjectViewProjectNode" />
+              <item name="news_mapper_django" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="news_mapper_django" type="b2602c69:ProjectViewProjectNode" />
+              <item name="news_mapper_django" type="462c0819:PsiDirectoryNode" />
+              <item name="news_mapper_django" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="NBKnowledgePane" />
+      <pane id="Scope" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+    <property name="last_opened_file_path" value="$USER_HOME$/Anaconda3/envs/news_mapper_conda_env/python.exe" />
+    <property name="ignore_missing_gitignore" value="true" />
+    <property name="HbShouldOpenHtmlAsHb" value="" />
+    <property name="nodejs_interpreter_path" value="C:/Program Files/nodejs/node" />
+    <property name="JavaScriptPreferStrict" value="false" />
+    <property name="JavaScriptWeakerCompletionTypeGuess" value="true" />
+    <property name="DefaultHtmlFileTemplate" value="HTML File" />
+    <property name="list.type.of.created.stylesheet" value="CSS" />
+    <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
+    <property name="add_unversioned_files" value="true&#10;E:/Alpha/Software Development Capstone - 2905-01/My Files/Projects/news_mapper_django/.env" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="E:\Alpha\Software Development Capstone - 2905-01\My Files\Projects\news_mapper_django\news_mapper_django" />
+      <recent name="E:\Alpha\Software Development Capstone - 2905-01\My Files\Projects\news_mapper_django" />
+      <recent name="E:\Alpha\Software Development Capstone - 2905-01\My Files\Projects\news_mapper_django\app\news_mapper_web\templates" />
+      <recent name="E:\Alpha\Software Development Capstone - 2905-01\My Files\Projects\news_mapper_django\app\news_mapper_web\templates\news_mapper_web" />
+      <recent name="E:\Alpha\Software Development Capstone - 2905-01\My Files\Projects\news_mapper_django\app\static\news_mapper_web" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\Alpha\Software Development Capstone - 2905-01\My Files\Projects\news_mapper_django\news_mapper_django\news_mapper_web" />
+      <recent name="E:\Alpha\Software Development Capstone - 2905-01\My Files\Projects\news_mapper_django\news_mapper_django\wheels" />
+      <recent name="E:\Alpha\Software Development Capstone - 2905-01\My Files\Projects\news_mapper_django\news_mapper_web\static\img" />
+      <recent name="E:\Alpha\Software Development Capstone - 2905-01\My Files\Projects\news_mapper_django" />
+      <recent name="E:\Alpha\Software Development Capstone - 2905-01\My Files\Projects\news_mapper_django\wheels" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager" selected="Django server.news_mapper_web_app">
+    <configuration default="true" type="PyBehaveRunConfigurationType" factoryName="Behave">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="news_mapper_web_app" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="ADDITIONAL_ARGS" value="" />
+    </configuration>
+    <configuration default="true" type="Python.DjangoServer" factoryName="Django server">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="news_mapper_django" />
+      <option name="launchJavascriptDebuger" value="false" />
+      <option name="port" value="8000" />
+      <option name="host" value="" />
+      <option name="additionalOptions" value="" />
+      <option name="browserUrl" value="" />
+      <option name="runTestServer" value="false" />
+      <option name="runNoReload" value="false" />
+      <option name="useCustomRunCommand" value="false" />
+      <option name="customRunCommand" value="" />
+    </configuration>
+    <configuration default="true" type="DjangoTestsConfigurationType" factoryName="Django tests">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="news_mapper_web_app" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="TARGET" value="" />
+      <option name="SETTINGS_FILE" value="" />
+      <option name="CUSTOM_SETTINGS" value="false" />
+      <option name="USE_OPTIONS" value="false" />
+      <option name="OPTIONS" value="" />
+    </configuration>
+    <configuration default="true" type="tests" factoryName="Doctests">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="news_mapper_web_app" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="CLASS_NAME" value="" />
+      <option name="METHOD_NAME" value="" />
+      <option name="FOLDER_NAME" value="" />
+      <option name="TEST_TYPE" value="TEST_SCRIPT" />
+      <option name="PATTERN" value="" />
+      <option name="USE_PATTERN" value="false" />
+    </configuration>
+    <configuration default="true" type="PyLettuceRunConfigurationType" factoryName="Lettuce">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="news_mapper_web_app" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="ADDITIONAL_ARGS" value="" />
+    </configuration>
+    <configuration default="true" type="PythonConfigurationType" factoryName="Python">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="news_mapper_web_app" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+    </configuration>
+    <configuration default="true" type="Tox" factoryName="Tox">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <module name="news_mapper_web_app" />
+    </configuration>
+    <configuration default="true" type="tests" factoryName="Nosetests">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="news_mapper_web_app" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="_new_regexPattern" value="&quot;&quot;" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;&quot;" />
+      <option name="_new_targetType" value="&quot;PATH&quot;" />
+    </configuration>
+    <configuration default="true" type="tests" factoryName="Unittests">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="news_mapper_web_app" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;&quot;" />
+      <option name="_new_targetType" value="&quot;PATH&quot;" />
+    </configuration>
+    <configuration default="true" type="tests" factoryName="py.test">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="news_mapper_web_app" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="_new_keywords" value="&quot;&quot;" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;&quot;" />
+      <option name="_new_targetType" value="&quot;PATH&quot;" />
+    </configuration>
+    <configuration name="news_mapper_web_app" type="Python.DjangoServer" factoryName="Django server">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="NEWS_MAPPER_KEY" value="'dlt$aysys8tmw^kasdfg429m_-=6$f%#y3@lkqy@m1e))p84*s'" />
+        <env name="PYTHONUNBUFFERED" value="1" />
+        <env name="NEWS_CLIENT_API_KEY" value="5df648f726dd42d69fe046b765e22667" />
+        <env name="api_key_news" value="daaba2aab3d54874a0a154c18715e82c" />
+      </envs>
+      <option name="SDK_HOME" value="C:\Users\g\.virtualenvs\venv\Scripts\python.exe" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="news_mapper_django" />
+      <option name="launchJavascriptDebuger" value="false" />
+      <option name="port" value="8000" />
+      <option name="host" value="" />
+      <option name="additionalOptions" value="" />
+      <option name="browserUrl" value="" />
+      <option name="runTestServer" value="false" />
+      <option name="runNoReload" value="false" />
+      <option name="useCustomRunCommand" value="false" />
+      <option name="customRunCommand" value="" />
+    </configuration>
+  </component>
+  <component name="ShelveChangesManager" show_recycled="false">
+    <option name="remove_strategy" value="false" />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="0" y="0" width="960" height="1080" extended-state="0" />
+    <layout>
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="ReactNative" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="12" side_tool="true" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32911393" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Mongo Explorer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3729146" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3329832" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Docker" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32973504" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
+      <window_info id="JSON Utils" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Inspection Results" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32911393" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3261928" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+    </layout>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Have bare bones site working,&#10;now adding minimum business logic to show proof of concept" />
+    <MESSAGE value="Added a good portion of the business logic. Going to remove auth for the time being and add it back in once the rest is further along." />
+    <MESSAGE value="business logic appears to be working.&#10;&#10;After query has executed, template rendering produces a PermissionError.&#10;&#10;Possibility 1:&#10;     The template is denied access from the DB when retrieving the query.choropleth (html file)&#10;     &#10;Possibility 2:&#10;     To get the map_mgr to read 'geo_data_for_news_choropleth.txt', the first working solution was creating a new static directory. The 2nd static directory is in the project level directory, not the app level directory. Perhaps the template is first directed to the project level static folder, which it might lack access to." />
+    <MESSAGE value="omg it displayed....take raw html from query, pass through view, render page with jquery applying the html to a &lt;p&gt; element" />
+    <MESSAGE value="aside from threading issues coming from tkinter during folium plotting, app framework is done. &#10;&#10;Next up:&#10;           - Add some structure to url's&#10;           - Add corresponding templates/views&#10;           - Split large functions&#10;           - Re-examine project structure&#10;           &#10;           Possible solutions to the threading issue:&#10;                - Make use of a notebook like Jupyter to handle rendering&#10;                - Convert the maps to an image to host on GCP&#10;                - Restrict requests to the offending urls to come from specific urls inside the app?" />
+    <MESSAGE value="Added Auth and Finished Views/Models" />
+    <MESSAGE value="Had Main Functionality running earlier, seemed to have deleted something useful along with the commented out old code..." />
+    <MESSAGE value="Main routing, business logic, and auth are friends for now." />
+    <MESSAGE value="Querying and Posting now functional.&#10;Next: Commenting" />
+    <MESSAGE value="Commenting working.&#10;Next: &#10;    - adding del/update methods for posts/comments&#10;    - Public/Private Posts&#10;    - Deploy ?" />
+    <MESSAGE value="folium iframes working" />
+    <MESSAGE value="Styles Added" />
+    <MESSAGE value="Deployment Fun" />
+    <MESSAGE value="Django-Heroku and Conf Vars Added" />
+    <MESSAGE value="dockerized" />
+    <MESSAGE value="need to spell things right in the dockerfile.." />
+    <MESSAGE value="need aale.." />
+    <MESSAGE value="need aale..werer" />
+    <option name="LAST_COMMIT_MESSAGE" value="need aale..werer" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <option name="time" value="37" />
+    </breakpoint-manager>
+    <watches-manager />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/news_mapper_web/templates/news_mapper_web/view_comment.html" />
+    <entry file="file://$PROJECT_DIR$/news_mapper_web/templates/news_mapper_web/view_public_posts.html" />
+    <entry file="file://$PROJECT_DIR$/news_mapper_web/templates/news_mapper_web/index.html" />
+    <entry file="file://$PROJECT_DIR$/news_mapper_web/static/img/mtn_a_transp.png" />
+    <entry file="file://$PROJECT_DIR$/news_mapper_web/api_mgr.py" />
+    <entry file="file://$PROJECT_DIR$/api_data-World Cup_all-20180929-030401.json" />
+    <entry file="file://$PROJECT_DIR$/news_mapper_web/map_mgr.py" />
+    <entry file="file://$PROJECT_DIR$/news_mapper_web/templates/news_mapper_web/view_sources.html" />
+    <entry file="file://$PROJECT_DIR$/news_mapper_web/views.py" />
+    <entry file="file://$PROJECT_DIR$/news_mapper_web/templates/news_mapper_web/base.html" />
+    <entry file="file://$PROJECT_DIR$/news_mapper_web/templates/news_mapper_web/new_query.html" />
+    <entry file="file://$PROJECT_DIR$/news_mapper_web/static/img/mtn_2.png" />
+    <entry file="file://$PROJECT_DIR$/news_mapper_web/static/img/news-bg-map-relief.jpg" />
+    <entry file="file://$PROJECT_DIR$/news_mapper_web/static/img/news-bg-paper-rack.jpg" />
+    <entry file="file://$PROJECT_DIR$/news_mapper_web/static/img/plexal-img.jpg" />
+    <entry file="file://$PROJECT_DIR$/news_mapper_web/static/img/news-bg-tz-map.jpg" />
+    <entry file="file://$PROJECT_DIR$/news_mapper_web/static/img/mtn-bkrd-window.jpg" />
+    <entry file="file://$PROJECT_DIR$/news_mapper_web/static/img/mtn_3.png" />
+    <entry file="file://$PROJECT_DIR$/news_mapper_web/static/css/style.css" />
+    <entry file="file://$PROJECT_DIR$/news_mapper/settings.py" />
+    <entry file="file://$PROJECT_DIR$/news_mapper_django/venv/pipenv-proper-names.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="42">
+          <caret line="2" column="0" lean-forward="false" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/news_mapper_django/news_mapper_web/managers/article_manager.py" />
+    <entry file="file://$PROJECT_DIR$/news_mapper_django/manage.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="252">
+          <caret line="15" column="0" lean-forward="false" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/news_mapper_django/news_mapper_web/tests.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/news_mapper_django/news_mapper_web/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/news_mapper_django/news_mapper_web/metadata_mgr.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="84">
+          <caret line="4" column="0" lean-forward="false" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/news_mapper_django/news_mapper_web/map_mgr.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="399">
+          <caret line="19" column="80" lean-forward="false" selection-start-line="19" selection-start-column="80" selection-end-line="19" selection-end-column="80" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/news_mapper_django/news_mapper_web/forms.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/news_mapper_django/news_mapper_web/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-3">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/news_mapper_django/news_mapper_web/admin.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/news_mapper_django/news_mapper_web/auth_backends.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/news_mapper_django/news_mapper_web/apps.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/news_mapper_django/news_mapper_web/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="42">
+          <caret line="17" column="46" lean-forward="false" selection-start-line="17" selection-start-column="46" selection-end-line="17" selection-end-column="46" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/news_mapper_django/news_mapper_web/api_mgr.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="192" column="33" lean-forward="false" selection-start-line="192" selection-start-column="33" selection-end-line="192" selection-end-column="33" />
+          <folding>
+            <marker date="1539901184995" expanded="true" signature="385:8238" ph="..." />
+            <marker date="1539901184995" expanded="true" signature="4657:6055" ph="..." />
+            <marker date="1539901184995" expanded="true" signature="5011:5171" ph="..." />
+            <marker date="1539901184995" expanded="true" signature="5623:6015" ph="..." />
+            <marker date="1539901184995" expanded="true" signature="6105:7128" ph="..." />
+            <marker date="1539901184995" expanded="true" signature="6827:7088" ph="..." />
+            <marker date="1539901184995" expanded="true" signature="7198:7692" ph="..." />
+            <marker date="1539901184995" expanded="true" signature="7211:7319" ph="..." />
+            <marker date="1539901184995" expanded="true" signature="7733:8035" ph="..." />
+            <marker date="1539901184995" expanded="true" signature="7841:8007" ph="..." />
+            <marker date="1539901184995" expanded="true" signature="7926:8007" ph="..." />
+            <marker date="1539901184995" expanded="true" signature="8107:8238" ph="..." />
+            <marker date="1539901184995" expanded="false" signature="8139:8238" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/news_mapper_django/news_mapper_web/geo_data_for_news_choropleth.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/news_mapper_django/old_requirements_4.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="294">
+          <caret line="31" column="13" lean-forward="false" selection-start-line="31" selection-start-column="13" selection-end-line="31" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/news_mapper_django/news_mapper_web/backends.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-144">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/news_mapper_django/Dockerfile">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/news_mapper_django/news_mapper/wsgi.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="189">
+          <caret line="20" column="0" lean-forward="false" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/news_mapper_django/news_mapper/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="168">
+          <caret line="25" column="0" lean-forward="false" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/news_mapper_django/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-498">
+          <caret line="6" column="8" lean-forward="false" selection-start-line="6" selection-start-column="8" selection-end-line="6" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/news_mapper_django/news_mapper/settings.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="336">
+          <caret line="228" column="60" lean-forward="false" selection-start-line="228" selection-start-column="60" selection-end-line="228" selection-end-column="60" />
+          <folding>
+            <element signature="e#0#318#1" expanded="true" />
+            <element signature="e#320#329#0" expanded="true" />
+            <element signature="e#330#375#0" expanded="true" />
+            <element signature="e#2336#3022#0" expanded="true" />
+            <element signature="e#2666#3012#0" expanded="true" />
+            <element signature="e#2702#2973#0" expanded="true" />
+            <element signature="e#3165#3314#0" expanded="true" />
+            <element signature="e#3182#3312#0" expanded="true" />
+            <element signature="e#4359#4458#0" expanded="true" />
+            <element signature="e#4464#4553#0" expanded="true" />
+            <element signature="e#4559#4649#0" expanded="true" />
+            <element signature="e#4655#4746#0" expanded="true" />
+            <element signature="e#4755#4777#0" expanded="true" />
+            <element signature="e#6195#6249#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/news_mapper_django/Aptfile">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="189">
+          <caret line="9" column="12" lean-forward="false" selection-start-line="9" selection-start-column="12" selection-end-line="9" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/news_mapper_django/release.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="168">
+          <caret line="6" column="24" lean-forward="false" selection-start-line="6" selection-start-column="24" selection-end-line="6" selection-end-column="24" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/news_mapper_django/start.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="63">
+          <caret line="3" column="16" lean-forward="false" selection-start-line="3" selection-start-column="16" selection-end-line="3" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/news_mapper_django/Procfile.windows">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pip_check.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="1" lean-forward="false" selection-start-line="0" selection-start-column="1" selection-end-line="0" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/news_mapper_django/Procfile">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="21" lean-forward="false" selection-start-line="0" selection-start-column="21" selection-end-line="0" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/news_mapper_django/requirements.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="126">
+          <caret line="6" column="13" lean-forward="false" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/news_mapper_django/.env">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="42">
+          <caret line="1" column="27" lean-forward="true" selection-start-line="1" selection-start-column="27" selection-end-line="1" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/news_mapper_django/runtime.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="12" lean-forward="false" selection-start-line="0" selection-start-column="12" selection-end-line="0" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="ScopeChooserConfigurable.UI">
+        <settings>
+          <last-edited>1</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+          <order>
+            <scope name="1" />
+          </order>
+        </settings>
+      </state>
+    </states>
+  </component>
+</project>

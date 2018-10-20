@@ -2,7 +2,7 @@
 ### Python template
 # Byte-compiled / optimized / DLL files
 __pycache__/
-*.py[cod]
+venv/Lib/site-packages/pandas/_libs/groupby.cp36-win32.pyd
 *$py.class
 api_data*.json
 # C extensions
