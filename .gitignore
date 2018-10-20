@@ -7,6 +7,10 @@ __pycache__/
 api_data*.json
 # C extensions
 *.so
+old*
+ven37/
+wheels/
+*.whl
 
 # Distribution / packaging
 .Python
