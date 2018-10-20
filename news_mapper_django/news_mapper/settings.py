@@ -225,8 +225,8 @@ LOGIN_URL = 'login'
 # LOGIN_REDIRECT_URL = ''
 LOGOUT_REDIRECT_URL = 'index'
 
-GDAL_LIBRARY_PATH = os.getenv('GDAL_LIBRARY_PATH')
-GEOS_LIBRARY_PATH = os.getenv('GEOS_LIBRARY_PATH')
+GDAL_LIBRARY_PATH = os.environ.get('GDAL_LIBRARY_PATH', None)
+GEOS_LIBRARY_PATH = os.environ.get('GEOS_LIBRARY_PATH', None)
 
 
 # GDAL_LIBRARY_PATH=/app/.heroku/vendor/lib/libgdal.so

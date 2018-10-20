@@ -16,7 +16,6 @@ ENV NEWS_MAPPER_KEY ${NEWS_MAPPER_KEY}
 ENTRYPOINT ["/bin/bash", "-c"]
 COPY . /code
 WORKDIR /code
-ADD . /code
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 RUN apt-get update && apt-get install -y && apt-get install build-essential libssl-dev -y && rm -rf /var/lib/apt/lists/*
 RUN conda create --name news_mapper_conda_env python=3 && source activate news_mapper_conda_env && conda install GDAL Fiona cython pyproj rtree shapely django && pip install --trusted-host pypi.python.org -r requirements.txt

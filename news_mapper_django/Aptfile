@@ -1,1 +1,10 @@
-libjasper
+libgeos-3.4.2
+proj-bin
+proj-data
+libproj0
+libgdal1h
+gdal-bin
+libblas3
+liblapack3
+libjasper1
+libquadmath0
