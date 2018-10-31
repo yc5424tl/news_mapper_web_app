@@ -1,72 +1,69 @@
-#Map the News
+# Map the News
 
 A Django based web-app where a user's query returns a choropleth map of where related news stories were published. Authenticated users can not only make searches, but also save their results, post them, and comment on their's and other's posts too. 
 
-<hr>
-##PREREQUISITES##
 
-    ###1. Python###
-        * Runtime 3.6.6
-    
-    ###2. Dependencies listed in requirements.txt###
-        __Windows Installation Details Below__
-    
-    ###3. Environment Variables###
-        * 'NEWS_CLIENT_API_KEY' == API Key from <a href="www.newsapi.org">newsapi.org</a>
-        * 'NEWS_MAPPER_SECRET'  == User defined value for the encryption key
-    
-    ###4. Virtual Environment use Recommended###
-        * Conda and Pip used in development
 
-<hr>
+## PREREQUISITES
 
-##NOTES AND KNOWN ISSUES##
+### 1. Python
+   * Runtime 3.6.6
 
-    ###1. Building Queries###
-    
-        * MAXIMUM OF 40,000 RESULTS PER DAY TOTAL allowed per api key, query with a purpose.
+### 2. Dependencies listed in requirements.txt
+   __Windows Installation Details Below__
+
+### 3. Environment Variables
+   * 'NEWS_CLIENT_API_KEY' == API Key from [newsapi.org](https://www.newsapi.org)
+   * 'NEWS_MAPPER_SECRET'  == User defined value for the encryption key
+
+### 4. Virtual Environment use Recommended
+   * Conda and Pip used in development
+
+
+
+## NOTES AND KNOWN ISSUES
+
+   ### 1. Building Queries
+     
+   * MAXIMUM OF 40,000 RESULTS PER DAY TOTAL allowed per api key, query with a purpose.
         
-        * The number of results (articles) returned from querying the API has a maximum of 10,000
+   * The number of results (articles) returned from querying the API has a maximum of 10,000
         
-        * A maximum of 5,000 is currently hard-coded at api_mgr.query_api:
-                ```
-                    line 44: top_range = 50
-                ```
+   * A maximum of 5,000 is currently hard-coded at api_mgr.query_api:
+     ```
+    line 44: top_range = 50
+     ```
             
-        * The top_range value has a functional range of 0-100
+   * The top_range value has a functional range of 0-100
         
-        * For a responsive top_range value, uncomment lines 39-42 (below), and comment out line 44 (above)
-                ```
-                    line 39: top_range = ((article_count // 100) -1)
-                    line 40:
-                    line 41: if top_range > 100:
-                    line 42:    top_range = 100
-                ```
-        
-        
-    ###2. Query types (Map the News###
-        * Although listed, the 'headlines' option has limited capabilites, as paging through the API response is not yet in place
-        * The 'all' option should be solely used currently. 
+   * For a responsive top_range value, uncomment lines 39-42 (below), and comment out line 44 (above)
+     ```
+    line 39: top_range = ((article_count // 100) -1)
+   line 40:
+    line 41: if top_range > 100:
+    line 42:    top_range = 100```
+ 
+   ### 2. Query types (Map the News)
+   * Although listed, the 'headlines' option has limited capabilites, as paging through the API response is not yet in place
+   * The 'all' option should be solely used currently. 
 
-
-    ###3. Delete Foo###
-        * Buttons to Delete Comments, Queries, and Posts are not yet functional, although visible. 
-
-
-
-<hr>
-
-##INSTALLING ON WINDOWS##
-
-    ###1. Download and Install 'Build Tools for Visual Studio 2017' from <a href="https://visualstudio.microsoft.com/downloads/">Microsoft</a>###
-
-
-    ###2. Install GDAL, Fiona, Shapely, RTree, and PyProj###
-
-
-        * Windows lacks the C++ Libraries to install these as is
-    
    
+   ### 3. Delete Foo
+   * Buttons to Delete Comments, Queries, and Posts are not yet functional, although visible. 
+
+
+
+
+
+
+## INSTALLING ON WINDOWS
+
+   ### 1. Download and Install 'Build Tools for Visual Studio 2017' from(https://visualstudio.microsoft.com/downloads/)
+
+   ### 2. Install GDAL, Fiona, Shapely, RTree, and PyProj
+   
+        * Windows lacks the C++ Libraries to install these
+    
         * Using CONDA virtual env:
         
             * The conda package manner can handle the installation out of the box:
@@ -102,7 +99,7 @@ A Django based web-app where a user's query returns a choropleth map of where re
                 ```
           
           
-###3. Start App###
+### 3. Start App
       * Using the command line from the project root (or another location, prepending the manage.py file with the relative path), enter:
             ```
                 python manage.py createsuperuser (follow prompts)
@@ -112,7 +109,7 @@ A Django based web-app where a user's query returns a choropleth map of where re
             ```
             
           
-###4. Visit Site###
+### 4. Visit Site
       * Using a browser, navigate to either localhost:8000 or 127.0.0.1:8000
       
       
