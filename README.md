@@ -3,24 +3,24 @@ Choropleth Maps of the News
 <hr>
 <h1>REQUIRED</h1>
 
-    <b>1. Python</b> 
+    <em>1. Python</em> 
         - Runtime 3.6.6
     
-    <b>2. Dependencies listed in requirements.txt</b>
+    <em>2. Dependencies listed in requirements.txt</em>
         - ****Windows Installation Details Below****
     
-    <b>3. Environment Variables</b>
+    <em>3. Environment Variables</em>
         - 'NEWS_CLIENT_API_KEY' == API Key from <a href="www.newsapi.org">newsapi.org</a>
         - 'NEWS_MAPPER_SECRET'  == Arbitrary user defined value for the encryption key
     
-    <b>4. Virtual Environment use Recommended</b>
+    <em>4. Virtual Environment use Recommended</em>
         - Conda and Pip used in development
 
 <hr>
 
 <h1>NOTES AND KNOWN ISSUES</h1>
 
-<b>1. Building Queries</b>
+<em>1. Building Queries</em>
     
         - The number of results (articles) returned from querying the API has a maximum of 10,000
 
@@ -42,14 +42,14 @@ Choropleth Maps of the News
         </pre></blockquote>
         
         
-<b>2. Query types (Map the News):</b>
+<em>2. Query types (Map the News):</em>
     
         - Although listed, the 'headlines' option has limited capabilites, as paging through the API response is not yet in place
         - The 'all' option should be solely used currently. 
 
 
 
-<b>3. Delete Foo</b>
+<em>3. Delete Foo</em>
 
     - Buttons to Delete Comments, Queries, and Posts are not yet functional, although visible. 
 
@@ -59,11 +59,11 @@ Choropleth Maps of the News
 
 <h1>WINDOWS INSTALLATION</h1>
 
-<b>1. Download and Install 'Build Tools for Visual Studio 2017' from <a href="https://visualstudio.microsoft.com/downloads/">Microsoft</a></b>
+<em>1. Download and Install 'Build Tools for Visual Studio 2017' from <a href="https://visualstudio.microsoft.com/downloads/">Microsoft</a></em>
 
 
 
-<b>2. Install GDAL, Fiona, Shapely, RTree, and PyProj</b>
+<em>2. Install GDAL, Fiona, Shapely, RTree, and PyProj</em>
 
     - Windows lacks the C++ Libraries to install these as is
     
@@ -81,14 +81,14 @@ Choropleth Maps of the News
           - Install remaining dependencies using "python -m pip install --user -r requirements.txt"
           
           
-<b>3. Start App</b>
+<em>3. Start App</em>
       - Using the command line from the project root (or another location, prepending the manage.py file with the relative path), enter:
       - "python manage.py createsuperuser", follow prompts
       - "python manage.py makemigrations"
       - "python manage.py migrate"
       - "python manage.py runserver"
           
-<b>4. Visit Site:</b>
+<em>4. Visit Site:</em>
       - Using a browser, navigate to either localhost:8000 or 127.0.0.1:8000
       
       
