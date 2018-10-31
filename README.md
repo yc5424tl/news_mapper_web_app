@@ -1,34 +1,30 @@
 # news_mapper_web_app
 Choropleth Maps of the News 
+<hr>
+<h1>REQUIRED</h1>
 
-REQUIRED =============================================
-
-    - Python Runtime 3.6.6
+    <b>1. Python</b> 
+        - Runtime 3.6.6
     
-    - Dependencies listed in requirements.txt
+    <b>2. Dependencies listed in requirements.txt</b>
         - ****Windows Installation Details Below****
     
-    - Environment Variables
+    <b>3. Environment Variables</b>
         - 'NEWS_CLIENT_API_KEY' == API Key from <a href="www.newsapi.org">newsapi.org</a>
         - 'NEWS_MAPPER_SECRET'  == Arbitrary user defined value for the encryption key
     
-    - Virtual Environment use Recommended
+    <b>4. Virtual Environment use Recommended</b>
         - Conda and Pip used in development
 
+<hr>
 
+<h1>NOTES AND KNOWN ISSUES</h1>
 
+<b>1. Building Queries</b>
+    
+        - The number of results (articles) returned from querying the API has a maximum of 10,000
 
-
-
-
-
-
-
-NOTES AND KNOWN ISSUES =================================
-
-1. The number of results (articles) returned from querying the API has a maximum of 10,00
-
-        -  MAXIMUM OF 40,000 RESULTS PER DAY TOTAL allowed per api key, query with intent. 
+        - MAXIMUM OF 40,000 RESULTS PER DAY TOTAL allowed per api key, query with intent. 
 
         - A maximum of 5,000 is currently hard-coded at api_mgr.query_api:
         
@@ -38,39 +34,36 @@ NOTES AND KNOWN ISSUES =================================
         
         - For a responsive top_range value, uncomment lines 39-42 (below), and comment out line 44 (above)
         
-        <blockquote>
+        <blockquote><pre>
             line 39: top_range = ((article_count // 100) -1)
             line 40:
             line 41: if top_range > 100:
             line 42:    top_range = 100
-        </blockquote>
+        </pre></blockquote>
         
         
-2. Query types (Map the News):
+<b>2. Query types (Map the News):</b>
     
         - Although listed, the 'headlines' option has limited capabilites, as paging through the API response is not yet in place
         - The 'all' option should be solely used currently. 
 
 
 
-3. Delete Foo
+<b>3. Delete Foo</b>
 
     - Buttons to Delete Comments, Queries, and Posts are not yet functional, although visible. 
 
 
 
+<hr>
+
+<h1>WINDOWS INSTALLATION</h1>
+
+<b>1. Download and Install 'Build Tools for Visual Studio 2017' from <a href="https://visualstudio.microsoft.com/downloads/">Microsoft</a></b>
 
 
 
-
-
-WINDOWS INSTALLATION ===================================
-
-1. Download and Install 'Build Tools for Visual Studio 2017' from <a href="https://visualstudio.microsoft.com/downloads/">Microsoft</a>
-
-
-
-2. Install GDAL, Fiona, Shapely, RTree, and PyProj
+<b>2. Install GDAL, Fiona, Shapely, RTree, and PyProj</b>
 
     - Windows lacks the C++ Libraries to install these as is
     
@@ -88,14 +81,14 @@ WINDOWS INSTALLATION ===================================
           - Install remaining dependencies using "python -m pip install --user -r requirements.txt"
           
           
-3. Start App
+<b>3. Start App</b>
       - Using the command line from the project root (or another location, prepending the manage.py file with the relative path), enter:
       - "python manage.py createsuperuser", follow prompts
       - "python manage.py makemigrations"
       - "python manage.py migrate"
       - "python manage.py runserver"
           
-4. Visit Site:
+<b>4. Visit Site:</b>
       - Using a browser, navigate to either localhost:8000 or 127.0.0.1:8000
       
       
