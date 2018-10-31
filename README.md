@@ -2,24 +2,30 @@
 
 A Django based web-app where a user's query returns a choropleth map of where related news stories were published. Authenticated users can not only make searches, but also save their results, post them, and comment on their's and other's posts too. 
 
-
+<br>
 
 ## PREREQUISITES
 
 ### 1. Python
    * Runtime 3.6.6
 
-### 2. Dependencies listed in requirements.txt
-   __Windows Installation Details Below__
+### 2. Pip
+   * Conda may be used in conjunction with, but not as a replacement for, pip. 
 
-### 3. Environment Variables
+### 3. Dependencies listed in requirements.txt
+   * Windows Installation Details Below
+
+### 4. Environment Variables
    * 'NEWS_CLIENT_API_KEY' == API Key from [newsapi.org](https://www.newsapi.org)
    * 'NEWS_MAPPER_SECRET'  == User defined value for the encryption key
 
-### 4. Virtual Environment use Recommended
-   * Conda and Pip used in development
+### 5. Virtual Environment Recommended
+   * Pip Example:
+   ```virtualenv create venv```
+   * Conda Example:
+   ```conda create fooEnv```
 
-
+<br>
 
 ## NOTES AND KNOWN ISSUES
 
@@ -37,11 +43,13 @@ A Django based web-app where a user's query returns a choropleth map of where re
    * The top_range value has a functional range of 0-100
         
    * For a responsive top_range value, uncomment lines 39-42 (below), and comment out line 44 (above)
-     ```
-    line 39: top_range = ((article_count // 100) -1)
+    
+    ```
+   line 39: top_range = (article_count // 100) -1 
    line 40:
-    line 41: if top_range > 100:
-    line 42:    top_range = 100```
+   line 41: if top_range > 100:
+   line 42:    top_range = 100
+    ```
  
    ### 2. Query types (Map the News)
    * Although listed, the 'headlines' option has limited capabilites, as paging through the API response is not yet in place
@@ -52,8 +60,7 @@ A Django based web-app where a user's query returns a choropleth map of where re
    * Buttons to Delete Comments, Queries, and Posts are not yet functional, although visible. 
 
 
-
-
+<hr>
 
 
 ## INSTALLING ON WINDOWS
@@ -67,16 +74,12 @@ A Django based web-app where a user's query returns a choropleth map of where re
         * Using CONDA virtual env:
         
             * The conda package manner can handle the installation out of the box:
-                ```
-                conda install gdal fiona shapely rtree pyproj pip
-                ```
+                ```conda install gdal fiona shapely rtree pyproj pip```
                 
             * Install remaining dependencies:
-                ```
-                pip install --user -r requirements.txt
-                ```
-          
-         
+                ```pip install --user -r requirements.txt```
+                
+           
         * Using PIP:
         
             * Using "pip install gdal fiona..." will fail
@@ -89,16 +92,13 @@ A Django based web-app where a user's query returns a choropleth map of where re
             * Either place wheels somewhere in the project folder, or note the (relative) path to where they are stored
             
             * In an active virtual env, install each individually (GDAL first) using:
-                ```
-                python -m pip install --user path\to\wheel\wheelfile.whl
-                ```
+                ```python -m pip install --user path\to\wheel\wheelfile.whl```
                 
             * Install remaining dependencies using:
-                ```
-                python -m pip install --user -r requirements.txt
-                ```
-          
-          
+                ```python -m pip install --user -r requirements.txt```
+                
+                
+                
 ### 3. Start App
       * Using the command line from the project root (or another location, prepending the manage.py file with the relative path), enter:
             ```
