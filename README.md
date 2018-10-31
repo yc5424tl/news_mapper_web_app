@@ -1,7 +1,7 @@
 # news_mapper_web_app
 Choropleth Maps of the News 
 
-======================================== REQUIRED ===========================================
+REQUIRED =============================================
 
     - Python Runtime 3.6.6
     
@@ -12,7 +12,8 @@ Choropleth Maps of the News
         - 'NEWS_CLIENT_API_KEY' == API Key from <a href="www.newsapi.org">newsapi.org</a>
         - 'NEWS_MAPPER_SECRET'  == Arbitrary user defined value for the encryption key
     
-============ VIRTUAL ENVIRONMENT RECOMMENDED (conda and pip used in development) ============
+VIRTUAL ENVIRONMENT RECOMMENDED =======================
+(conda and pip used in development)
 
 
 
@@ -21,7 +22,7 @@ Choropleth Maps of the News
 
 
 
-==================================== NOTES AND KNOWN ISSUES =================================
+NOTES AND KNOWN ISSUES =================================
 
 1. The number of results (articles) returned from querying the API has a maximum of 10,00
 
@@ -61,7 +62,7 @@ Choropleth Maps of the News
 
 
 
-==================================== WINDOWS INSTALLATION ===================================
+WINDOWS INSTALLATION ===================================
 
 1. Download and Install 'Build Tools for Visual Studio 2017' from <a href="https://visualstudio.microsoft.com/downloads/">Microsoft</a>
 
