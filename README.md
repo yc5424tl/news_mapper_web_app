@@ -6,28 +6,46 @@ A Django based web-app where a user's query returns a choropleth map of where re
 
 ## PREREQUISITES
 
+
 ### 1. Python
+
 * Runtime 3.6.6
 
+
+
 ### 2. Pip
+
 * Conda may be used in conjunction with, but not as a replacement for, pip. 
-* Conda comes prepackaged with several GeoSpatial libraries which, if using a Windows OS, require installing wheels manually in pip. 
+* Conda is able to install GDAL, Fiona, RTree, Shapely, and PyProj using standard commands. 
+* On Windows OS, pip is succesful only when installing pre-compiled wheel files which match the system architecture.  
 * Regardless of which method is used, pip is still required to install several packages which are not available using Conda. 
 
+
+
 ### 3. Dependencies listed in requirements.txt
+
 * Windows Installation Details Below
-* The requirements.txt file has no versions listed next to GDAL, RTree, PyProj, Shapely, or Fiona; this is intentional. 
+* The requirements.txt file has no versions listed next to GDAL, RTree, PyProj, Shapely, or Fiona; this is intentional.
+
 
 
 ### 4. Environment Variables
-* 'NEWS_CLIENT_API_KEY' == API Key from [newsapi.org](https://www.newsapi.org)
-* 'NEWS_MAPPER_SECRET'  == User defined value for the encryption key
+
+* set NEWS_CLIENT_API_KEY to the value of an API Key from [newsapi.org](https://www.newsapi.org)
+* set NEWS_MAPPER_SECRET to an appropriate **secret key** value of your choosing.
+
+
 
 ### 5. Virtual Environment Recommended
+
 * Pip Example:
-`virtualenv create venv`
+  ```
+  virtualenv create venv
+  ```
 * Conda Example:
-`conda create fooEnv`
+  ```
+  conda create fooEnv
+  ```
 
 <br>
 
@@ -45,11 +63,22 @@ A Django based web-app where a user's query returns a choropleth map of where re
         * The top_range value has a functional range of 0-100
         
         * For a responsive top_range value, uncomment lines 39-42 (below), and comment out line 44 (above)
-    
-          line 39: top_range = ((article_count // 100) -1) 
+        
+          '''
+          line 39: top_range = ((article_count // 100) -1)
+          ```
+          
+          ```
           line 40:
+          ```
+          
+          ```
           line 41: if top_range > 100:
+          ```
+          
+          ```
           line 42:    top_range = 100
+          ```
     
  
 ### 2. Query types (Map the News)
@@ -57,8 +86,8 @@ A Django based web-app where a user's query returns a choropleth map of where re
 * The 'all' option should be solely used currently. 
 
    
-### 3. Delete Foo
-* Buttons to Delete Comments, Queries, and Posts are not yet functional, although visible. 
+### 3. Deleting Discussion Items
+* Buttons to Delete Comments, Queries, and Posts are not yet finished, and if used will crash the program!
 
 <hr>
 
@@ -69,20 +98,24 @@ A Django based web-app where a user's query returns a choropleth map of where re
 
 ### 2. Install GDAL, Fiona, Shapely, RTree, and PyProj
    
-   * Windows lacks the required C++ binaries required by GDAL, 
+   * Windows has no native C compiler for which to compile the GDAL binaries, so pre-compiled versions are needed. 
     
         * Using CONDA virtual env:
         
             * The conda package manner can handle the installation out of the box:
-                ```conda install gdal fiona shapely rtree pyproj pip```
+               ```
+               conda install gdal fiona shapely rtree pyproj pip
+               ```
                 
             * Install remaining dependencies:
-                ```pip install --user -r requirements.txt```
+              ```
+              pip install --user -r requirements.txt
+              ```
                 
            
         * Using PIP:
         
-            * Using "pip install gdal fiona..." will fail
+            * Using ```pip install gdal fiona...``` will fail
             
             * Must install manually using the correct wheels for the host system
             
@@ -92,25 +125,40 @@ A Django based web-app where a user's query returns a choropleth map of where re
             * Either place wheels somewhere in the project folder, or note the (relative) path to where they are stored
             
             * In an active virtual env, install each individually (GDAL first) using:
-                ```python -m pip install --user path\to\wheel\wheelfile.whl```
+              ```
+              python -m pip install --user path\to\wheel\wheelfile.whl
+              ```
                 
             * Install remaining dependencies using:
-                ```python -m pip install --user -r requirements.txt```
+              ```
+              python -m pip install --user -r requirements.txt
+              ```
                 
                 
                 
 ### 3. Start App
 * Using the command line from the project root (or another location, prepending the manage.py file with the relative path), enter:
 
-    python manage.py createsuperuser (follow prompts)
-    python manage.py makemigrations"
-    python manage.py migrate
-    python manage.py runserver
-
+  ```
+  python manage.py createsuperuser (follow prompts)
+  ```
+  
+  ```
+  python manage.py makemigrations"
+  ```   
+  
+  ``` 
+  python manage.py migrate
+  ```
+ 
+  ```   
+  python manage.py runserver
+  ```
             
           
+          
 ### 4. Visit Site
-* Using a browser, navigate to either ###localhost:8000### or ###127.0.0.1:8000###
+* Using a browser, navigate to either **localhost:8000** or **127.0.0.1:8000**
       
       
       
