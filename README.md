@@ -12,8 +12,10 @@ REQUIRED =============================================
         - 'NEWS_CLIENT_API_KEY' == API Key from <a href="www.newsapi.org">newsapi.org</a>
         - 'NEWS_MAPPER_SECRET'  == Arbitrary user defined value for the encryption key
     
-VIRTUAL ENVIRONMENT RECOMMENDED =======================
-(conda and pip used in development)
+    - Virtual Environment use Recommended
+        - Conda and Pip used in development
+
+
 
 
 
