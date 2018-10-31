@@ -58,24 +58,23 @@ A Django based web-app where a user's query returns a choropleth map of where re
       * The number of results (articles) returned from querying the API has a maximum of 10,000
         
         * A maximum of 5,000 is currently hard-coded at api_mgr.query_api:
-        ` line 44: top_range = 50 `
+          ``` 
+          line 44: top_range = 50
+          ```
             
         * The top_range value has a functional range of 0-100
         
-        * For a responsive top_range value, uncomment lines 39-42 (below), and comment out line 44 (above)
         
-          '''
+        * For a responsive top_range value, uncomment lines 39-42 (below), and comment out line 44 (above)
+          ```
           line 39: top_range = ((article_count // 100) -1)
           ```
-          
           ```
           line 40:
-          ```
-          
+          ```  
           ```
           line 41: if top_range > 100:
           ```
-          
           ```
           line 42:    top_range = 100
           ```
@@ -100,7 +99,7 @@ A Django based web-app where a user's query returns a choropleth map of where re
    
    * Windows has no native C compiler for which to compile the GDAL binaries, so pre-compiled versions are needed. 
     
-        * Using CONDA virtual env:
+        * **Using CONDA virtual env**:
         
             * The conda package manner can handle the installation out of the box:
                ```
@@ -113,16 +112,22 @@ A Django based web-app where a user's query returns a choropleth map of where re
               ```
                 
            
-        * Using PIP:
+        * **Using PIP**:
         
             * Using ```pip install gdal fiona...``` will fail
             
+            
             * Must install manually using the correct wheels for the host system
             
+            
             * These wheels are currently hosted by Christoph Gohlke <a href="https://www.lfd.uci.edu/~gohlke/pythonlibs/">here</a>.
+            
+            
                 * Be sure to get the correct wheels, matching both the python version and either 64/86 bit architecture. 
                 
+                
             * Either place wheels somewhere in the project folder, or note the (relative) path to where they are stored
+            
             
             * In an active virtual env, install each individually (GDAL first) using:
               ```
@@ -141,20 +146,16 @@ A Django based web-app where a user's query returns a choropleth map of where re
 
   ```
   python manage.py createsuperuser (follow prompts)
-  ```
-  
+  ```  
   ```
   python manage.py makemigrations"
-  ```   
-  
+  ```    
   ``` 
   python manage.py migrate
-  ```
- 
+  ``` 
   ```   
   python manage.py runserver
-  ```
-            
+  ```            
           
           
 ### 4. Visit Site
