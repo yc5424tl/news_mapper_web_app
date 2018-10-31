@@ -110,7 +110,7 @@ A Django based web-app where a user's query returns a choropleth map of where re
             
           
 ### 4. Visit Site
-* Using a browser, navigate to either localhost:8000 or 127.0.0.1:8000
+* Using a browser, navigate to either ###localhost:8000### or ###127.0.0.1:8000###
       
       
       
