@@ -26,6 +26,6 @@ requests==2.17.1
 rtree
 shapely
 six==1.11.0
-urllib3==1.21.1
+urllib3==1.26.5
 whitenoise==4.1
 wincertstore==0.2
